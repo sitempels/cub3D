@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/08 18:21:56 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/08 19:06:10 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ typedef enum e_type
 }			t_type;
 /*_______________________________FUNCTION_____________________________________*/
 /*________________PARSING*/
+char	*ft_strnstrend(const char *haystack, const char *needle, size_t len);
+
 /*________________PLAYER_*/
 /*________________RAYCAST*/
 /*________________UTILS__*/

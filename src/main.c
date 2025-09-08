@@ -2,8 +2,7 @@
 
 bool	valid_file_extension(char *filename, char *ext)
 {
-	// probleme lorsqu ext partiellement correcte. ex: map.cubbbb
-	if (ft_strnstr(filename, ext, ft_strlen(filename)) != NULL)
+	if (ft_strnstrend(filename, ext, ft_strlen(filename)) != NULL)
 		return true;
 	ft_printf_fd(STDERR_FILENO, "Error: incorrect or missing file extension. Expected: %s\n", ext);
 	return false;
