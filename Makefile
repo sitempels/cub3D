@@ -1,30 +1,55 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
+#    new_MAkefile                                       :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: agaland <agaland@student.s19.be>           +#+  +:+       +#+         #
+#    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/08 19:02:58 by agaland          ###   ########.fr        #
+#    Updated: 2025/09/08 19:24:29 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #MAKEFLAGS += --silent
 #
-NAME = cub3D 
+NAME_PROJECT = cub3D 
+NAME = $(NAME_PROJECT)
+debug: NAME = $(addprefix debug_, $(NAME_PROJECT))
 TYPE = EXEC
 #----------------------------COMPILER------------------------------------------#
-CC = clang
+CC = cc
+debug: CC = gcc 
 CCFLAGS = -Wall -Wextra -Werror
+debug: CCFLAGS = -g3
 CPPFLAGS = $(INC_FLAG)
 #
 #----------------------------LINKER--------------------------------------------#
 #----------------------------DEBUG---------------------------------------------#
-#----------------------------MAIN----------------------------------------------#
+#----------------------------HEADER--------------------------------------------#
+INC_DIR = inc
+INC_FLAG = -I$(INC_DIR)
+#
 #----------------------------SRC-----------------------------------------------#
+MAIN = main
 SRC_DIR = src
-SRC = $(addprefix src/, $(addsuffix .c, main utils)) 
+#
+EVENT_DIR = event
+SRC_EVENT = $(addprefix $(EVENT_DIR)/, )
+#
+RAYCASTER_DIR = raycaster
+SRC_RAYCASTER = $(addprefix $(RAYCASTER_DIR)/, )
+#
+PARSER_DIR = parser
+SRC_PARSER = $(addprefix $(PARSER_DIR)/, )
+#
+PLAYER_DIR = player
+SRC_PLAYER = $(addprefix $(PLAYER_DIR)/, )
+#
+UTILS_DIR = utils
+SRC_UTILS = $(addprefix $(UTILS_DIR)/, )
+#
+SRCS ::= $(MAIN) $(SRC_EVENT) $(SRC_RAYCASTER) $(SRC_PARSER) $(SRC_PLAYER) $(SRC_UTILS)
+SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 
 #
 #----------------------------OBJ-----------------------------------------------#
 OBJ_DIR = obj
@@ -33,49 +58,66 @@ OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
 #----------------------------LIB-----------------------------------------------#
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
-INC_FLAG = -I $(LIBFT_DIR)/$(INC_DIR)
+MINILBX_DIR = minilibx_linux
+INC_FLAG += -I $(LIBFT_DIR)/$(INC_DIR)
+LIB_FLAG = -lft -lX11 -lXext -lm 
 #
-#----------------------------HEADER--------------------------------------------#
-INC_DIR = inc
-INC_FLAG += -I$(INC_DIR)
-#
+#----------------------------MISC----------------------------------------------#
 #----------------------------RULES---------------------------------------------#
+#
 all: $(NAME)
 #
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile
 	@mkdir -p $(@D)
 	$(CC) $(CCFLAGS) $(CPPFLAGS) -c $< -o $@
 #
-lib:	$(LIBFT) 
+lib:	$(LIBFT) minilbx
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
 #
-$(NAME): $(OBJ) $(LIBFT) minilibx
-	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) -lX11 -lXext -lm -lft -o $@
-	@echo "$(NAME) $(GREEN)created !$(NC)"
+minilbx:
+	@$(MAKE) -C $(MINILBX_DIR)
 #
-minilibx: 
-	@$(MAKE) -C minilibx_linux
+$(NAME): $(OBJ) $(LIBFT) 
+	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
+	@echo "$(NAME) $(GREEN)created !$(NC)"
+
+run: $(NAME)
+	@./$(NAME)
+#
+leak: debug
+	@valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-origins=yes --track-fds=yes --suppressions=./valgrind.supp ./debug_$(NAME_PROJECT)
+#
+vgdb: debug
+	@valgrind --vgdb-error=0 --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=./valgrind.supp ./debug_$(NAME_PROJECT)
 #
 clean: libclean
-	rm -rf $(OBJ_DIR)
+	rm -rf $(OBJ_DIR) $(DEPENDS)
 	@echo "$(NAME) $(GREEN)$@ed !$(NC)"
 #
 libclean:
 	$(MAKE) clean -C $(LIBFT_DIR)	
+	$(MAKE) clean -C $(MINILBX_DIR)
 	rm -rf $(LIBFT)
 #
 fclean: clean
+	$(MAKE) fclean -C $(LIBFT_DIR)	
 	rm -rf $(NAME)
+	rm -rf $(addprefix debug_, $(NAME))
 	$(MAKE) fclean -C $(LIBFT_DIR)	
 	@echo "$(NAME) $(GREEN)$@ed !$(NC)"
 #
-re: fclean all
+re: all
 #
-.PHONY: all clean libclean fclean re design
+debug: $(OBJ) $(LIBFT) 
+	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
+	@echo "$(NAME) created !"
+#
+-include $(DEPENDS)
+#
+.PHONY: all clean libclean fclean re
 #----------------------------TEXT----------------------------------------------#
-GREEN=\033[0;32m
-NC=\033[0m
+
 #
 #----------------------------MISC----------------------------------------------#
 #
