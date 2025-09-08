@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    new_MAkefile                                       :+:      :+:    :+:    #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
+#    By: agaland <agaland@student.s19.be>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/08 19:24:29 by stempels         ###   ########.fr        #
+#    Updated: 2025/09/08 19:27:21 by agaland          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ PLAYER_DIR = player
 SRC_PLAYER = $(addprefix $(PLAYER_DIR)/, )
 #
 UTILS_DIR = utils
-SRC_UTILS = $(addprefix $(UTILS_DIR)/, )
+SRC_UTILS = $(addprefix $(UTILS_DIR)/, utils)
 #
 SRCS ::= $(MAIN) $(SRC_EVENT) $(SRC_RAYCASTER) $(SRC_PARSER) $(SRC_PLAYER) $(SRC_UTILS)
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 
