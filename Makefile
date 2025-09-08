@@ -3,13 +3,13 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: stempels <stempels@student.s19.be>         +#+  +:+       +#+         #
+#    By: agaland <agaland@student.s19.be>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/08 14:38:30 by stempels         ###   ########.fr        #
+#    Updated: 2025/09/08 18:06:44 by agaland          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-#
+
 #MAKEFLAGS += --silent
 #
 NAME = cub3D 
@@ -55,7 +55,7 @@ $(NAME): $(OBJ) $(LIBFT) minilibx
 	@echo "$(NAME) $(GREEN)created !$(NC)"
 #
 minilibx: 
-	@$(MAKE) -C minilibx-linux
+	@$(MAKE) -C minilibx_linux
 #
 clean: libclean
 	rm -rf $(OBJ_DIR)
