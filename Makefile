@@ -1,18 +1,18 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    stempels_Makefile                                  :+:      :+:    :+:    #
+#    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: stempels <stempels@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/03/20 12:11:32 by stempels         ###   ########.fr        #
+#    Updated: 2025/09/08 13:20:21 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #
 #MAKEFLAGS += --silent
 #
-NAME = push_swap 
+NAME = cub3D 
 TYPE = EXEC
 #----------------------------COMPILER------------------------------------------#
 CC = clang
@@ -24,7 +24,7 @@ CPPFLAGS = $(INC_FLAG)
 #----------------------------MAIN----------------------------------------------#
 #----------------------------SRC-----------------------------------------------#
 SRC_DIR = src
-SRC = $(addprefix src/, $(addsuffix .c, main_push_swap push_swap push_swap_utils push_swap_utils2 manip_push manip_swap manip_rotate manip_rrotate)) 
+SRC = $(addprefix src/, $(addsuffix .c, ) 
 #
 #----------------------------OBJ-----------------------------------------------#
 OBJ_DIR = obj
