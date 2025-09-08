@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 10:09:18 by stempels          #+#    #+#             */
-/*   Updated: 2025/03/20 16:12:10 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/08 15:27:44 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,10 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 int		ft_atoi(const char *str);
+/**/
+/*--------------------------STR_FUNCTIONS-------------------------------------*/
+// join any (nbr_str) nbr of string
+char	*ft_strjoin_var(int nbr_str, ...);
 /**/
 /*--------------------------MALLOC_FUNCTIONS----------------------------------*/
 void	*ft_calloc(size_t count, size_t size);

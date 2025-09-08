@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/08 13:36:10 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/08 16:53:47 by agaland          ###   ########.fr       */
+/*   Created: 2025/09/08 14:41:00 by stempels          #+#    #+#             */
+/*   Updated: 2025/09/08 17:10:23 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/cub3D.h"
-
-bool	check_file_ext(char *filename, char *ext)
+int	calc_frame(t_game *game)
 {
-	if (ft_strnstr(filename, ext, ft_strlen(filename)) != NULL)
-		return (true);
-	return true;
+	if (map[x][y] == WALL || map[x][y + 1] == WALL)
+
+	return (0);
 }
 
 int	main(int ac, char **av)
