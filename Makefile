@@ -6,7 +6,7 @@
 #    By: stempels <stempels@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/08 13:20:21 by stempels         ###   ########.fr        #
+#    Updated: 2025/09/08 13:42:42 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #
@@ -16,7 +16,7 @@ NAME = cub3D
 TYPE = EXEC
 #----------------------------COMPILER------------------------------------------#
 CC = clang
-CCFLAGS = -Wall -Wextra -Werror -g
+CCFLAGS = -Wall -Wextra -Werror
 CPPFLAGS = $(INC_FLAG)
 #
 #----------------------------LINKER--------------------------------------------#
@@ -24,7 +24,7 @@ CPPFLAGS = $(INC_FLAG)
 #----------------------------MAIN----------------------------------------------#
 #----------------------------SRC-----------------------------------------------#
 SRC_DIR = src
-SRC = $(addprefix src/, $(addsuffix .c, ) 
+SRC = $(addprefix src/, $(addsuffix .c, main)) 
 #
 #----------------------------OBJ-----------------------------------------------#
 OBJ_DIR = obj
@@ -50,11 +50,14 @@ lib:	$(LIBFT)
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
 #
-$(NAME): $(OBJ) $(LIBFT)
-	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -o $@
+$(NAME): $(OBJ) $(LIBFT) minilibx
+	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) -lX11 -lXext -lm -lft -o $@
 	@echo "$(NAME) $(GREEN)created !$(NC)"
 #
-clean:
+minilibx: 
+	@$(MAKE) -C minilibx-linux
+#
+clean: libclean
 	rm -rf $(OBJ_DIR)
 	@echo "$(NAME) $(GREEN)$@ed !$(NC)"
 #
@@ -64,13 +67,12 @@ libclean:
 #
 fclean: clean
 	rm -rf $(NAME)
+	$(MAKE) fclean -C $(LIBFT_DIR)	
 	@echo "$(NAME) $(GREEN)$@ed !$(NC)"
 #
-ffclean: fclean libclean
+re: fclean all
 #
-re: ffclean all
-#
-.PHONY: all clean libclean fclean ffclean re design
+.PHONY: all clean libclean fclean re design
 #----------------------------TEXT----------------------------------------------#
 GREEN=\033[0;32m
 NC=\033[0m
