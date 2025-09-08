@@ -6,7 +6,7 @@
 #    By: agaland <agaland@student.s19.be>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/08 19:27:21 by agaland          ###   ########.fr        #
+#    Updated: 2025/09/08 19:32:51 by agaland          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,8 @@ debug: NAME = $(addprefix debug_, $(NAME_PROJECT))
 TYPE = EXEC
 #----------------------------COMPILER------------------------------------------#
 CC = cc
-debug: CC = gcc 
-CCFLAGS = -Wall -Wextra -Werror
+debug: CC = gcc -fPIE
+CCFLAGS = -Wall -Wextra -Werror -fPIE
 debug: CCFLAGS = -g3
 CPPFLAGS = $(INC_FLAG)
 #
