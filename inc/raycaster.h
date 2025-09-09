@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 09:00:17 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/09 13:33:59 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/09 15:21:58 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define PLAYER_COLOR 0xfa3737
 # define SPEED_FORWARD 2
 # define SPEED_BACKWARD 1
+# define TURN_SPEED (10 * M_PI / 180)
 /*_______________________________STRUCT_______________________________________*/
 typedef struct		s_data
 {

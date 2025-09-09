@@ -6,19 +6,16 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/09 14:15:30 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/09 16:05:18 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
 static void	px_put(t_data *data, int x, int y, unsigned int color);
-int	game_loop(t_game *game, t_data *data);
 
-int	display_handler(t_game *game, int max_x, int max_y)
+int	display_handler(t_game *game)
 {
-	int		i;
-	int		j;
 	t_data	*data;
 
 	data = (t_data *) malloc(sizeof(t_data));
@@ -29,11 +26,20 @@ int	display_handler(t_game *game, int max_x, int max_y)
 	data->addr = mlx_get_data_addr(data->img, &data->bpp, &data->l_length, &data->endian); 
 	mlx_hook(data->win, 2, 1L << 0, key_handler, game);
 	mlx_hook(data->win, 17, 0, close_all, data);
+	game_loop(game, data);
+	return (0);
+}
+
+int	game_loop(t_game *game, t_data *data)
+{
+	int	i;
+	int	j;
+
 	i = 0;
-	while (i < max_x)
+	while (i < game->max_x)
 	{
 		j = 0;
-		while (j < max_y)
+		while (j < game->max_y)
 		{
 			if (game->map[i][j] == EMPTY)
 				img_put(data, i, j, EMPTY_COLOR);

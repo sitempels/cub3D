@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/09 14:37:56 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/09 15:25:55 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 		player->pos_y = player->pos_y + cosf(player->facing) * SPEED_FORWARD;
 		printf("forward %d\n", SPEED_FORWARD);
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
-		img_put(data, game->player->pos_x, game->player->pos_y, PLAYER_COLOR);
-		mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+		game_loop(game, data);
 	}
 	else if (key_code == DOWN_KEY)
 	{
@@ -63,26 +62,27 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 		player->pos_y = player->pos_y - cosf(player->facing) * SPEED_BACKWARD;
 		printf("backward %d\n", SPEED_BACKWARD);
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
-		img_put(data, game->player->pos_x, game->player->pos_y, PLAYER_COLOR);
-		mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+		game_loop(game, data);
 	}
 	else if (key_code == LEFT_KEY)
 	{
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
-		player->facing += 10 * M_PI / 180;
+		player->facing += TURN_SPEED; 
 		if (player->facing >= 2 * M_PI)
 			player->facing -= 2 * M_PI;
 		printf("backward %d\n", SPEED_BACKWARD);
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
+		game_loop(game, data);
 	}
 	else if (key_code == RIGHT_KEY)
 	{
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
-		player->facing -= 10 * M_PI / 180;
+		player->facing -= TURN_SPEED;
 		if (player->facing < 0)
 			player->facing += 2 * M_PI;
-		printf("backward %d\n", SPEED_BACKWARD);
+		printf("turn right %f\n", TURN_SPEED);
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
+		game_loop(game, data);
 	}
 	return (0);
 }

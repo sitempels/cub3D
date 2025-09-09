@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/09 14:15:41 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/09 16:03:34 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ typedef enum e_type
 /*________________RAYCAST*/
 int			close_all(t_game *game, t_data *data, int status);
 int			key_handler(int keycode, t_game *game);
-int			display_handler(t_game *game, int max_x, int max_y);
-void	img_put(t_data *data, float x, float y, unsigned int color);
+int			display_handler(t_game *game);
+int			game_loop(t_game *game, t_data *data);
+void		img_put(t_data *data, float x, float y, unsigned int color);
 /*________________UTILS__*/
 #endif
