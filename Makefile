@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/09 11:04:03 by stempels         ###   ########.fr        #
+#    Updated: 2025/09/09 19:20:47 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ EVENT_DIR = event
 SRC_EVENT = $(addprefix $(EVENT_DIR)/,)
 #
 RAYTRACER_DIR = raytracer
-SRC_RAYTRACER = $(addprefix $(RAYTRACER_DIR)/, display_handler display_handler_utils)
+SRC_RAYTRACER = $(addprefix $(RAYTRACER_DIR)/, display_handler display_handler_utils dda_operation)
 #
 PARSER_DIR = parser
 SRC_PARSER = $(addprefix $(PARSER_DIR)/,)

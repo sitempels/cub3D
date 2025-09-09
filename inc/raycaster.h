@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 09:00:17 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/09 15:21:58 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/09 16:22:47 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define DOWN_KEY 0xff54
 # define LEFT_KEY 0xff51
 # define RIGHT_KEY 0xff53
-# define EMPTY_COLOR 0xedf0f5
+# define FLOOR_COLOR 0xedf0f5
 # define WALL_COLOR 0x428715
 # define PLAYER_COLOR 0xfa3737
 # define SPEED_FORWARD 2

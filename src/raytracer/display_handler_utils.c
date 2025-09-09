@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/09 15:25:55 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/09 19:37:55 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,40 +48,40 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	player = game->player;
 	if (key_code == UP_KEY)
 	{
-		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
-		player->pos_x = player->pos_x + sinf(player->facing) * SPEED_FORWARD;
-		player->pos_y = player->pos_y + cosf(player->facing) * SPEED_FORWARD;
+		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
+		player->pos[0] = player->pos[0] + sinf(player->facing) * SPEED_FORWARD;
+		player->pos[1] = player->pos[1] + cosf(player->facing) * SPEED_FORWARD;
 		printf("forward %d\n", SPEED_FORWARD);
-		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
+		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game, data);
 	}
 	else if (key_code == DOWN_KEY)
 	{
-		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
-		player->pos_x = player->pos_x - sinf(player->facing) * SPEED_BACKWARD;
-		player->pos_y = player->pos_y - cosf(player->facing) * SPEED_BACKWARD;
+		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
+		player->pos[0] = player->pos[0] - sinf(player->facing) * SPEED_BACKWARD;
+		player->pos[1] = player->pos[1] - cosf(player->facing) * SPEED_BACKWARD;
 		printf("backward %d\n", SPEED_BACKWARD);
-		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
+		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game, data);
 	}
 	else if (key_code == LEFT_KEY)
 	{
-		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
+		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		player->facing += TURN_SPEED; 
 		if (player->facing >= 2 * M_PI)
 			player->facing -= 2 * M_PI;
 		printf("backward %d\n", SPEED_BACKWARD);
-		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
+		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game, data);
 	}
 	else if (key_code == RIGHT_KEY)
 	{
-		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
+		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		player->facing -= TURN_SPEED;
 		if (player->facing < 0)
 			player->facing += 2 * M_PI;
 		printf("turn right %f\n", TURN_SPEED);
-		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
+		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game, data);
 	}
 	return (0);

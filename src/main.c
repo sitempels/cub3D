@@ -40,10 +40,11 @@ int	main(void)
 	game->map[4][4] = 1;
 	game->max_x = 5;
 	game->max_y = 5;
+	game->fov = FOV;
 	game->player = (t_player *) malloc(sizeof(t_player));
 	game->player->facing = 0;
-	game->player->pos_x = 2;
-	game->player->pos_y = 3;
+	game->player->pos[0] = 2;
+	game->player->pos[1] = 3;
 	display_handler(game);
 	return (0);
 }

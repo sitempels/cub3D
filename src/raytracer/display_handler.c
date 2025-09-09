@@ -6,13 +6,11 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/09 16:05:18 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/09 20:14:42 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-static void	px_put(t_data *data, int x, int y, unsigned int color);
 
 int	display_handler(t_game *game)
 {
@@ -32,8 +30,9 @@ int	display_handler(t_game *game)
 
 int	game_loop(t_game *game, t_data *data)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	double	field;
 
 	i = 0;
 	while (i < game->max_x)
@@ -41,16 +40,22 @@ int	game_loop(t_game *game, t_data *data)
 		j = 0;
 		while (j < game->max_y)
 		{
-			if (game->map[i][j] == EMPTY)
-				img_put(data, i, j, EMPTY_COLOR);
+			if (game->map[i][j] == FLOOR)
+				img_put(data, i, j, FLOOR_COLOR);
 			if (game->map[i][j] == WALL)
 				img_put(data, i, j, WALL_COLOR);
 			j++;
 		}
 		i++;
 	}
-	img_put(data, game->player->pos_x, game->player->pos_y, PLAYER_COLOR);
-	printf("player main_loop	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos_x, game->player->pos_y);
+	img_put(data, game->player->pos[0], game->player->pos[1], PLAYER_COLOR);
+	field = game->player->facing - (game->fov * M_PI / 180);
+	while (field < game->player->facing + (game->fov * M_PI / 180))
+	{
+		dda_operation(game, field);
+		field += (game->fov * M_PI / 6 * 180);
+	}
+	printf("player main_loop	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	mlx_loop(data->mlx);
 	return (0);
@@ -74,7 +79,7 @@ void	img_put(t_data *data, float x, float y, unsigned int color)
 	}
 }
 
-static void	px_put(t_data *data, int x, int y, unsigned int color)
+void	px_put(t_data *data, int x, int y, unsigned int color)
 {
 	char	*dst;
 

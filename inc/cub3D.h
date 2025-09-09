@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/09 16:03:34 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/09 20:14:58 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <math.h>
 /**/
 /*_______________________________MACRO________________________________________*/
+# define FOV 66
 /*_______________________________STRUCT_______________________________________*/
 
 typedef struct		s_game
@@ -37,13 +38,13 @@ typedef struct		s_game
 typedef	struct		s_player
 {
 	float 			facing;
-	float			pos_x;
-	float			pos_y;
+	float			pos[2];
 }					t_player;
 /*_______________________________ENUM_________________________________________*/
 typedef enum e_type
 {
-	EMPTY = 0,
+	EMPTY = -1,
+	FLOOR,
 	WALL,
 	N,
 	E,
@@ -59,5 +60,7 @@ int			key_handler(int keycode, t_game *game);
 int			display_handler(t_game *game);
 int			game_loop(t_game *game, t_data *data);
 void		img_put(t_data *data, float x, float y, unsigned int color);
+double		dda_operation(t_game *game, double facing);
+void	px_put(t_data *data, int x, int y, unsigned int color);
 /*________________UTILS__*/
 #endif
