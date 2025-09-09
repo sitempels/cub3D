@@ -6,7 +6,7 @@
 #    By: agaland <agaland@student.s19.be>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/09 18:29:04 by agaland          ###   ########.fr        #
+#    Updated: 2025/09/10 00:12:25 by agaland          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ RAYCASTER_DIR = raycaster
 SRC_RAYCASTER = $(addprefix $(RAYCASTER_DIR)/, )
 #
 PARSER_DIR = parser
-SRC_PARSER = $(addprefix $(PARSER_DIR)/, parsing_utils)
+SRC_PARSER = $(addprefix $(PARSER_DIR)/, parsing parsing_utils)
 #
 PLAYER_DIR = player
 SRC_PLAYER = $(addprefix $(PLAYER_DIR)/, )

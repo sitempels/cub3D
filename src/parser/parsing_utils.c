@@ -42,7 +42,15 @@ int	init_matrix(int ***matrix, char *line, int max_len, int curr_row, int line_l
 	return (0);
 }
 
-char	*ft_strnstrend(const char *haystack, const char *needle, size_t len)
+bool	valid_file_extension(char *filename, char *ext)
+{
+	if (ft_strnstr_end(filename, ext, ft_strlen(filename)) != NULL)
+		return true;
+	ft_printf_fd(STDERR_FILENO, "Error: incorrect or missing file extension. Expected: %s\n", ext);
+	return false;
+}
+
+char	*ft_strnstr_end(const char *haystack, const char *needle, size_t len)
 {
 	size_t	i;
 	size_t	j;

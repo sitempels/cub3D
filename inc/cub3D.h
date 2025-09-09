@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/09 19:40:37 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/10 00:20:03 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,13 @@ typedef enum e_type
 }			t_type;
 /*_______________________________FUNCTION_____________________________________*/
 /*________________PARSING*/
-char	*ft_strnstrend(const char *haystack, const char *needle, size_t len);
-int		init_matrix(int ***matrix, char *line, int max_len, int curr_row, int line_lenght);
+int		parse_file(int fd, t_game *game);
+int		process_map_recursive(int fd, int ***matrix, int *rows, int *max_len);
+
+bool	valid_file_extension(char *filename, char *ext);
 int		allocate_matrix(int ***matrix, int rows);
+int		init_matrix(int ***matrix, char *line, int max_len, int curr_row, int line_lenght);
+char	*ft_strnstr_end(const char *haystack, const char *needle, size_t len);
 
 /*________________PLAYER_*/
 /*________________RAYCAST*/

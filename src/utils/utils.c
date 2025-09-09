@@ -5,7 +5,6 @@ void	print_map(int **matrix, int height, int width)
 	int	i;
 	int	j;
 
-
 	printf("------------ Print Map ------------\n");
 	printf("\n");
 	i = 0;
