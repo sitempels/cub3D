@@ -10,14 +10,14 @@ bool	valid_file_extension(char *filename, char *ext)
 	return false;
 }
 
-/* int	check_line(char *line, int *player_count)
+int	check_line(char *line, int *player_count)
 {
 	int		i;
 
 	i = 0;
 	while (line[i])
 	{
-		if (!ft_strchr("01NSEW ", line[i]))
+		if (!ft_strchr("01NSEW \n", line[i]))
 		{
 			ft_printf_fd(STDERR_FILENO, "Error: Invalid character <%c> inserted\n", line[i]);
 			return(1);
@@ -34,7 +34,7 @@ bool	valid_file_extension(char *filename, char *ext)
 		i++;		
 	}
 	return (0);
-} */
+}
 
 
 int	parse_map(int fd, int ***matrix, int *rows, int *max_len)
@@ -42,18 +42,17 @@ int	parse_map(int fd, int ***matrix, int *rows, int *max_len)
 	char 	*line;
 	int		line_lenght;
 	int		curr_row;
-	int		j;
+	int		player_count;
 
 	line = get_next_line(fd);
 	if (!line)
-	{
-		*matrix = malloc(sizeof(int *) * (*rows));
-		return (0);
-	}
+		return (allocate_matrix(matrix, *rows));
 	line_lenght = ft_strlen(line);
 	if (line_lenght > *max_len)
 		*max_len = line_lenght;
 	curr_row = *rows;
+	if (check_line(line, &player_count) == 1)
+		return (1);
 	(*rows)++;
 	parse_map(fd, matrix, rows, max_len);
 	if (!*matrix)
@@ -61,7 +60,7 @@ int	parse_map(int fd, int ***matrix, int *rows, int *max_len)
 	(*matrix)[curr_row] = malloc(sizeof(int) * (*max_len));
 	if (!(*matrix)[curr_row])
 		return (1);
-	if (init_map(matrix, line, *max_len, curr_row, line_lenght) != 0)
+	if (init_matrix(matrix, line, *max_len, curr_row, line_lenght) != 0)
 	{
 		free(line);
 		return (1);

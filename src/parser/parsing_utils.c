@@ -1,6 +1,14 @@
 #include "../inc/cub3D.h"
 
-int	init_map(int ***matrix, char *line, int max_len, int curr_row, int line_lenght)
+int	allocate_matrix(int ***matrix, int rows)
+{
+	*matrix = malloc(sizeof(int *) * (rows));
+	if (!*matrix)
+		return (1);
+	return (0);
+}
+
+int	init_matrix(int ***matrix, char *line, int max_len, int curr_row, int line_lenght)
 {
 	int	j;
 

@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/09 18:39:25 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/09 19:40:37 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ typedef enum e_type
 /*_______________________________FUNCTION_____________________________________*/
 /*________________PARSING*/
 char	*ft_strnstrend(const char *haystack, const char *needle, size_t len);
-int		init_map(int ***matrix, char *line, int max_len, int curr_row, int line_lenght);
+int		init_matrix(int ***matrix, char *line, int max_len, int curr_row, int line_lenght);
+int		allocate_matrix(int ***matrix, int rows);
 
 /*________________PLAYER_*/
 /*________________RAYCAST*/
