@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/08 19:34:25 by stempels         ###   ########.fr        #
+#    Updated: 2025/09/09 11:04:03 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,21 +34,21 @@ MAIN = main
 SRC_DIR = src
 #
 EVENT_DIR = event
-SRC_EVENT = $(addprefix $(EVENT_DIR)/, )
+SRC_EVENT = $(addprefix $(EVENT_DIR)/,)
 #
-RAYCASTER_DIR = raycaster
-SRC_RAYCASTER = $(addprefix $(RAYCASTER_DIR)/, )
+RAYTRACER_DIR = raytracer
+SRC_RAYTRACER = $(addprefix $(RAYTRACER_DIR)/, display_handler display_handler_utils)
 #
 PARSER_DIR = parser
-SRC_PARSER = $(addprefix $(PARSER_DIR)/, )
+SRC_PARSER = $(addprefix $(PARSER_DIR)/,)
 #
 PLAYER_DIR = player
-SRC_PLAYER = $(addprefix $(PLAYER_DIR)/, )
+SRC_PLAYER = $(addprefix $(PLAYER_DIR)/,)
 #
 UTILS_DIR = utils
-SRC_UTILS = $(addprefix $(UTILS_DIR)/, )
+SRC_UTILS = $(addprefix $(UTILS_DIR)/,)
 #
-SRCS ::= $(MAIN) $(SRC_EVENT) $(SRC_RAYCASTER) $(SRC_PARSER) $(SRC_PLAYER) $(SRC_UTILS)
+SRCS ::= $(MAIN) $(SRC_EVENT) $(SRC_RAYTRACER) $(SRC_PARSER) $(SRC_PLAYER) $(SRC_UTILS)
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 
 #
 #----------------------------OBJ-----------------------------------------------#
@@ -59,27 +59,30 @@ OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 MINILBX_DIR = minilibx_linux
-INC_FLAG += -I $(LIBFT_DIR)/$(INC_DIR)
-LIB_FLAG = -lft -lX11 -lXext -lm 
+MINILBX = $(MINILBX_DIR)/libmlx_Linux.a
+INC_FLAG += -I $(LIBFT_DIR)/$(INC_DIR) -I $(MINILBX_DIR)
+LIB += $(LIBFT) $(MINILBX)
+LIB_FLAG = -lX11 -lXext -lm -lz
 #
 #----------------------------MISC----------------------------------------------#
 #----------------------------RULES---------------------------------------------#
 #
 all: $(NAME)
 #
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	echo $(SRC)
 	@mkdir -p $(@D)
 	$(CC) $(CCFLAGS) $(CPPFLAGS) -c $< -o $@
 #
-lib:	$(LIBFT) minilbx
+lib: $(LIB)
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
 #
-minilbx:
+$(MINILBX):
 	@$(MAKE) -C $(MINILBX_DIR)
 #
-$(NAME): $(OBJ) $(LIBFT) 
-	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
+$(NAME): $(OBJ) $(LIB) 
+	$(CC) $(CCFLAGS) $(OBJ) -L$(LIB) $(LIB_FLAG) -o $(NAME)
 	@echo "$(NAME) $(GREEN)created !$(NC)"
 
 run: $(NAME)
@@ -109,11 +112,9 @@ fclean: clean
 #
 re: all
 #
-debug: fclean $(OBJ) $(LIBFT) 
-	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
+debug: fclean $(OBJ) $(LIB) 
+	$(CC) $(CCFLAGS) $(OBJ) -L$(LIB) $(LIB_FLAG) -o $(NAME)
 	@echo "$(NAME) created !"
-#
--include $(DEPENDS)
 #
 .PHONY: all clean libclean fclean re
 #----------------------------TEXT----------------------------------------------#
