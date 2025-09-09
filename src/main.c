@@ -36,35 +36,31 @@ bool	valid_file_extension(char *filename, char *ext)
 	return (0);
 } */
 
-char 	**parse_map(int fd, int *rows, int *max_len)
+int	parse_map(int fd, char ***matrix, int *rows, int max_len)
 {
 	char 	*line;
-	char 	**matrix;
 	int		line_lenght;
 	int		curr_row;
 
 	line = get_next_line(fd);
 	if (!line)
 	{
-		matrix = malloc(sizeof(char *) * (*rows + 1));
-		return (matrix);
+		*matrix = malloc(sizeof(char *) * (max_len));
+		return (0);
 	}
 	line_lenght = ft_strlen(line);
-	if (line_lenght > *max_len)
-		*max_len = line_lenght;
-	//printf("max_len: %d\n", *max_len);
+	if (line_lenght > max_len)
+		max_len = line_lenght;
 	curr_row = *rows;
 	(*rows)++;
-	parse_map(fd, rows, max_len);
-	if (!matrix)
-		return NULL;
-	matrix[curr_row] = malloc(sizeof(char) * (*max_len));
-	if (!matrix[curr_row])
-		return (NULL);
-	matrix[curr_row] = line;
-	//printf("curr_row: %d\n", curr_row);
-	//printf("LAST ROW: %d\n", *rows);
-	return (matrix);
+	parse_map(fd, matrix, rows, max_len);
+	if (!*matrix)
+		return (1);
+	(*matrix)[curr_row] = malloc(sizeof(char) * (*rows));
+	if (!(*matrix)[curr_row])
+		return (1);
+	(*matrix)[curr_row] = line;
+	return (0);
 }
 
 int	main(int ac, char **av)
@@ -72,9 +68,9 @@ int	main(int ac, char **av)
 	int	fd;
 	int	i;
 	int	rows;
-	int	len;
 	char **matrix;
 
+	matrix = NULL;
 	if (ac != 2)
 	{
 		ft_printf_fd(STDERR_FILENO, "Wrong number of arguments\nUsage : ./cub3d <filename.cub>\n");
@@ -85,9 +81,10 @@ int	main(int ac, char **av)
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
 		return (perror("open"), 1);
-	len = 0;
 	rows = 0;
-	matrix = parse_map(fd, &rows, &len);
+	if (parse_map(fd, &matrix, &rows, 0) == 1)
+		return (1);
+	printf("ICI\n");
 	i = 0;
 	while (matrix[i])
 	{
