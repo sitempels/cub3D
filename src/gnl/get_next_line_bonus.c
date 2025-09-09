@@ -15,7 +15,7 @@ char	*extract_line_from_stash(char *line, char **stash)
 		*stash = gnl_substr(old_stash, i + 1, gnl_strlen(old_stash) - (i + 1));
 		if (*stash && **stash == '\0')
 		{
-			free(*stash); //eviter 1 byte leaks de dup("")
+			free(*stash);
 			*stash = NULL;
 		}
 	}
@@ -28,55 +28,73 @@ char	*extract_line_from_stash(char *line, char **stash)
 	return (line);
 }
 
-char	*read_file(int fd, char *buffer, char *stash)
+int	read_file(int fd, char *buffer, char **stash)
 {
 	ssize_t	bytes_read;
 	char	*temp;
 
 	temp = NULL;
-	if (stash && gnl_strchr(stash, '\n'))
-		return (stash);
+	if (*stash && gnl_strchr(*stash, '\n'))
+		return (GNL_SUCCESS);
 	while (1)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read <= 0)
 			break ;
 		buffer[bytes_read] = '\0';
-		temp = gnl_strjoin(stash, buffer);
-		if (stash)
-			free(stash);
+		temp = gnl_strjoin(*stash, buffer);
+		if (*stash)
+			free(*stash);
 		if (!temp)
-			return (NULL);
-		stash = temp;
+			return (GNL_ERROR);
+		*stash = temp;
 		if (gnl_strchr(buffer, '\n'))
 			break ;
 	}
 	if (bytes_read < 0)
-		return (free(stash), NULL);
-	return (stash);
+		return (free(*stash), GNL_ERROR);
+	return (GNL_SUCCESS);
 }
 
-char	*get_next_line(int fd)
+int	check_result(int read_result, char *stash)
+{
+	if (read_result == GNL_ERROR)
+	{
+		if (stash)
+		{
+			free(stash);
+			stash = NULL;
+		}
+		return (GNL_ERROR);
+	}
+	return (GNL_SUCCESS);
+}
+
+int	get_next_line(int fd, char **line)
 {
 	static char	*stash[MAX_FD];
 	char		buffer[BUFFER_SIZE + 1];
-	char		*line;
+	int			read_result;
 
-	line = NULL;
-	if (BUFFER_SIZE <= 0 || fd < 0 || fd >= MAX_FD)
-		return (NULL);
-	stash[fd] = read_file(fd, buffer, stash[fd]);
-	if (!stash[fd])
-		return (NULL);
-	line = extract_line_from_stash(line, &stash[fd]);
 	if (!line)
+		return (GNL_ERROR);
+	*line = NULL;
+	if (BUFFER_SIZE <= 0 || fd < 0 || fd >= MAX_FD)
+		return (GNL_ERROR);
+	read_result = read_file(fd, buffer, &stash[fd]);
+	if (check_result(read_result, stash[fd]) < 0)
+		return (GNL_ERROR);
+	if (!stash[fd])
+		return (GNL_EOF);
+	*line = extract_line_from_stash(*line, &stash[fd]);
+	if (!*line)
 	{
 		if (stash[fd])
 		{
 			free(stash[fd]);
 			stash[fd] = NULL;
 		}
-		return (NULL);
+		return (GNL_ERROR);
 	}
-	return (line);
+	return (GNL_SUCCESS);
 }

@@ -15,11 +15,15 @@
 #  define BUFFER_SIZE 1048576 /* = 1 MB */
 # endif 
 
+# define GNL_SUCCESS 1
+# define GNL_EOF 0
+# define GNL_ERROR -1
+
 /* valeur defaut de la limite max de fichiers ouverts sur linux */
 # define MAX_FD 1024
 
-char	*get_next_line(int fd);
-char	*read_file(int fd, char *buffer, char *stash);
+int		get_next_line(int fd, char **line);
+int		read_file(int fd, char *buffer, char **stash);
 char	*extract_line_from_stash(char *line, char **stash);
 
 size_t	gnl_strlen(const char *str);

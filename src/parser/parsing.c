@@ -49,8 +49,9 @@ int	process_map_recursive(int fd, int ***matrix, int *rows, int *max_len)
 	int			curr_row;
 	static int	player_count;
 
-	line = get_next_line(fd);
-	if (!line)
+	if ((get_next_line(fd, &line)) < 0)
+		return (printf("Gnl Error\n"), 1);
+	else if (!line)
 		return (allocate_matrix(matrix, *rows));
 	line_lenght = ft_strlen(line);
 	if (line_lenght > *max_len)
