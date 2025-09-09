@@ -36,39 +36,46 @@ bool	valid_file_extension(char *filename, char *ext)
 	return (0);
 } */
 
-int	parse_map(int fd, char ***matrix, int *rows, int max_len)
+
+int	parse_map(int fd, int ***matrix, int *rows, int *max_len)
 {
 	char 	*line;
 	int		line_lenght;
 	int		curr_row;
+	int		j;
 
 	line = get_next_line(fd);
 	if (!line)
 	{
-		*matrix = malloc(sizeof(char *) * (max_len));
+		*matrix = malloc(sizeof(int *) * (*rows));
 		return (0);
 	}
 	line_lenght = ft_strlen(line);
-	if (line_lenght > max_len)
-		max_len = line_lenght;
+	if (line_lenght > *max_len)
+		*max_len = line_lenght;
 	curr_row = *rows;
 	(*rows)++;
 	parse_map(fd, matrix, rows, max_len);
 	if (!*matrix)
 		return (1);
-	(*matrix)[curr_row] = malloc(sizeof(char) * (*rows));
+	(*matrix)[curr_row] = malloc(sizeof(int) * (*max_len));
 	if (!(*matrix)[curr_row])
 		return (1);
-	(*matrix)[curr_row] = line;
+	if (init_map(matrix, line, *max_len, curr_row, line_lenght) != 0)
+	{
+		free(line);
+		return (1);
+	}
+	free(line);
 	return (0);
 }
 
 int	main(int ac, char **av)
 {
 	int	fd;
-	int	i;
 	int	rows;
-	char **matrix;
+	int	max_len;
+	int **matrix;
 
 	matrix = NULL;
 	if (ac != 2)
@@ -82,15 +89,11 @@ int	main(int ac, char **av)
 	if (fd < 0)
 		return (perror("open"), 1);
 	rows = 0;
-	if (parse_map(fd, &matrix, &rows, 0) == 1)
+	max_len = 0;
+	if (parse_map(fd, &matrix, &rows, &max_len) == 1)
 		return (1);
-	printf("ICI\n");
-	i = 0;
-	while (matrix[i])
-	{
-		printf("%s", matrix[i]);
-		i++;
-	}
+	print_map(matrix, rows, max_len);
+
 	return 0;
 
 }

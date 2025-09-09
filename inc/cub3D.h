@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/08 23:30:55 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/09 18:39:25 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@
 /**/
 /*_______________________________MACRO________________________________________*/
 
-# define CELL_TYPE "01NSEW " 
+# define CELL_TYPE "01NSEW "
+# define SPACE " "
 /*_______________________________STRUCT_______________________________________*/
 
 typedef struct		s_game
@@ -43,7 +44,8 @@ typedef	struct		s_player
 /*_______________________________ENUM_________________________________________*/
 typedef enum e_type
 {
-	EMPTY = 0,
+	EMPTY = -1,
+	FLOOR,
 	WALL,
 	N,
 	E,
@@ -53,8 +55,11 @@ typedef enum e_type
 /*_______________________________FUNCTION_____________________________________*/
 /*________________PARSING*/
 char	*ft_strnstrend(const char *haystack, const char *needle, size_t len);
+int		init_map(int ***matrix, char *line, int max_len, int curr_row, int line_lenght);
 
 /*________________PLAYER_*/
 /*________________RAYCAST*/
 /*________________UTILS__*/
+void	print_map(int **matrix, int height, int width);
+
 #endif

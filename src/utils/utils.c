@@ -1,23 +1,24 @@
 #include "../inc/cub3D.h"
 
-char	*ft_strnstrend(const char *haystack, const char *needle, size_t len)
+void	print_map(int **matrix, int height, int width)
 {
-	size_t	i;
-	size_t	j;
-	char	*ptr;
+	int	i;
+	int	j;
 
+
+	printf("------------ Print Map ------------\n");
+	printf("\n");
 	i = 0;
-	if (needle[0] == 0)
-		return ((char *) haystack);
-	while (haystack[i] && i < len)
+	while (i < height)
 	{
-		j = 0;
-		ptr = (char *) &haystack[i];
-		while (haystack[i + j] == needle[j] && haystack[i + j] && i + j < len)
+		j = 0 ;
+		while(j < width)
+		{
+			printf("%d", matrix[i][j]);
 			j++;
-		if (needle[j] == '\0' && haystack[i + j] == '\0')
-			return (ptr);
+		}
+		printf("\n");
 		i++;
 	}
-	return (NULL);
+	printf("----------------------------------\n");
 }
