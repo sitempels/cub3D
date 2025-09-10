@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/09 20:14:42 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/10 15:41:54 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,9 @@ int	display_handler(t_game *game)
 
 int	game_loop(t_game *game, t_data *data)
 {
-	double	field;
-
-	field = game->player->facing - (game->fov * M_PI / 180);
-	while (field < game->player->facing + (game->fov * M_PI / 180))
-	{
-		dda_operation(game, field);
-		field += (game->fov * M_PI / 6 * 180);
-	}
-	printf("player main_loop	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 	img_put(data, game->player->pos[0], game->player->pos[1], PLAYER_COLOR);
+	dda_operation(game, game->player->facing);
+	printf("player main_loop	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	mlx_loop(data->mlx);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/09 20:14:58 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/10 16:27:31 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ typedef struct		s_game
 	int				**map;
 	int				max_x;
 	int				max_y;
-	int				fov;
+	double			fov;
 	struct s_player	*player;
 	struct s_data	*data;
 }					t_game;
 
 typedef	struct		s_player
 {
-	float 			facing;
+	double 			facing;
 	float			pos[2];
 }					t_player;
 /*_______________________________ENUM_________________________________________*/
@@ -62,5 +62,6 @@ int			game_loop(t_game *game, t_data *data);
 void		img_put(t_data *data, float x, float y, unsigned int color);
 double		dda_operation(t_game *game, double facing);
 void	px_put(t_data *data, int x, int y, unsigned int color);
+void	safe_angle_add(double *angle, double mod);
 /*________________UTILS__*/
 #endif

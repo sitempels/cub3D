@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:24:02 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/09 20:17:08 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/10 16:03:39 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@ double	dda_operation(t_game *game, double facing)
 		dir[0] = 0;
 	else
 		dir[0] = -1;
-	if (-M_PI / 2 < facing && facing < M_PI / 2)
-		dir[1] = 1;
-	else if (facing == -M_PI / 2 || facing == M_PI / 2)
+	if (M_PI / 2 < facing && facing < 3 * M_PI / 2)
+		dir[1] = -1;
+	else if (facing == M_PI / 2 || facing == 3 * M_PI / 2)
 		dir[1] = 0;
 	else
-		dir[1] = -1;
+		dir[1] = 1;
 
 	plane[0] = 0;
-	plane[1] = game->fov / 100;
+	plane[1] = (game->fov * 180) / (M_PI * 100);
 	//time = 0;
 	//old_time = 0;
 	wall_dist = dda_init(game, dir, plane, &side);
@@ -54,26 +54,26 @@ static double	dda_init(t_game *game, double dir[2], double plane[2], int *side)
 	double	raydir[2];
 	double	d_dist[2];
 	double	camera_x;
+	double	wall_dist;
 
 	x = 0;
 	while (x < game->max_x)
 	{
-		camera_x = 2 * x / (double)game->max_x - 1;
+		camera_x = (2 * x) / ((double)game->max_x - 1);
 		raydir[0] = dir[0] + plane[0] * camera_x;
 		raydir[1] = dir[1] + plane[1] * camera_x;
-		x++;
-	}
-	x = 0;
-	while (x < 2)
-	{
-		map[x] = (int)game->player->pos[x];
-		if (raydir[x] == 0)
-			d_dist[x] = INT_MAX;
+		map[0] = (int)game->player->pos[x];
+		if (raydir[0] == 0)
+			d_dist[0] = INT_MAX;
 		else
-			d_dist[x] = fabs(1 / raydir[x]);
+			d_dist[0] = fabs(1 / raydir[0]);
+		if (raydir[1] == 0)
+			d_dist[1] = INT_MAX;
+		else
+			d_dist[1] = fabs(1 / raydir[1]);
+		wall_dist = get_first_dist(game, raydir, map, side, d_dist);
 		x++;
 	}
-	return (get_first_dist(game, raydir, map, side, d_dist));
 }
 
 static double	get_first_dist(t_game *game, double raydir[2], int map[2], int *side, double d_dist[2])
