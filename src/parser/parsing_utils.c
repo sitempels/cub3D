@@ -1,53 +1,46 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/10 13:35:43 by agaland           #+#    #+#             */
+/*   Updated: 2025/09/10 18:15:49 by agaland          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/cub3D.h"
 
-int	allocate_matrix(int ***matrix, int rows)
+bool	valid_file_extension(char *filename, char *ext, char flag)
 {
-	*matrix = malloc(sizeof(int *) * (rows));
-	if (!*matrix)
-		return (1);
-	return (0);
+	if (flag != 'X')
+	{
+		if (ft_strnstr_end(filename, ext, ft_strlen(filename)) != NULL)
+			return (true);
+	}
+	else
+	{
+		if (ft_strnstr(filename, ext, ft_strlen(filename)) != NULL)
+			return (true);
+	}
+	ft_printf_fd(STDERR_FILENO,
+		"Error: incorrect or missing file extension. Expected: %s\n", ext);
+	return (false);
 }
 
-int	init_matrix(int ***matrix, char *line, int max_len, int curr_row, int line_lenght)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	int	j;
+	size_t	i;
 
-	j = 0;
-	while (j < max_len)
+	i = 0;
+	while (s1[i] || s2[i])
 	{
-		(*matrix)[curr_row][j] = -1;
-		j++;
-	}
-	j = 0;
-	while (j < line_lenght)
-	{
-		if (line[j] == ' ' || line[j] == '\n')
-			(*matrix)[curr_row][j] = EMPTY;
-		else if (line[j] == '0')
-			(*matrix)[curr_row][j] = FLOOR;
-		else if (line[j] == '1')
-			(*matrix)[curr_row][j] = WALL;
-		else if (line[j] == 'N')
-			(*matrix)[curr_row][j] = N;
-		else if (line[j] == 'S')
-			(*matrix)[curr_row][j] = S;
-		else if (line[j] == 'E')
-			(*matrix)[curr_row][j] = E;
-		else if (line[j] == 'W')
-			(*matrix)[curr_row][j] = W;
-		else
-			return (1);
-		j++;
+		if (s1[i] != s2[i])
+			return ((unsigned char) s1[i] - (unsigned char) s2[i]);
+		i++;
 	}
 	return (0);
-}
-
-bool	valid_file_extension(char *filename, char *ext)
-{
-	if (ft_strnstr_end(filename, ext, ft_strlen(filename)) != NULL)
-		return true;
-	ft_printf_fd(STDERR_FILENO, "Error: incorrect or missing file extension. Expected: %s\n", ext);
-	return false;
 }
 
 char	*ft_strnstr_end(const char *haystack, const char *needle, size_t len)
