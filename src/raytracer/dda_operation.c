@@ -13,7 +13,7 @@
 #include "cub3D.h"
 
 static double	dda_init(t_game *game, double dir[2], double plane[2], int *side);
-static double	get_first_dist(t_game *game, double raydir[2], int map[2], int *side);
+static double	get_first_dist(t_game *game, double raydir[2], int map[2], int *side, double d_dist[2]);
 static double	collision_dist(t_game *game, double d_dist[2], double side_dist[2], int *side, int step[2], int map[2]);
 static void	draw_line(t_game *game, double dist, double facing);
 
@@ -52,6 +52,7 @@ static double	dda_init(t_game *game, double dir[2], double plane[2], int *side)
 	int		x;
 	int		map[2];
 	double	raydir[2];
+	double	d_dist[2];
 	double	camera_x;
 
 	x = 0;
@@ -67,19 +68,18 @@ static double	dda_init(t_game *game, double dir[2], double plane[2], int *side)
 	{
 		map[x] = (int)game->player->pos[x];
 		if (raydir[x] == 0)
-			raydir[x] = INT_MAX;
+			d_dist[x] = INT_MAX;
 		else
-			raydir[x] = fabs(1 / raydir[x]);
+			d_dist[x] = fabs(1 / raydir[x]);
 		x++;
 	}
-	return (get_first_dist(game, raydir, map, side));
+	return (get_first_dist(game, raydir, map, side, d_dist));
 }
 
-static double	get_first_dist(t_game *game, double raydir[2], int map[2], int *side)
+static double	get_first_dist(t_game *game, double raydir[2], int map[2], int *side, double d_dist[2])
 {
 	int		i;
 	int		step[2];
-	double	d_dist[2];
 	double	side_dist[2];
 
 	i = 0;
@@ -127,8 +127,8 @@ static void	draw_line(t_game *game, double dist, double facing)
 	float	dist_x;
 	float	dist_y;
 
-	dist_x = sinf(facing) * dist;
-	dist_y = cosf(facing) * dist;
+	dist_x = sinf(facing) * dist *64;
+	dist_y = cosf(facing) * dist *64;
 	x = game->player->pos[0];
 	y = game->player->pos[1];
 	while (x < dist_x || y < dist_y)

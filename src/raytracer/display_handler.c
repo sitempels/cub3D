@@ -14,6 +14,8 @@
 
 int	display_handler(t_game *game)
 {
+	int		i;
+	int		j;
 	t_data	*data;
 
 	data = (t_data *) malloc(sizeof(t_data));
@@ -24,16 +26,6 @@ int	display_handler(t_game *game)
 	data->addr = mlx_get_data_addr(data->img, &data->bpp, &data->l_length, &data->endian); 
 	mlx_hook(data->win, 2, 1L << 0, key_handler, game);
 	mlx_hook(data->win, 17, 0, close_all, data);
-	game_loop(game, data);
-	return (0);
-}
-
-int	game_loop(t_game *game, t_data *data)
-{
-	int		i;
-	int		j;
-	double	field;
-
 	i = 0;
 	while (i < game->max_x)
 	{
@@ -48,7 +40,15 @@ int	game_loop(t_game *game, t_data *data)
 		}
 		i++;
 	}
-	img_put(data, game->player->pos[0], game->player->pos[1], PLAYER_COLOR);
+	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	game_loop(game, data);
+	return (0);
+}
+
+int	game_loop(t_game *game, t_data *data)
+{
+	double	field;
+
 	field = game->player->facing - (game->fov * M_PI / 180);
 	while (field < game->player->facing + (game->fov * M_PI / 180))
 	{
@@ -56,6 +56,7 @@ int	game_loop(t_game *game, t_data *data)
 		field += (game->fov * M_PI / 6 * 180);
 	}
 	printf("player main_loop	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
+	img_put(data, game->player->pos[0], game->player->pos[1], PLAYER_COLOR);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	mlx_loop(data->mlx);
 	return (0);

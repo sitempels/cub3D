@@ -49,6 +49,7 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	if (key_code == UP_KEY)
 	{
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
+		img_put(data, game->player->pos[0], game->player->pos[1], FLOOR_COLOR);
 		player->pos[0] = player->pos[0] + sinf(player->facing) * SPEED_FORWARD;
 		player->pos[1] = player->pos[1] + cosf(player->facing) * SPEED_FORWARD;
 		printf("forward %d\n", SPEED_FORWARD);
@@ -58,6 +59,7 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	else if (key_code == DOWN_KEY)
 	{
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
+		img_put(data, game->player->pos[0], game->player->pos[1], FLOOR_COLOR);
 		player->pos[0] = player->pos[0] - sinf(player->facing) * SPEED_BACKWARD;
 		player->pos[1] = player->pos[1] - cosf(player->facing) * SPEED_BACKWARD;
 		printf("backward %d\n", SPEED_BACKWARD);
