@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/11 11:53:36 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/11 13:29:27 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef enum e_type
 int			close_all(t_game *game, t_data *data, int status);
 int			key_handler(int keycode, t_game *game);
 int			display_handler(t_game *game);
-int			game_loop(t_game *game, t_data *data);
+int			game_loop(t_game *game);
 void		img_put(t_data *data, float x, float y, unsigned int color);
 double		dda_operation(t_game *game, double facing);
 void	px_put(t_data *data, int x, int y, unsigned int color);

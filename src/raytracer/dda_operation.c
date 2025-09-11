@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:24:02 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/11 11:24:04 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/11 12:26:23 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ double	dda_operation(t_game *game, double facing)
 {
 	int		side;
 	double	wall_dist;
+	double	plane_x_size;
+	double	plane_y_size;
 	t_dda	dda;
 //	double	time;
 //	double	old_time;
@@ -38,8 +40,10 @@ double	dda_operation(t_game *game, double facing)
 	else
 		dda.dir[1] = 1;
 
-	dda.plane[0] = 0;
-	dda.plane[1] = (game->fov * 180) / (M_PI * 100);
+	plane_x_size = 1;
+	plane_y_size = (game->fov * 180) / (M_PI * 100);
+	dda.plane[0] = plane_x_size * cosf(facing) - plane_y_size * sinf(facing);
+	dda.plane[1] = plane_x_size * sinf(facing) + plane_y_size * cosf(facing);
 	//time = 0;
 	//old_time = 0;
 	wall_dist = dda_init(game, &dda, &side);
