@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/11 20:53:12 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/12 00:13:14 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,17 +106,21 @@ int	process_config(int fd)
 	char	*line;
 	int		arr[6];
 	int		i;
+	int		ret;
 
 	i = 0;
 	while (i < 6)
 		arr[i++] = -1;
 	if ((get_next_line(fd, &line)) < 0)
 		return (printf("Gnl Error\n"), 1);
-	//print_int_arr(arr, 6);
-	if (parse_config(line, arr) == 1)
-		return (free(line), 1);
+	if (!line)
+	{
+		printf("No configurations found\n");
+		return (1);
+	}
+	ret = parse_config(line, arr);
 	free(line);
-	return (0);
+	return (ret);
 }
 
 int	parse_file(int fd, t_game *game)

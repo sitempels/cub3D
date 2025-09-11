@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/11 21:06:51 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/12 01:05:03 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	init_game_struct(t_game *game, int rows, int max_len)
 	game->player = malloc(sizeof(t_player));
 	if (!game->player)
 		return (1);
-	ft_memset(game->player, 0, sizeof(game->player));
+	ft_memset(game->player, 0, sizeof(t_player));
 	return (0);
 }
 
@@ -78,6 +78,14 @@ int	init_map(t_game *game, char *line, int curr_row, int line_lenght)
 	return (0);
 }
 
+void	gnl_cleanup(void)
+{
+	char *line;
+	
+	while (get_next_line(-1, &line) > 0)
+		free(line);
+}
+
 int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 {
 	char		*line;
@@ -93,14 +101,15 @@ int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 		*max_len = line_lenght;
 	curr_row = *rows;
 	if (check_line(line) == 1)
-		return (1);
+		return (free(line), 1);
 	(*rows)++;
-	process_map_recursive(fd, game, rows, max_len);
+	if (process_map_recursive(fd, game, rows, max_len) != 0)
+		return (gnl_cleanup(), free(line), 1);
 	if (!game->map)
-		return (1);
+		return (free(line), 1);
 	game->map[curr_row] = malloc(sizeof(int) * (*max_len));
 	if (!(game->map)[curr_row])
-		return (1);
+		return (free(line), 1);
 	if (init_map(game, line, curr_row, line_lenght) != 0)
 		return (free(line), 1);
 	free(line);
