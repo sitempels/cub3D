@@ -6,12 +6,12 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/10 13:37:11 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/11 14:40:13 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/cub3D.h"
-#include "../gnl/get_next_line_bonus.h"
+#include "cub3D.h"
+#include "get_next_line_bonus.h"
 
 int	allocate_matrix(int ***matrix, int rows)
 {

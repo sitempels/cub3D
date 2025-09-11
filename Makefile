@@ -6,7 +6,7 @@
 #    By: agaland <agaland@student.s19.be>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/11 13:58:40 by stempels         ###   ########.fr        #
+#    Updated: 2025/09/11 15:22:27 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ SRC_UTILS = $(addprefix $(UTILS_DIR)/, utils)
 GNL_DIR = gnl
 SRC_GNL = $(addprefix $(GNL_DIR)/, get_next_line_bonus get_next_line_utils_bonus)
 #
-SRCS ::= $(MAIN) $(SRC_EVENT) $(SRC_RAYCASTER) $(SRC_PARSER) $(SRC_PLAYER) $(SRC_UTILS) $(SRC_GNL)
+SRCS ::= $(MAIN) $(SRC_EVENT) $(SRC_RAYTRACER) $(SRC_PARSER) $(SRC_PLAYER) $(SRC_UTILS) $(SRC_GNL)
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 
 #
 #----------------------------OBJ-----------------------------------------------#
@@ -65,7 +65,7 @@ MINILBX_DIR = minilibx_linux
 MINILBX = $(MINILBX_DIR)/libmlx_Linux.a
 INC_FLAG += -I $(LIBFT_DIR)/$(INC_DIR) -I $(MINILBX_DIR)
 LIB += $(LIBFT) $(MINILBX)
-LIB_FLAG = -lX11 -lXext -lm -lz
+LIB_FLAG = -lft -lmlx -lX11 -lXext -lm -lz
 #
 #----------------------------MISC----------------------------------------------#
 #----------------------------RULES---------------------------------------------#
@@ -85,7 +85,7 @@ $(MINILBX):
 	@$(MAKE) -C $(MINILBX_DIR)
 #
 $(NAME): $(OBJ) $(LIB) 
-	$(CC) $(CCFLAGS) $(OBJ) -L$(LIB) $(LIB_FLAG) -o $(NAME)
+	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) -L$(MINILBX_DIR) $(LIB_FLAG) -o $(NAME)
 	@echo "$(NAME) $(GREEN)created !$(NC)"
 
 run: $(NAME)
@@ -116,7 +116,7 @@ fclean: clean
 re: fclean all
 #
 debug: fclean $(OBJ) $(LIB) 
-	$(CC) $(CCFLAGS) $(OBJ) -L$(LIB) $(LIB_FLAG) -o $(NAME)
+	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) -L$(MINILBX_DIR) $(LIB_FLAG) -o $(NAME)
 	@echo "$(NAME) created !"
 #
 .PHONY: all clean libclean fclean re

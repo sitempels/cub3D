@@ -6,11 +6,11 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:43 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/10 18:15:49 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/11 14:12:37 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/cub3D.h"
+#include "cub3D.h"
 
 bool	valid_file_extension(char *filename, char *ext, char flag)
 {

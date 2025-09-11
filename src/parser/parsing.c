@@ -6,17 +6,18 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/10 18:16:18 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/11 14:39:20 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/cub3D.h"
-#include "../gnl/get_next_line_bonus.h"
+#include "cub3D.h"
+#include "get_next_line_bonus.h"
 
 bool	detect_content(char *line, char *first_char)
 {
 	int	i;
 
+	i = 0;
 	while (line[i])
 	{
 		if (!ft_isspace(line[i]))
@@ -48,7 +49,7 @@ int	compare_types(char *line_pos)
 
 int	ft_isspace2(char c)
 {
-	if (c == 32 || c == 9 || 11 <= c && c <= 13)
+	if ((c == 32 || c == 9 || 11 <= c) && c <= 13)
 		return (1);
 	return (0);
 }
@@ -93,7 +94,7 @@ int	parse_config(char *line, int *arr)
 	return (0);
 }
 
-int	process_config(int fd, t_game *game)
+int	process_config(int fd)
 {
 	char	*line;
 	int		arr[6];
@@ -116,7 +117,7 @@ int	parse_file(int fd, t_game *game)
 	int	rows;
 	int	max_len;
 
-	if (process_config(fd, game) == 1)
+	if (process_config(fd) == 1)
 		return (1);
 	rows = 0;
 	max_len = 0;
