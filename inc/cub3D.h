@@ -6,14 +6,14 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/11 14:03:08 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/11 15:04:56 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
-# include "raycaster.h"
 # include "libft.h"
+# include "raycaster.h"
 # include "mlx.h"
 # include <unistd.h>
 # include <stdlib.h>
