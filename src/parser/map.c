@@ -6,48 +6,52 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/11 14:40:13 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/11 16:37:07 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 #include "get_next_line_bonus.h"
 
-int	allocate_matrix(int ***matrix, int rows)
+int	init_game_struct(t_game *game, int rows, int max_len)
 {
-	*matrix = malloc(sizeof(int *) * (rows));
-	if (!*matrix)
+	game->map = malloc(sizeof(int *) * (rows));
+	if (!game->map)
 		return (1);
+	game->max_x = max_len;
+	game->max_y = rows;
+	game->minimap = 1;
+	game->fov = 66;
 	return (0);
 }
 
-int	init_matrix(int ***matrix, char *line, int max_len, int curr_row, int line_lenght)
+int	init_matrix(t_game *game, char *line, int max_len, int curr_row, int line_lenght)
 {
 	int	j;
 
 	j = 0;
 	while (j < max_len)
 	{
-		(*matrix)[curr_row][j] = -1;
+		game->map[curr_row][j] = -1;
 		j++;
 	}
 	j = 0;
 	while (j < line_lenght)
 	{
 		if (line[j] == ' ' || line[j] == '\n')
-			(*matrix)[curr_row][j] = EMPTY;
+			game->map[curr_row][j] = EMPTY;
 		else if (line[j] == '0')
-			(*matrix)[curr_row][j] = FLOOR;
+			game->map[curr_row][j] = FLOOR;
 		else if (line[j] == '1')
-			(*matrix)[curr_row][j] = WALL;
+			game->map[curr_row][j] = WALL;
 		else if (line[j] == 'N')
-			(*matrix)[curr_row][j] = N;
+			game->map[curr_row][j] = N;
 		else if (line[j] == 'S')
-			(*matrix)[curr_row][j] = S;
+			game->map[curr_row][j] = S;
 		else if (line[j] == 'E')
-			(*matrix)[curr_row][j] = E;
+			game->map[curr_row][j] = E;
 		else if (line[j] == 'W')
-			(*matrix)[curr_row][j] = W;
+			game->map[curr_row][j] = W;
 		else
 			return (1);
 		j++;
@@ -55,7 +59,7 @@ int	init_matrix(int ***matrix, char *line, int max_len, int curr_row, int line_l
 	return (0);
 }
 
-int	process_map_recursive(int fd, int ***matrix, int *rows, int *max_len)
+int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 {
 	char		*line;
 	int			line_lenght;
@@ -65,7 +69,7 @@ int	process_map_recursive(int fd, int ***matrix, int *rows, int *max_len)
 	if ((get_next_line(fd, &line)) < 0)
 		return (printf("Gnl Error\n"), 1);
 	else if (!line)
-		return (allocate_matrix(matrix, *rows));
+		return (init_game_struct(game, *rows, *max_len));
 	line_lenght = ft_strlen(line);
 	if (line_lenght > *max_len)
 		*max_len = line_lenght;
@@ -73,13 +77,13 @@ int	process_map_recursive(int fd, int ***matrix, int *rows, int *max_len)
 	if (check_line(line, &player_count) == 1)
 		return (1);
 	(*rows)++;
-	process_map_recursive(fd, matrix, rows, max_len);
-	if (!*matrix)
+	process_map_recursive(fd, game, rows, max_len);
+	if (!game->map)
 		return (1);
-	(*matrix)[curr_row] = malloc(sizeof(int) * (*max_len));
-	if (!(*matrix)[curr_row])
+	game->map[curr_row] = malloc(sizeof(int) * (*max_len));
+	if (!(game->map)[curr_row])
 		return (1);
-	if (init_matrix(matrix, line, *max_len, curr_row, line_lenght) != 0)
+	if (init_matrix(game, line, *max_len, curr_row, line_lenght) != 0)
 	{
 		free(line);
 		return (1);

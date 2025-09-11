@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/11 15:04:56 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/11 16:32:28 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,10 @@ typedef enum e_config_type
 /*________________PARSING*/
 char		*ft_strnstr_end(const char *haystack, const char *needle, size_t len);
 int			parse_file(int fd, t_game *game);
-int			process_map_recursive(int fd, int ***matrix, int *rows, int *max_len);
+int			process_map_recursive(int fd, t_game *game, int *rows, int *max_len);
 int			check_line(char *line, int *player_count);
-int			allocate_matrix(int ***matrix, int rows);
-int			init_matrix(int ***matrix, char *line, int max_len, int curr_row, int line_lenght);
+int			init_game_struct(t_game *game, int rows, int max_len);
+int			init_matrix(t_game *game, char *line, int max_len, int curr_row, int line_lenght);
 int			ft_strcmp(const char *s1, const char *s2);
 bool		valid_file_extension(char *filename, char *ext, char del);
 

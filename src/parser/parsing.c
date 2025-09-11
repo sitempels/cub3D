@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/11 14:39:20 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/11 16:34:12 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	parse_file(int fd, t_game *game)
 		return (1);
 	rows = 0;
 	max_len = 0;
-	if (process_map_recursive(fd, &game->map, &rows, &max_len) == 1)
+	if (process_map_recursive(fd, game, &rows, &max_len) == 1)
 		return (1);
 	print_map(game->map, rows, max_len);
 	return (0);
