@@ -3,11 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
+#    By: agaland <agaland@student.s19.be>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/08 19:34:25 by stempels         ###   ########.fr        #
-#                                                                              #
+#    Updated: 2025/09/10 12:16:56 by agaland          ###   ########.fr        #
 # **************************************************************************** #
 
 #MAKEFLAGS += --silent
@@ -18,9 +17,9 @@ debug: NAME = $(addprefix debug_, $(NAME_PROJECT))
 TYPE = EXEC
 #----------------------------COMPILER------------------------------------------#
 CC = cc
-debug: CC = gcc 
-CCFLAGS = -Wall -Wextra -Werror
-debug: CCFLAGS = -g3
+debug: CC = gcc
+CCFLAGS = -Wall -Wextra -Werror -fPIE
+debug: CCFLAGS = -g3 -fPIE
 CPPFLAGS = $(INC_FLAG)
 #
 #----------------------------LINKER--------------------------------------------#
@@ -40,15 +39,18 @@ RAYCASTER_DIR = raycaster
 SRC_RAYCASTER = $(addprefix $(RAYCASTER_DIR)/, )
 #
 PARSER_DIR = parser
-SRC_PARSER = $(addprefix $(PARSER_DIR)/, )
+SRC_PARSER = $(addprefix $(PARSER_DIR)/, parsing parsing_utils map)
 #
 PLAYER_DIR = player
 SRC_PLAYER = $(addprefix $(PLAYER_DIR)/, )
 #
 UTILS_DIR = utils
-SRC_UTILS = $(addprefix $(UTILS_DIR)/, )
+SRC_UTILS = $(addprefix $(UTILS_DIR)/, utils)
+
+GNL_DIR = gnl
+SRC_GNL = $(addprefix $(GNL_DIR)/, get_next_line_bonus get_next_line_utils_bonus)
 #
-SRCS ::= $(MAIN) $(SRC_EVENT) $(SRC_RAYCASTER) $(SRC_PARSER) $(SRC_PLAYER) $(SRC_UTILS)
+SRCS ::= $(MAIN) $(SRC_EVENT) $(SRC_RAYCASTER) $(SRC_PARSER) $(SRC_PLAYER) $(SRC_UTILS) $(SRC_GNL)
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 
 #
 #----------------------------OBJ-----------------------------------------------#
@@ -109,7 +111,7 @@ fclean: clean
 #
 re: all
 #
-debug: fclean $(OBJ) $(LIBFT) 
+debug: $(OBJ) $(LIBFT)
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
 	@echo "$(NAME) created !"
 #
