@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 09:00:17 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/10 16:29:49 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/11 11:22:52 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,16 @@ typedef struct		s_data
 	int		endian;
 }					t_data;
 
-typedef struct		s_point
+typedef struct		s_dda
 {
-	int	x;
-	int	y;
-	int	color;
-}					t_point;
+	int				map[2];
+	int				step[2];
+	double			dir[2];
+	double			plane[2];
+	double			raydir[2];
+	double			d_dist[2];
+	double			side_dist[2];
+	double			camera_x;
+}					t_dda;
 /*_______________________________FUNCT________________________________________*/
 #endif

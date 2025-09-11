@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/10 16:41:48 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/11 11:50:56 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	{
 		int	speed;
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
-		img_put(data, game->player->pos[0], game->player->pos[1], FLOOR_COLOR);
+		draw_player(game, data, FLOOR_COLOR);
 		speed = (SPEED * SPEED_RATIO * (key_code - 0xff53));
 		player->pos[0] = player->pos[0] + sinf(player->facing) * speed;
 		player->pos[1] = player->pos[1] + cosf(player->facing) * speed;
@@ -76,4 +76,52 @@ void	safe_angle_add(double *angle, double mod)
 		*angle += 2 * M_PI;
 	else if (*angle >= 2 * M_PI)
 		*angle -= 2 * M_PI;
+}
+
+void	draw_player(t_game *game, t_data *data, unsigned int color)
+{
+	int	i;
+	int	j;
+	int	x;
+	int	y;
+
+	x = (game->player->pos[0] * (SIZE_MOD));
+	y = (game->player->pos[1] * (SIZE_MOD));
+	x = x - SIZE_MOD / 4;
+	y = y - SIZE_MOD / 4;
+	i = 0;
+	while (i < SIZE_MOD / 2)
+	{
+		j = 0;
+		while (j < SIZE_MOD / 2)
+		{
+			px_put(data, x + j, y + i, color);
+			j++;
+		}
+		i++;
+	}
+	return ;
+}
+
+void	draw_minimap(t_game *game, t_data *data)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < game->max_x)
+	{
+		j = 0;
+		while (j < game->max_y)
+		{
+			if (game->map[i][j] == FLOOR)
+				img_put(data, i, j, FLOOR_COLOR);
+			if (game->map[i][j] == WALL)
+				img_put(data, i, j, WALL_COLOR);
+			j++;
+		}
+		i++;
+	}
+	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	return ;
 }

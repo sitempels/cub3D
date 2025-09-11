@@ -6,7 +6,7 @@
 #    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/09 19:20:47 by stempels         ###   ########.fr        #
+#    Updated: 2025/09/11 11:55:18 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -110,7 +110,7 @@ fclean: clean
 	$(MAKE) fclean -C $(LIBFT_DIR)	
 	@echo "$(NAME) $(GREEN)$@ed !$(NC)"
 #
-re: all
+re: fclean all
 #
 debug: fclean $(OBJ) $(LIB) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIB) $(LIB_FLAG) -o $(NAME)

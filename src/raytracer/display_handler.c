@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/10 15:41:54 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/11 11:54:05 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,25 @@
 
 int	display_handler(t_game *game)
 {
-	int		i;
-	int		j;
-	t_data	*data;
+	t_data	data;
 
-	data = (t_data *) malloc(sizeof(t_data));
-	game->data = data;
-	data->mlx = mlx_init();
-	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "cub3D");
-	data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
-	data->addr = mlx_get_data_addr(data->img, &data->bpp, &data->l_length, &data->endian); 
-	mlx_hook(data->win, 2, 1L << 0, key_handler, game);
-	mlx_hook(data->win, 17, 0, close_all, data);
-	i = 0;
-	while (i < game->max_x)
-	{
-		j = 0;
-		while (j < game->max_y)
-		{
-			if (game->map[i][j] == FLOOR)
-				img_put(data, i, j, FLOOR_COLOR);
-			if (game->map[i][j] == WALL)
-				img_put(data, i, j, WALL_COLOR);
-			j++;
-		}
-		i++;
-	}
-	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
-	game_loop(game, data);
+	game->data = &data;
+	data.mlx = mlx_init();
+	data.win = mlx_new_window(data.mlx, WIDTH, HEIGHT, "cub3D");
+	data.img = mlx_new_image(data.mlx, WIDTH, HEIGHT);
+	data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.l_length, &data.endian); 
+	mlx_hook(data.win, 2, 1L << 0, key_handler, game);
+	mlx_hook(data.win, 17, 0, close_all, &data);
+	draw_minimap(game, &data);
+	game_loop(game, &data);
 	return (0);
 }
 
 int	game_loop(t_game *game, t_data *data)
 {
-	img_put(data, game->player->pos[0], game->player->pos[1], PLAYER_COLOR);
+	if (game->minimap == 1)
+		draw_minimap(game, data);
+	draw_player(game, data, PLAYER_COLOR);
 	dda_operation(game, game->player->facing);
 	printf("player main_loop	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
