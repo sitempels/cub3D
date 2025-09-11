@@ -7,7 +7,6 @@
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
 #    Updated: 2025/09/10 12:16:56 by agaland          ###   ########.fr        #
-#                                                                              #
 # **************************************************************************** #
 
 #MAKEFLAGS += --silent
@@ -18,9 +17,9 @@ debug: NAME = $(addprefix debug_, $(NAME_PROJECT))
 TYPE = EXEC
 #----------------------------COMPILER------------------------------------------#
 CC = cc
-debug: CC = gcc -fPIE
+debug: CC = gcc
 CCFLAGS = -Wall -Wextra -Werror -fPIE
-debug: CCFLAGS = -g3
+debug: CCFLAGS = -g3 -fPIE
 CPPFLAGS = $(INC_FLAG)
 #
 #----------------------------LINKER--------------------------------------------#
@@ -112,7 +111,7 @@ fclean: clean
 #
 re: all
 #
-debug: $(OBJ) $(LIBFT) 
+debug: $(OBJ) $(LIBFT)
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) $(LIB_FLAG) -o $(NAME)
 	@echo "$(NAME) created !"
 #
