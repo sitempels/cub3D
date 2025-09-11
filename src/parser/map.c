@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/11 16:37:07 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/11 21:06:51 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,39 @@ int	init_game_struct(t_game *game, int rows, int max_len)
 	game->max_x = max_len;
 	game->max_y = rows;
 	game->minimap = 1;
-	game->fov = 66;
+	game->fov = FOV;
+	game->player = malloc(sizeof(t_player));
+	if (!game->player)
+		return (1);
+	ft_memset(game->player, 0, sizeof(game->player));
 	return (0);
 }
 
-int	init_matrix(t_game *game, char *line, int max_len, int curr_row, int line_lenght)
+void	pad_map_row(t_game *game, int y)
+{
+	int	x;
+
+	x = 0;
+	while (x < game->max_x)
+	{
+		game->map[y][x] = -1;
+		x++;
+	}
+}
+
+void	init_player(t_game *game, int y, int x, double facing)
+{
+	game->player->facing = facing;
+	game->player->pos[0] = (y + 0.5);
+	game->player->pos[1] = (x + 0.5);
+	game->map[y][x] = FLOOR;
+}
+
+int	init_map(t_game *game, char *line, int curr_row, int line_lenght)
 {
 	int	j;
 
-	j = 0;
-	while (j < max_len)
-	{
-		game->map[curr_row][j] = -1;
-		j++;
-	}
+	pad_map_row(game, curr_row);
 	j = 0;
 	while (j < line_lenght)
 	{
@@ -45,13 +64,13 @@ int	init_matrix(t_game *game, char *line, int max_len, int curr_row, int line_le
 		else if (line[j] == '1')
 			game->map[curr_row][j] = WALL;
 		else if (line[j] == 'N')
-			game->map[curr_row][j] = N;
+			init_player(game, curr_row, j, NORTH);
 		else if (line[j] == 'S')
-			game->map[curr_row][j] = S;
+			init_player(game, curr_row, j, SOUTH);
 		else if (line[j] == 'E')
-			game->map[curr_row][j] = E;
+			init_player(game, curr_row, j, EAST);
 		else if (line[j] == 'W')
-			game->map[curr_row][j] = W;
+			init_player(game, curr_row, j, WEST);
 		else
 			return (1);
 		j++;
@@ -64,7 +83,6 @@ int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 	char		*line;
 	int			line_lenght;
 	int			curr_row;
-	static int	player_count;
 
 	if ((get_next_line(fd, &line)) < 0)
 		return (printf("Gnl Error\n"), 1);
@@ -74,7 +92,7 @@ int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 	if (line_lenght > *max_len)
 		*max_len = line_lenght;
 	curr_row = *rows;
-	if (check_line(line, &player_count) == 1)
+	if (check_line(line) == 1)
 		return (1);
 	(*rows)++;
 	process_map_recursive(fd, game, rows, max_len);
@@ -83,11 +101,8 @@ int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 	game->map[curr_row] = malloc(sizeof(int) * (*max_len));
 	if (!(game->map)[curr_row])
 		return (1);
-	if (init_matrix(game, line, *max_len, curr_row, line_lenght) != 0)
-	{
-		free(line);
-		return (1);
-	}
+	if (init_map(game, line, curr_row, line_lenght) != 0)
+		return (free(line), 1);
 	free(line);
 	return (0);
 }

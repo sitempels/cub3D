@@ -6,12 +6,14 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/11 16:32:28 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/11 20:53:28 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
+
+# define _GNU_SOURCE
 # include "libft.h"
 # include "raycaster.h"
 # include "mlx.h"
@@ -28,6 +30,12 @@
 # define CELL_TYPE "01NSEW "
 # define SPACE " "
 # define FOV 66
+# define NORTH 0
+# define SOUTH (M_PI)
+# define EAST (M_PI_2)
+# define WEST (3 * M_PI_2)
+
+
 /*_______________________________STRUCT_______________________________________*/
 
 typedef struct		s_game
@@ -83,11 +91,12 @@ typedef enum e_config_type
 char		*ft_strnstr_end(const char *haystack, const char *needle, size_t len);
 int			parse_file(int fd, t_game *game);
 int			process_map_recursive(int fd, t_game *game, int *rows, int *max_len);
-int			check_line(char *line, int *player_count);
-int			init_game_struct(t_game *game, int rows, int max_len);
-int			init_matrix(t_game *game, char *line, int max_len, int curr_row, int line_lenght);
+int			check_line(char *line);
+int			init_game(t_game *game, int rows, int max_len);
+int			init_map(t_game *game, char *line, int curr_row, int line_lenght);
 int			ft_strcmp(const char *s1, const char *s2);
 bool		valid_file_extension(char *filename, char *ext, char del);
+void		init_player(t_game *game, int y, int x, double facing);
 
 /*________________PLAYER_*/
 /*________________RAYCAST*/

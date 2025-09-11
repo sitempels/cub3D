@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/11 16:34:12 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/11 20:53:12 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ bool	detect_content(char *line, char *first_char)
 }
 
 int	compare_types(char *line_pos)
-{	
+{
 	if (ft_strncmp(line_pos, "NO ", 3) == 0)
 		return (NO);
 	if (ft_strncmp(line_pos, "SO ", 3) == 0)
@@ -49,7 +49,7 @@ int	compare_types(char *line_pos)
 
 int	ft_isspace2(char c)
 {
-	if ((c == 32 || c == 9 || 11 <= c) && c <= 13)
+	if (c == 32 || c == 9 || (11 <= c && c <= 13))
 		return (1);
 	return (0);
 }
@@ -75,21 +75,28 @@ int	parse_config(char *line, int *arr)
 		{
 			if (type == NO && arr[NO] == -1)
 				i += 2;
-			else 
+			else
 				return (printf("Error: This type has already been parsed\n"), 1);
 		}
 		while (ft_isspace2(line[i]))
 			i++;
 		if (!line[i] || line[i] == '\n')
 		{
-			printf("Error: Missing config value");
+			printf("Error: Missing config value\n");
 			return (1);
 		}
 		if (!valid_file_extension(&line[i], ".xpm", 'X')) //logique a peaufiner, del pourrair etre ' ' aussi + verifier qu'aucun contenu ne se trouve apres.
 			return (1);
 		printf("Texture extension format validated\n");
-		break ;
+		while (ft_isalnum(line[i]) || line[i] == '.' || line[i] == '/')
+			i++;
+		if (detect_content(&line[i], &first_char))
+		{
+			printf("Invalid configuration informations.\n");
+			return (1);
+		}
 		//allocate_config();
+		break ;
 	}
 	return (0);
 }
@@ -127,13 +134,18 @@ int	parse_file(int fd, t_game *game)
 	return (0);
 }
 
-int	check_line(char *line, int *player_count)
+int	check_line(char *line)
 {
 	int		i;
+	static int	player_count;
+
+	//char	first_char;
 
 	i = 0;
 	while (line[i])
 	{
+/* 		if (!detect_content(line, &first_char) || first_char != '1')
+			return (printf("Error: invalid map\n"), 1); */
 		if (!ft_strchr("01NSEW \n", line[i]))
 		{
 			ft_printf_fd(STDERR_FILENO,
@@ -142,8 +154,8 @@ int	check_line(char *line, int *player_count)
 		}
 		if (ft_strchr("NSEW", line[i]))
 		{
-			(*player_count)++;
-			if (*player_count > 1)
+			player_count++;
+			if (player_count > 1)
 			{
 				ft_printf_fd(STDERR_FILENO, "Error: Multiple players found\n");
 				return (1);
