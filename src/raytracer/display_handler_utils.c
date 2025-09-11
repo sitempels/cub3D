@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/11 11:50:56 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/11 13:36:53 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 		player->pos[0] = player->pos[0] + sinf(player->facing) * speed;
 		player->pos[1] = player->pos[1] + cosf(player->facing) * speed;
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
-		game_loop(game, data);
+		game_loop(game);
 	}
 	else if (key_code == LEFT_KEY || key_code == RIGHT_KEY)
 	{
@@ -64,7 +64,7 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 		turn = TURN_SPEED * -1 * (key_code - 0xff52);
 		safe_angle_add(&player->facing, turn);
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
-		game_loop(game, data);
+		game_loop(game);
 	}
 	return (0);
 }
