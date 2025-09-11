@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:01 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/11 15:05:15 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/11 16:35:10 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ int	main(int ac, char **av)
 	if (parse_file(fd, &game) == 1)
 		return (1);
 	close(fd);
+	game.max_x = 34;
+	game.max_y = 15;
+	game.player->facing = 0;
+	game.player->pos[0] = 2 + 0.5; 
+	game.player->pos[1] = 11 + 0.5;
+	game.minimap = 1;
 	display_handler(&game);
 	return (0);
 }

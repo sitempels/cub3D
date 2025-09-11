@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:24:02 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/11 12:26:23 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:55:04 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ double	dda_operation(t_game *game, double facing)
 {
 	int		side;
 	double	wall_dist;
-	double	plane_x_size;
+	double	old_plane_x;
 	double	plane_y_size;
 	t_dda	dda;
 //	double	time;
@@ -40,10 +40,12 @@ double	dda_operation(t_game *game, double facing)
 	else
 		dda.dir[1] = 1;
 
-	plane_x_size = 1;
-	plane_y_size = (game->fov * 180) / (M_PI * 100);
-	dda.plane[0] = plane_x_size * cosf(facing) - plane_y_size * sinf(facing);
-	dda.plane[1] = plane_x_size * sinf(facing) + plane_y_size * cosf(facing);
+//	plane_x_size = 0;
+//	plane_y_size = (game->fov * 180) / (M_PI * 100);
+	dda.plane[0] = -0.66 * sinf(facing);
+	dda.plane[1] = 0.66 * cosf(facing);
+	//dda.plane[0] = 0;
+	//dda.plane[1] = 0.66;
 	//time = 0;
 	//old_time = 0;
 	wall_dist = dda_init(game, &dda, &side);
@@ -108,14 +110,14 @@ static double	collision_dist(t_game *game, t_dda *dda, int *side)
 	hit = 0;
 	while (hit == 0 && (game->max_x > dda->map[0] && game->max_y > dda->map[1]))
 	{
-		if (dda->side_dist[0] >= dda->side_dist[1])
-			i = 1;
-		else
+		if (dda->side_dist[0] < dda->side_dist[1])
 			i = 0;
+		else
+			i = 1;
 		dda->side_dist[i] += dda->d_dist[i];
-		dda->map[i] += dda->step[i];
+		dda->map[i] -= dda->step[i];
 		*side = i;
-		if (game->map[dda->map[0]][dda->map[1]] > 0)
+		if (game->map[dda->map[1]][dda->map[0]] > 0)
 			hit = 1;
 	}
 	return (dda->side_dist[i] - dda->d_dist[i]);
