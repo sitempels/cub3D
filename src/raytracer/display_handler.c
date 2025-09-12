@@ -40,6 +40,7 @@ int	game_loop(t_game *game)
 	dda_operation(game, game->player->facing);
 	printf("player main_loop	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	usleep(1000);
 	return (0);
 }
 

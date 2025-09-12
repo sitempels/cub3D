@@ -13,7 +13,7 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# define _GNU_SOURCE
+//# define _GNU_SOURCE
 # include "libft.h"
 # include "raycaster.h"
 # include "mlx.h"
@@ -30,10 +30,12 @@
 # define CELL_TYPE "01NSEW "
 # define SPACE " "
 # define FOV 66
-# define NORTH (M_PI_2)
-# define SOUTH (3 * M_PI_2)
+# define NORTH (M_PI / 2)
+# define SOUTH (3 * M_PI / 2)
 # define EAST 0
 # define WEST (M_PI)
+# define WIDTH 768
+# define HEIGHT 512
 
 
 /*_______________________________STRUCT_______________________________________*/
@@ -44,9 +46,9 @@ typedef struct		s_game
 	int				max_x;
 	int				max_y;
 	int				minimap;
+	double			screen_width;
+	double			screen_height;
 	double			fov;
-	int			screen_height;
-	int			screen_width;
 	struct s_player	*player;
 	struct s_data	*data;
 }					t_game;

@@ -44,13 +44,13 @@ static double	dda_init(t_game *game, t_dda *dda, int *side)
 	double	plane_x_size;
 	double	plane_y_size;
 
-	plane_x_size = 1;
-	plane_y_size = tan(game->fov * M_PI / 360) * plane_x_size;
+	plane_x_size = 0;
+	plane_y_size = tan(game->fov * M_PI / 360);
 	dda->plane[0] = plane_x_size * cosf(game->player->facing) - plane_y_size * sinf(game->player->facing);
 	dda->plane[1] = plane_x_size * sinf(game->player->facing) + plane_y_size * cosf(game->player->facing);
 	x = 0;
-	while (x < game->screen_width)
-	{
+//	while (x <= game->screen_width)
+//	{
 		dda->camera_x = (2 * x / (double)game->screen_width) - 1;
 		dda->raydir[0] = dda->dir[0] + dda->plane[0] * dda->camera_x;
 		dda->raydir[1] = dda->dir[1] + dda->plane[1] * dda->camera_x;
@@ -67,7 +67,7 @@ static double	dda_init(t_game *game, t_dda *dda, int *side)
 		wall_dist = get_first_dist(game, dda, side);
 		draw_line(game, dda, wall_dist, *side);
 		x++;
-	}
+//	}
 	return (wall_dist);
 }
 
@@ -99,14 +99,14 @@ static double	collision_dist(t_game *game, t_dda *dda, int *side)
 	int		hit;
 
 	hit = 0;
-	while (hit == 0 && (game->max_x > dda->map[0] && game->max_y > dda->map[1]))
+	while (hit == 0)
 	{
 		if (dda->side_dist[0] < dda->side_dist[1])
 			i = 0;
 		else
 			i = 1;
 		dda->side_dist[i] += dda->d_dist[i];
-		dda->map[i] -= dda->step[i];
+		dda->map[i] += dda->step[i];
 		*side = i;
 		if (game->map[dda->map[1]][dda->map[0]] > 0)
 			hit = 1;
