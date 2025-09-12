@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:01 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/12 01:29:24 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/11 16:35:10 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,15 @@ int	main(int ac, char **av)
 	if (parse_file(fd, &game) == 1)
 		return (close(fd), 1);
 	close(fd);
+	game.screen_width = WIDTH;
+	game.screen_height = HEIGHT;
+	game.max_x = 34;
+	game.max_y = 15;
+	game.player->facing = 0;
+	game.player->pos[0] = 2 + 0.5; 
+	game.player->pos[1] = 11 + 0.5;
+	game.minimap = 1;
+	game.fov = 66;
 	display_handler(&game);
 	cleanup_game(&game);
 	return (0);

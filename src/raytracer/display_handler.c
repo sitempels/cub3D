@@ -18,8 +18,8 @@ int	display_handler(t_game *game)
 
 	game->data = &data;
 	data.mlx = mlx_init();
-	data.win = mlx_new_window(data.mlx, WIDTH, HEIGHT, "cub3D");
-	data.img = mlx_new_image(data.mlx, WIDTH, HEIGHT);
+	data.win = mlx_new_window(data.mlx, game->screen_width, game->screen_height, "cub3D");
+	data.img = mlx_new_image(data.mlx, game->screen_width, game->screen_height);
 	data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.l_length, &data.endian); 
 	draw_minimap(game, &data);
 	mlx_loop_hook(data.mlx, game_loop, game);
