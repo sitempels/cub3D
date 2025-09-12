@@ -32,7 +32,6 @@ int	main(int ac, char **av)
 	if (parse_file(fd, &game) == 1)
 		return (close(fd), 1);
 	close(fd);
-	game.player->facing = W;
 	display_handler(&game);
 	cleanup_game(&game);
 	return (0);

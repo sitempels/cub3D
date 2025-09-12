@@ -44,8 +44,8 @@ static double	dda_init(t_game *game, t_dda *dda, int *side)
 	double	plane_x_size;
 	double	plane_y_size;
 
-	plane_x_size = 0;
-	plane_y_size = tan(game->fov * M_PI / 360);
+	plane_x_size = 1;
+	plane_y_size = tan(game->fov * M_PI / 360) * plane_x_size;
 	dda->plane[0] = plane_x_size * cosf(game->player->facing) - plane_y_size * sinf(game->player->facing);
 	dda->plane[1] = plane_x_size * sinf(game->player->facing) + plane_y_size * cosf(game->player->facing);
 	x = 0;
@@ -127,7 +127,7 @@ static void	draw_line(t_game *game, t_dda *dda, double dist, int side)
 	dist_y = 0;
 	while ((side == 0 && dist_x < dist * SIZE_MOD) || (side == 1 && dist_y < dist * SIZE_MOD))
 	{
-		px_put(game->data, x - (dist_x * dda->dir[0]), y - (dist_y * dda->dir[1]), 0x74a33e);
+		px_put(game->data, x + (dist_x * dda->dir[0]), y - (dist_y * dda->dir[1]), 0x74a33e);
 		if (dda->raydir[0] != 0 && (dist_x < dist_y || dda->raydir[1] == 0))
 			dist_x += dda->d_dist[0];
 		else
