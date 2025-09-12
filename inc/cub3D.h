@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/12 01:16:48 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/12 02:08:57 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,6 @@ double		dda_operation(t_game *game, double facing);
 void		print_map(int **matrix, int height, int width);
 void		print_int_arr(int *arr, int len);
 void		cleanup_game(t_game *game);
-void		gnl_cleanup(void);
+void		gnl_cleanup(char *line);
 
 #endif
