@@ -45,7 +45,7 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 		int	speed;
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		draw_player(game, data, FLOOR_COLOR);
-		speed = SPEED * SPEED_RATIO * (key_code - 0xff53);
+		speed = SPEED * SPEED_RATIO * (0xff53 - key_code);
 		player->pos[0] = player->pos[0] + cosf(player->facing) * speed;
 		player->pos[1] = player->pos[1] + sinf(player->facing) * speed;
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
@@ -55,7 +55,7 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	{
 		double	turn;
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
-		turn = TURN_SPEED * (key_code - 0xff52);
+		turn = TURN_SPEED * (0xff52 - key_code );
 		safe_angle_add(&player->facing, turn);
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game);

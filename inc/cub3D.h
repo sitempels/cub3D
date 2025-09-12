@@ -13,7 +13,7 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-//# define _GNU_SOURCE
+# define _GNU_SOURCE
 # include "libft.h"
 # include "raycaster.h"
 # include "mlx.h"
