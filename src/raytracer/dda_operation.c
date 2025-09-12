@@ -127,7 +127,7 @@ static void	draw_line(t_game *game, t_dda *dda, double dist, int side)
 	dist_y = 0;
 	while ((side == 0 && dist_x < dist * SIZE_MOD) || (side == 1 && dist_y < dist * SIZE_MOD))
 	{
-		px_put(game->data, x + (dist_x * dda->dir[0]), y - (dist_y * dda->dir[1]), 0x74a33e);
+		px_put(game->data, x - (dist_x * dda->dir[0]), y - (dist_y * dda->dir[1]), 0x74a33e);
 		if (dda->raydir[0] != 0 && (dist_x < dist_y || dda->raydir[1] == 0))
 			dist_x += dda->d_dist[0];
 		else
