@@ -31,6 +31,8 @@ int	main(int ac, char **av)
 	if (parse_file(fd, &game) == 1)
 		return (1);
 	close(fd);
+	game.screen_width = WIDTH;
+	game.screen_height = HEIGHT;
 	game.max_x = 34;
 	game.max_y = 15;
 	game.player->facing = 0;

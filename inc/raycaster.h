@@ -13,9 +13,9 @@
 #ifndef RAYCASTER_H
 # define RAYCASTER_H
 /*_______________________________MACRO________________________________________*/
-# define SIZE_MOD 64
-# define WIDTH 1920
-# define HEIGHT 1080
+# define SIZE_MOD 16
+# define WIDTH 768
+# define HEIGHT 512
 # define ESC_KEY 65307
 # define LEFT_KEY 0xff51
 # define UP_KEY 0xff52

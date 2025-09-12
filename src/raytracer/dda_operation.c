@@ -58,9 +58,9 @@ static double	dda_init(t_game *game, t_dda *dda, int *side)
 	double	wall_dist;
 
 	x = 0;
-	while (x < game->max_x)
+	while (x < (game->max_x * SIZE_MOD))
 	{
-		dda->camera_x = (2 * x) / ((double)game->max_x - 1);
+		dda->camera_x = (2 * x) / (((double)game->max_x * SIZE_MOD) - 1);
 		dda->raydir[0] = dda->dir[0] + dda->plane[0] * dda->camera_x;
 		dda->raydir[1] = dda->dir[1] + dda->plane[1] * dda->camera_x;
 		dda->map[0] = (int)game->player->pos[0];
