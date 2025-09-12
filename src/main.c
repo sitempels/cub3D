@@ -39,6 +39,7 @@ int	main(int ac, char **av)
 	game.player->pos[0] = 2 + 0.5; 
 	game.player->pos[1] = 11 + 0.5;
 	game.minimap = 1;
+	game.fov = 66;
 	display_handler(&game);
 	return (0);
 }

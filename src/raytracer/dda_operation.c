@@ -21,45 +21,36 @@ double	dda_operation(t_game *game, double facing)
 {
 	int		side;
 	double	wall_dist;
-	double	old_plane_x;
-	double	plane_y_size;
 	t_dda	dda;
 //	double	time;
 //	double	old_time;
 
-	if (0 < facing && facing < M_PI)
-		dda.dir[0] = -1;
-	else if (facing == 0 || facing == M_PI)
-		dda.dir[0] = 0;
-	else
-		dda.dir[0] = 1;
-	if (M_PI / 2 < facing && facing < 3 * M_PI / 2)
-		dda.dir[1] = -1;
-	else if (facing == M_PI / 2 || facing == 3 * M_PI / 2)
-		dda.dir[1] = 0;
-	else
-		dda.dir[1] = 1;
+	dda.dir[0] = cosf(facing);
+	dda.dir[1] = sinf(facing);
+	printf("player	dda_facing: %f\n dir_x: %f	dir_y: %f\n", facing, dda.dir[0], dda.dir[1]);
 
-//	plane_x_size = 0;
-//	plane_y_size = (game->fov * 180) / (M_PI * 100);
-	dda.plane[0] = -0.66 * sinf(facing);
-	dda.plane[1] = 0.66 * cosf(facing);
 	//dda.plane[0] = 0;
 	//dda.plane[1] = 0.66;
 	//time = 0;
 	//old_time = 0;
 	wall_dist = dda_init(game, &dda, &side);
-	return (0);
+	return (wall_dist);
 }
 
 static double	dda_init(t_game *game, t_dda *dda, int *side)
 {
 	int		x;
 	double	wall_dist;
+	double	plane_x_size;
+	double	plane_y_size;
 
+	plane_x_size = 1;
+	plane_y_size = tan(game->fov * M_PI / 360) * plane_x_size;
 	x = 0;
-	while (x < (game->max_x * SIZE_MOD))
-	{
+//	while (x < (game->max_x * SIZE_MOD))
+//	{
+		dda->plane[0] = plane_x_size * cosf(game->player->facing) - plane_y_size * sinf(game->player->facing);
+		dda->plane[1] = plane_x_size * sinf(game->player->facing) + plane_y_size * cosf(game->player->facing);
 		dda->camera_x = (2 * x) / (((double)game->max_x * SIZE_MOD) - 1);
 		dda->raydir[0] = dda->dir[0] + dda->plane[0] * dda->camera_x;
 		dda->raydir[1] = dda->dir[1] + dda->plane[1] * dda->camera_x;
@@ -76,7 +67,7 @@ static double	dda_init(t_game *game, t_dda *dda, int *side)
 		wall_dist = get_first_dist(game, dda, side);
 		draw_line(game, dda, wall_dist, *side);
 		x++;
-	}
+//	}
 	return (wall_dist);
 }
 
@@ -125,8 +116,8 @@ static double	collision_dist(t_game *game, t_dda *dda, int *side)
 
 static void	draw_line(t_game *game, t_dda *dda, double dist, int side)
 {
-	int	x;
-	int	y;
+	double	x;
+	double	y;
 	double	dist_x;
 	double	dist_y;
 
@@ -136,7 +127,7 @@ static void	draw_line(t_game *game, t_dda *dda, double dist, int side)
 	dist_y = 0;
 	while ((side == 0 && dist_x < dist * SIZE_MOD) || (side == 1 && dist_y < dist * SIZE_MOD))
 	{
-		px_put(game->data, x - (dist_x * dda->step[0]), y - (dist_y * dda->step[1]), 0x74a33e);
+		px_put(game->data, x + (dist_x * dda->dir[0]), y - (dist_y * dda->dir[1]), 0x74a33e);
 		if (dda->raydir[0] != 0 && (dist_x < dist_y || dda->raydir[1] == 0))
 			dist_x += dda->d_dist[0];
 		else
