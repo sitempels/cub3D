@@ -6,20 +6,18 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/12 02:08:40 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/12 17:11:59 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 #include "get_next_line_bonus.h"
 
-int	init_game_struct(t_game *game, int rows, int max_len)
+int	init_game(t_game *game, int rows, int max_len)
 {
 	game->map = malloc(sizeof(int *) * (rows));
 	if (!game->map)
 		return (1);
-	game->max_x = max_len;
-	game->max_y = rows;
 	game->minimap = 1;
 	game->fov = FOV;
 	game->player = malloc(sizeof(t_player));
@@ -78,12 +76,6 @@ int	init_map(t_game *game, char *line, int curr_row, int line_lenght)
 	return (0);
 }
 
-void	gnl_cleanup(char *line)
-{
-	free(line);
-	get_next_line(-1, NULL);
-}
-
 int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 {
 	char		*line;
@@ -93,7 +85,7 @@ int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 	if ((get_next_line(fd, &line)) < 0)
 		return (printf("Gnl Error\n"), 1);
 	else if (!line)
-		return (init_game_struct(game, *rows, *max_len));
+		return (init_game(game, *rows, *max_len));
 	line_lenght = ft_strlen(line);
 	if (line_lenght > *max_len)
 		*max_len = line_lenght;

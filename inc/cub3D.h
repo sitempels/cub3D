@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/12 02:08:57 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/12 18:30:55 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,18 @@ typedef struct		s_game
 	double			fov;
 	struct s_player	*player;
 	struct s_data	*data;
+	struct s_config	*config;
 }					t_game;
 
 typedef	struct		s_config
 {
+	char			*first_map;
 	char			*no_texture;
 	char			*so_texture;
 	char			*we_texture;
 	char			*ea_texture;
-	int 			*floor_color;
-	int 			*ceiling_color;
+	int 			floor_color[3];
+	int 			ceiling_color[3];
 }					t_config;
 
 typedef	struct		s_player
@@ -115,5 +117,6 @@ void		print_map(int **matrix, int height, int width);
 void		print_int_arr(int *arr, int len);
 void		cleanup_game(t_game *game);
 void		gnl_cleanup(char *line);
+void		free_config(t_config *config);
 
 #endif

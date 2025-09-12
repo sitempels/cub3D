@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/12 00:13:14 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/12 18:41:44 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	parse_config(char *line, int *arr)
 	i = 0;
 	while (line[i])
 	{
-		while (ft_isspace2(line[i]))
+		while (line[i] && ft_isspace2(line[i]))
 			i++;
 		type = compare_types(&line[i]);
 		if (type >= 0)
@@ -78,7 +78,7 @@ int	parse_config(char *line, int *arr)
 			else
 				return (printf("Error: This type has already been parsed\n"), 1);
 		}
-		while (ft_isspace2(line[i]))
+		while (line[i] && ft_isspace2(line[i]))
 			i++;
 		if (!line[i] || line[i] == '\n')
 		{
@@ -101,40 +101,73 @@ int	parse_config(char *line, int *arr)
 	return (0);
 }
 
-int	process_config(int fd)
+bool	config_completed(int *parsed_elements)
+{
+	int	i;
+
+	i = 0;
+	while (NO < C)
+	{
+		if (parsed_elements[i] == -1)
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+void init_config(t_config *config)
+{
+	int	i;
+	
+	config->first_map = NULL;
+	config->no_texture = NULL;
+	config->so_texture = NULL;
+	config->we_texture = NULL;
+	config->ea_texture = NULL;
+	i = 0;
+	while (i++ < 3)
+	{
+		config->floor_color[i] = 0;
+		config->ceiling_color[i] = 0;
+	}
+}
+
+int	process_config(int fd, t_config *config)
 {
 	char	*line;
-	int		arr[6];
+	int		parsed_elements[6];
 	int		i;
 	int		ret;
 
 	i = 0;
 	while (i < 6)
-		arr[i++] = -1;
-	if ((get_next_line(fd, &line)) < 0)
-		return (printf("Gnl Error\n"), 1);
-	if (!line)
+		parsed_elements[i++] = -1;
+	while (1)
 	{
-		printf("No configurations found\n");
-		return (1);
+		ret = get_next_line(fd, &line);
+		if (ret < 0)
+			return (printf("Gnl Error\n"), 1);
+		if (config->first_map && !config_completed(parsed_elements))
+			return (printf("Configuration incomplete\n"), 1);
+		else	
+			break;
+		if (!line)
+			return (printf("Missing map\n"), 1);
+		if (parse_config(line, parsed_elements) == 1)
+			return (1);
+		free(line);
 	}
-	ret = parse_config(line, arr);
-	free(line);
 	return (ret);
 }
 
 int	parse_file(int fd, t_game *game)
 {
-	int	rows;
-	int	max_len;
-
-	if (process_config(fd) == 1)
+	init_config(game->config);
+	if (process_config(fd, game->config) == 1)
 		return (1);
-	rows = 0;
-	max_len = 0;
-	if (process_map_recursive(fd, game, &rows, &max_len) == 1)
-		return (1);
-	print_map(game->map, rows, max_len);
+	if (process_map_recursive(fd, game, &game->max_y, &game->max_x) == 1)
+		return (free_config(game->config), 1);
+	print_map(game->map, game->max_y, game->max_x);
 	return (0);
 }
 
