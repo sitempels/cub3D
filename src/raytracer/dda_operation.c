@@ -46,12 +46,12 @@ static double	dda_init(t_game *game, t_dda *dda, int *side)
 
 	plane_x_size = 1;
 	plane_y_size = tan(game->fov * M_PI / 360) * plane_x_size;
+	dda->plane[0] = plane_x_size * cosf(game->player->facing) - plane_y_size * sinf(game->player->facing);
+	dda->plane[1] = plane_x_size * sinf(game->player->facing) + plane_y_size * cosf(game->player->facing);
 	x = 0;
-//	while (x < (game->max_x * SIZE_MOD))
-//	{
-		dda->plane[0] = plane_x_size * cosf(game->player->facing) - plane_y_size * sinf(game->player->facing);
-		dda->plane[1] = plane_x_size * sinf(game->player->facing) + plane_y_size * cosf(game->player->facing);
-		dda->camera_x = (2 * x) / (((double)game->max_x * SIZE_MOD) - 1);
+	while (x < game->screen_width)
+	{
+		dda->camera_x = (2 * x / (double)game->screen_width) - 1;
 		dda->raydir[0] = dda->dir[0] + dda->plane[0] * dda->camera_x;
 		dda->raydir[1] = dda->dir[1] + dda->plane[1] * dda->camera_x;
 		dda->map[0] = (int)game->player->pos[0];
@@ -67,7 +67,7 @@ static double	dda_init(t_game *game, t_dda *dda, int *side)
 		wall_dist = get_first_dist(game, dda, side);
 		draw_line(game, dda, wall_dist, *side);
 		x++;
-//	}
+	}
 	return (wall_dist);
 }
 

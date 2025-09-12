@@ -37,8 +37,8 @@ typedef struct		s_game
 	int				max_y;
 	int				minimap;
 	double			fov;
-	double			screen_height;
-	double			screen_width;
+	int			screen_height;
+	int			screen_width;
 	struct s_player	*player;
 	struct s_data	*data;
 }					t_game;
