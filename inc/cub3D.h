@@ -30,10 +30,10 @@
 # define CELL_TYPE "01NSEW "
 # define SPACE " "
 # define FOV 66
-# define NORTH 0
-# define SOUTH (M_PI)
-# define EAST (M_PI_2)
-# define WEST (3 * M_PI_2)
+# define NORTH (M_PI_2)
+# define SOUTH (3 * M_PI_2)
+# define EAST 0
+# define WEST (M_PI)
 
 
 /*_______________________________STRUCT_______________________________________*/
