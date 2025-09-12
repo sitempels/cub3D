@@ -70,16 +70,32 @@ int	check_result(int read_result, char *stash)
 	return (GNL_SUCCESS);
 }
 
+void	cleanup_stash(char **stash)
+{
+	int	i;
+
+	i = 0;
+	while (i < MAX_FD)
+	{
+		if (stash[i])
+		{
+			free(stash[i]);
+			stash[i] = NULL;
+		}
+		i++;
+	}
+}
+
 int	get_next_line(int fd, char **line)
 {
 	static char	*stash[MAX_FD];
 	char		buffer[BUFFER_SIZE + 1];
 	int			read_result;
 
-	if (!line)
-		return (GNL_ERROR);
+	if (!line || fd < 0)
+		return (cleanup_stash(stash), GNL_ERROR);
 	*line = NULL;
-	if (BUFFER_SIZE <= 0 || fd < 0 || fd >= MAX_FD)
+	if (BUFFER_SIZE <= 0 || fd >= MAX_FD)
 		return (GNL_ERROR);
 	read_result = read_file(fd, buffer, &stash[fd]);
 	if (check_result(read_result, stash[fd]) < 0)

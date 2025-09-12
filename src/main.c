@@ -25,11 +25,12 @@ int	main(int ac, char **av)
 	}
 	if (!valid_file_extension(av[1], ".cub", '\0'))
 		return (1);
+	ft_memset(&game, 0, sizeof(t_game));
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
 		return (perror("open"), 1);
 	if (parse_file(fd, &game) == 1)
-		return (1);
+		return (close(fd), 1);
 	close(fd);
 	game.screen_width = WIDTH;
 	game.screen_height = HEIGHT;
@@ -41,5 +42,6 @@ int	main(int ac, char **av)
 	game.minimap = 1;
 	game.fov = 66;
 	display_handler(&game);
+	cleanup_game(&game);
 	return (0);
 }

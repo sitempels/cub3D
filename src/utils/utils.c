@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/10 18:10:58 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/12 01:14:57 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,29 @@ void	print_map(int **matrix, int height, int width)
 		i++;
 	}
 	printf("----------------------------------\n");
+}
+
+void	cleanup_game(t_game *game)
+{
+	int	i;
+
+	if (!game)
+		return;
+	if (game->map)
+	{
+		i = 0;
+		while (i < game->max_x)
+		{
+			if (game->map[i])
+				free(game->map[i]);
+			i++;
+		}
+		free(game->map);
+		game->map = NULL;
+	}
+	if (game->player)
+	{
+		free(game->player);
+		game->player = NULL;
+	}
 }

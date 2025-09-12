@@ -6,12 +6,14 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/11 15:04:56 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/12 02:08:57 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
+
+# define _GNU_SOURCE
 # include "libft.h"
 # include "raycaster.h"
 # include "mlx.h"
@@ -28,6 +30,12 @@
 # define CELL_TYPE "01NSEW "
 # define SPACE " "
 # define FOV 66
+# define NORTH (M_PI_2)
+# define SOUTH (3 * M_PI_2)
+# define EAST 0
+# define WEST (M_PI)
+
+
 /*_______________________________STRUCT_______________________________________*/
 
 typedef struct		s_game
@@ -84,12 +92,13 @@ typedef enum e_config_type
 /*________________PARSING*/
 char		*ft_strnstr_end(const char *haystack, const char *needle, size_t len);
 int			parse_file(int fd, t_game *game);
-int			process_map_recursive(int fd, int ***matrix, int *rows, int *max_len);
-int			check_line(char *line, int *player_count);
-int			allocate_matrix(int ***matrix, int rows);
-int			init_matrix(int ***matrix, char *line, int max_len, int curr_row, int line_lenght);
+int			process_map_recursive(int fd, t_game *game, int *rows, int *max_len);
+int			check_line(char *line);
+int			init_game(t_game *game, int rows, int max_len);
+int			init_map(t_game *game, char *line, int curr_row, int line_lenght);
 int			ft_strcmp(const char *s1, const char *s2);
 bool		valid_file_extension(char *filename, char *ext, char del);
+void		init_player(t_game *game, int y, int x, double facing);
 
 /*________________PLAYER_*/
 /*________________RAYCAST*/
@@ -106,4 +115,7 @@ double		dda_operation(t_game *game, double facing);
 /*________________UTILS__*/
 void		print_map(int **matrix, int height, int width);
 void		print_int_arr(int *arr, int len);
+void		cleanup_game(t_game *game);
+void		gnl_cleanup(char *line);
+
 #endif
