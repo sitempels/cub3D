@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/12 18:30:55 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/13 17:07:29 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ char		*ft_strnstr_end(const char *haystack, const char *needle, size_t len);
 int			parse_file(int fd, t_game *game);
 int			process_map_recursive(int fd, t_game *game, int *rows, int *max_len);
 int			check_line(char *line);
+int			ft_isblank(char c);
 int			init_game(t_game *game, int rows, int max_len);
 int			init_map(t_game *game, char *line, int curr_row, int line_lenght);
 int			ft_strcmp(const char *s1, const char *s2);

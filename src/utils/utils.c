@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/12 18:42:29 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/13 18:02:10 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,4 @@ void	free_config(t_config *config)
 		free(config->ea_texture);
 	if (config->no_texture)
 		free(config->ea_texture);
-	if (config->floor_color)
-		free(config->floor_color);
-	if (config->ceiling_color)
-		free(config->ceiling_color);
 }
