@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/13 19:39:09 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/13 22:07:24 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ bool	config_completed(int *parsed_elements)
 	return (true);
 }
 
-void	skip_and_save_type(int type, int *arr, int *i)
+int	skip_and_save_type(int type, int *arr, int *i)
 {
-	if ((type == NO || type == SO || type == WE || type == EA) && arr[type] == -1)
+	if (is_texture(type) && arr[type] == -1)
 	{
 		arr[type] = type;
 		*i += 2;
@@ -57,8 +57,25 @@ void	skip_and_save_type(int type, int *arr, int *i)
 		*i += 1;
 	}
 	else
+	{
 		ft_printf_fd(STDERR_FILENO, "Error: This type has already been parsed\n");
+		return (1);
+	}
+	return (0);
 }
+
+bool	is_texture(int type)
+{
+	if (type == NO || type == SO || type == WE || type == EA)
+		return (true);
+	return (false);
+}
+
+/* bool	valid_rgb(char *line_pos)
+{
+	return (false)
+	return (true);
+} */
 
 int	parse_config(char *line, int *arr, t_config *config)
 {
@@ -81,7 +98,10 @@ int	parse_config(char *line, int *arr, t_config *config)
 			i++;
 		type = compare_types(&line[i]);
 		if (type >= 0)
-			skip_and_save_type(type, arr, &i);
+		{
+			if (skip_and_save_type(type, arr, &i) != 0)
+				return (1);
+		}
 		while (line[i] && ft_isblank(line[i]))
 			i++;
 		if (!line[i] || line[i] == '\n')
@@ -89,9 +109,17 @@ int	parse_config(char *line, int *arr, t_config *config)
 			ft_printf_fd(STDERR_FILENO, "Error: Missing config value\n");
 			return (1);
 		}
-		if (!valid_file_extension(&line[i], ".xpm", 'X'))
-			return (1);
-		printf("Texture extension format validated\n");
+		if (is_texture(type))
+		{
+			if (!valid_file_extension(&line[i], ".xpm", 'X'))
+				return (1);
+			printf("Texture extension format validated\n");
+		}
+/* 		else
+		{
+			if (!valid_rgb(&line[i]))
+				return (1);
+		} */
 		while (ft_isalnum(line[i]) || line[i] == '.' || line[i] == '/' || line[i] == '_')
 			i++;
 		if (detect_content(&line[i], &first_char))
@@ -121,8 +149,6 @@ int	process_config(int fd, t_config *config)
 		ret = get_next_line(fd, &line);
 		if (ret < 0)
 			return (ft_printf_fd(STDERR_FILENO, "Error: Reading file"), 1);
-/* 		if (!line)
-			return (ft_printf_fd(STDERR_FILENO, "Error: Missing map\n"), 1); */
 		if (parse_config(line, parsed_elements, config) == 1)
 			return (free(line), free_config(config), 1);
 		free(line);
