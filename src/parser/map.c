@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/13 17:58:32 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/14 01:17:51 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	init_map(t_game *game, char *line, int curr_row, int line_lenght)
 	j = 0;
 	while (j < line_lenght)
 	{
-		if (line[j] == ' ' || line[j] == '\n')
+		if (line[j] == ' ' || line[j] == '\n' || line[j] == '\t')
 			game->map[curr_row][j] = EMPTY;
 		else if (line[j] == '0')
 			game->map[curr_row][j] = FLOOR;

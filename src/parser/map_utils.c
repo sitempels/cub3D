@@ -12,7 +12,7 @@ int	check_line(char *line)
 	{
 /* 		if (!detect_content(line, &first_char) || first_char != '1')
 			return (printf("Error: invalid map\n"), 1); */
-		if (!ft_strchr("01NSEW \n", line[i]))
+		if (!ft_strchr("01NSEW \n\t", line[i]))
 		{
 			ft_printf_fd(STDERR_FILENO,
 				"Error: Invalid character <%c> inserted\n", line[i]);

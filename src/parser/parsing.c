@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/13 22:07:24 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/14 00:55:19 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	config_completed(int *parsed_elements)
 	int	i;
 
 	i = 0;
-	while (i < C)
+	while (i <= C)
 	{
 		if (parsed_elements[i] == -1)
 			return (false);
@@ -71,11 +71,50 @@ bool	is_texture(int type)
 	return (false);
 }
 
-/* bool	valid_rgb(char *line_pos)
+int	check_rgb(char *line, int *i, t_config *config, int type)
 {
-	return (false)
-	return (true);
-} */
+	int		count;
+	char	*start;
+
+	start = &line[*i];
+	count = 0;
+	while (*start && ft_isblank(*start))
+		start++;
+
+	while (count < 3)
+	{
+		if (!ft_isdigit(*start))
+			return (ft_printf_fd(STDERR_FILENO, "Error: Invalid RGB format\n"), 1);
+		if (type == C)
+			config->ceiling_color[count] = atoi(start);
+		else
+			config->floor_color[count] = atoi(start);
+		if ((config->ceiling_color[count] < 0 || config->ceiling_color[count] > 255) ||
+				(config->floor_color[count] < 0 || config->floor_color[count] > 255))
+				return (ft_printf_fd(STDERR_FILENO, "Error: RGB value out of range (0-255)\n"), 1);
+		while (*start && ft_isdigit(*start))
+			start++;
+		count++;
+		if (count < 3)
+		{
+			while (*start && ft_isblank(*start))
+				start++;
+			if (*start  != ',')
+				return (ft_printf_fd(STDERR_FILENO, "Error: RGB values must be separated by a comma\n"), 1);
+			start++;
+			while (*start && ft_isblank(*start))
+				start++;
+		}
+	}			
+	if (count != 3)
+		return (ft_printf_fd(STDERR_FILENO, "Error: RGB must have exactly 3 values\n"), 1);
+	while (*start && ft_isblank(*start))
+		start++;
+	if (*start && *start != '\n' && *start != '\0')
+		return (ft_printf_fd(STDERR_FILENO, "Error: Extra content after RGB values"), 1);
+	*i = start - line;
+	return (0);
+}
 
 int	parse_config(char *line, int *arr, t_config *config)
 {
@@ -114,14 +153,15 @@ int	parse_config(char *line, int *arr, t_config *config)
 			if (!valid_file_extension(&line[i], ".xpm", 'X'))
 				return (1);
 			printf("Texture extension format validated\n");
+			while (ft_isalnum(line[i]) || line[i] == '.' || line[i] == '/' || line[i] == '_')
+				i++;
 		}
-/* 		else
+		else
 		{
-			if (!valid_rgb(&line[i]))
+			if (check_rgb(line, &i, config, type) != 0)
 				return (1);
-		} */
-		while (ft_isalnum(line[i]) || line[i] == '.' || line[i] == '/' || line[i] == '_')
-			i++;
+			printf("RGV value validated\n");
+		}
 		if (detect_content(&line[i], &first_char))
 		{
 			ft_printf_fd(STDERR_FILENO, "Invalid configuration informations.\n");
@@ -154,6 +194,11 @@ int	process_config(int fd, t_config *config)
 		free(line);
 		if (config->first_map && config_completed(parsed_elements))
 			return (0);
+		if (config->first_map)
+		{
+			ft_printf_fd(STDERR_FILENO, "Error: incomplete configuration\n");
+			return (1);
+		}
 	}
 	ft_printf_fd(STDERR_FILENO, "Error: incomplete configuration\n");
 	return (ret);

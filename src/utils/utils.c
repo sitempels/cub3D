@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/13 18:02:10 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/14 00:46:16 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,19 +80,29 @@ void	cleanup_game(t_game *game)
 
 void	free_config(t_config *config)
 {
-	// penser a tout assigner a NULL blablabla
 	if (config->first_map)
+	{
 		free(config->first_map);
+		config->first_map = NULL;
+	}
 	if (config->no_texture)
+	{
 		free(config->no_texture);
+		config->no_texture = NULL;
+	}
 	if (config->so_texture)
+	{
 		free(config->so_texture);
-	if (config->no_texture)
+		config->so_texture = NULL;
+	}
+	if (config->we_texture)
+	{
 		free(config->we_texture);
-	if (config->no_texture)
-		free(config->we_texture);
-	if (config->no_texture)
+		config->we_texture = NULL;
+	}
+	if (config->ea_texture)
+	{
 		free(config->ea_texture);
-	if (config->no_texture)
-		free(config->ea_texture);
+		config->ea_texture = NULL;
+	}
 }
