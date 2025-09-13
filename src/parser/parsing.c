@@ -6,29 +6,12 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/13 18:00:32 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/13 19:39:09 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 #include "get_next_line_bonus.h"
-
-bool	detect_content(char *line, char *first_char)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (!ft_isspace(line[i]))
-		{
-			*first_char = line[i];
-			return (true);
-		}
-		i++;
-	}
-	return (false);
-}
 
 int	compare_types(char *line_pos)
 {
@@ -40,65 +23,11 @@ int	compare_types(char *line_pos)
 		return (WE);
 	if (ft_strncmp(line_pos, "EA ", 3) == 0)
 		return (EA);
-	if (ft_strncmp(line_pos, "F ", 3) == 0)
+	if (ft_strncmp(line_pos, "F ", 2) == 0)
 		return (F);
-	if (ft_strncmp(line_pos, "C ", 3) == 0)
+	if (ft_strncmp(line_pos, "C ", 2) == 0)
 		return (C);
 	return (-1);
-}
-
-int	ft_isblank(char c)
-{
-	if (c == ' ' || c == '\t')
-		return (1);
-	return (0);
-}
-
-int	parse_config(char *line, int *arr)
-{
-	int		i;
-	char	first_char;
-	int		type;
-
-	if (!detect_content(line, &first_char))
-		return (0);
-	/* 	if (first_char == '1')
-		//it's a map!!
-	printf("first char: %c\n", first_char); */
-	i = 0;
-	while (line[i])
-	{
-		while (line[i] && ft_isblank(line[i]))
-			i++;
-		type = compare_types(&line[i]);
-		if (type >= 0)
-		{
-			if (type == NO && arr[NO] == -1)
-				i += 2;
-			else
-				return (printf("Error: This type has already been parsed\n"), 1);
-		}
-		while (line[i] && ft_isblank(line[i]))
-			i++;
-		if (!line[i] || line[i] == '\n')
-		{
-			printf("Error: Missing config value\n");
-			return (1);
-		}
-		if (!valid_file_extension(&line[i], ".xpm", 'X')) //logique a peaufiner, del pourrair etre ' ' aussi + verifier qu'aucun contenu ne se trouve apres.
-			return (1);
-		printf("Texture extension format validated\n");
-		while (ft_isalnum(line[i]) || line[i] == '.' || line[i] == '/')
-			i++;
-		if (detect_content(&line[i], &first_char))
-		{
-			printf("Invalid configuration informations.\n");
-			return (1);
-		}
-		//allocate_config();
-		break ;
-	}
-	return (0);
 }
 
 bool	config_completed(int *parsed_elements)
@@ -115,25 +44,65 @@ bool	config_completed(int *parsed_elements)
 	return (true);
 }
 
-void init_config(t_config *config)
+void	skip_and_save_type(int type, int *arr, int *i)
 {
-	int	i;
-	
-	if (config)
+	if ((type == NO || type == SO || type == WE || type == EA) && arr[type] == -1)
 	{
-		config->first_map = NULL;
-		config->no_texture = NULL;
-		config->so_texture = NULL;
-		config->we_texture = NULL;
-		config->ea_texture = NULL;
-		i = 0;
-		while (i < 3)
-		{
-			config->floor_color[i] = 0;
-			config->ceiling_color[i] = 0;
-			i++;
-		}
+		arr[type] = type;
+		*i += 2;
 	}
+	else if ((type == F || type == C) && arr[type] == -1)
+	{
+		arr[type] = type;
+		*i += 1;
+	}
+	else
+		ft_printf_fd(STDERR_FILENO, "Error: This type has already been parsed\n");
+}
+
+int	parse_config(char *line, int *arr, t_config *config)
+{
+	int		i;
+	char	first_char;
+	int		type;
+
+	if (!detect_content(line, &first_char))
+		return (0);
+	if (first_char == '1')
+	{
+		printf("it's a map!! : %c\n", first_char);
+		config->first_map = ft_strdup(line);
+		return (0);
+	}
+	i = 0;
+	while (line[i])
+	{
+		while (line[i] && ft_isblank(line[i]))
+			i++;
+		type = compare_types(&line[i]);
+		if (type >= 0)
+			skip_and_save_type(type, arr, &i);
+		while (line[i] && ft_isblank(line[i]))
+			i++;
+		if (!line[i] || line[i] == '\n')
+		{
+			ft_printf_fd(STDERR_FILENO, "Error: Missing config value\n");
+			return (1);
+		}
+		if (!valid_file_extension(&line[i], ".xpm", 'X'))
+			return (1);
+		printf("Texture extension format validated\n");
+		while (ft_isalnum(line[i]) || line[i] == '.' || line[i] == '/' || line[i] == '_')
+			i++;
+		if (detect_content(&line[i], &first_char))
+		{
+			ft_printf_fd(STDERR_FILENO, "Invalid configuration informations.\n");
+			return (1);
+		}
+		//allocate_config();
+		break ;
+	}
+	return (0);
 }
 
 int	process_config(int fd, t_config *config)
@@ -154,7 +123,7 @@ int	process_config(int fd, t_config *config)
 			return (ft_printf_fd(STDERR_FILENO, "Error: Reading file"), 1);
 /* 		if (!line)
 			return (ft_printf_fd(STDERR_FILENO, "Error: Missing map\n"), 1); */
-		if (parse_config(line, parsed_elements) == 1)
+		if (parse_config(line, parsed_elements, config) == 1)
 			return (free(line), free_config(config), 1);
 		free(line);
 		if (config->first_map && config_completed(parsed_elements))
@@ -184,34 +153,23 @@ int	parse_file(int fd, t_game *game)
 	return (0);
 }
 
-int	check_line(char *line)
+void init_config(t_config *config)
 {
-	int		i;
-	static int	player_count;
-
-	//char	first_char;
-
-	i = 0;
-	while (line[i])
+	int	i;
+	
+	if (config)
 	{
-/* 		if (!detect_content(line, &first_char) || first_char != '1')
-			return (printf("Error: invalid map\n"), 1); */
-		if (!ft_strchr("01NSEW \n", line[i]))
+		config->first_map = NULL;
+		config->no_texture = NULL;
+		config->so_texture = NULL;
+		config->we_texture = NULL;
+		config->ea_texture = NULL;
+		i = 0;
+		while (i < 3)
 		{
-			ft_printf_fd(STDERR_FILENO,
-				"Error: Invalid character <%c> inserted\n", line[i]);
-			return (1);
+			config->floor_color[i] = 0;
+			config->ceiling_color[i] = 0;
+			i++;
 		}
-		if (ft_strchr("NSEW", line[i]))
-		{
-			player_count++;
-			if (player_count > 1)
-			{
-				ft_printf_fd(STDERR_FILENO, "Error: Multiple players found\n");
-				return (1);
-			}
-		}
-		i++;
 	}
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/13 17:07:29 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/13 19:02:34 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,9 @@ int			init_game(t_game *game, int rows, int max_len);
 int			init_map(t_game *game, char *line, int curr_row, int line_lenght);
 int			ft_strcmp(const char *s1, const char *s2);
 bool		valid_file_extension(char *filename, char *ext, char del);
+bool		detect_content(char *line, char *first_char);
 void		init_player(t_game *game, int y, int x, double facing);
+void		init_config(t_config *config);
 
 /*________________PLAYER_*/
 /*________________RAYCAST*/
