@@ -6,14 +6,14 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/15 19:16:04 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/16 00:19:08 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 #include "get_next_line_bonus.h"
 
-int	init_game(t_game *game, int rows, int max_len)
+int	init_game(t_game *game, int rows)
 {
 	game->map = malloc(sizeof(int *) * (rows));
 	if (!game->map)
@@ -82,7 +82,6 @@ int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 	int			line_lenght;
 	int			curr_row;
 	int			ret;
-	int			map_end;
 
 	if (game->config->first_map)
 	{
@@ -95,7 +94,7 @@ int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 		if ((get_next_line(fd, &line)) < 0)
 			return (printf("Error: Reading file\n"), 1);
 		else if (!line)
-			return (init_game(game, *rows, *max_len));
+			return (init_game(game, *rows));
 	}
 	line_lenght = ft_strlen(line);
 	if (line_lenght > *max_len)

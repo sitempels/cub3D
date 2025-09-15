@@ -26,6 +26,7 @@ int	check_line(char *line, t_config *config)
 			return (1);
 		}
 		if (line[i] == ' ' || line[i] == '\t')
+			i++;
 			
 		if (ft_strchr("NSEW", line[i]))
 		{
