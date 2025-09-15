@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/15 02:08:41 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/15 16:08:19 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,5 +258,6 @@ void init_config(t_config *config)
 			config->ceiling_color[i] = 0;
 			i++;
 		}
+		config->map_end = false;
 	}
 }

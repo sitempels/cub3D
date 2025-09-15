@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/13 19:51:11 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/15 16:12:11 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef	struct		s_config
 	char			*ea_texture;
 	int 			floor_color[3];
 	int 			ceiling_color[3];
+	bool			map_end;
 }					t_config;
 
 typedef	struct		s_player
@@ -93,7 +94,7 @@ typedef enum e_config_type
 char		*ft_strnstr_end(const char *haystack, const char *needle, size_t len);
 int			parse_file(int fd, t_game *game);
 int			process_map_recursive(int fd, t_game *game, int *rows, int *max_len);
-int			check_line(char *line);
+int			check_line(char *line, t_config *config);
 int			ft_isblank(char c);
 int			init_game(t_game *game, int rows, int max_len);
 int			init_map(t_game *game, char *line, int curr_row, int line_lenght);

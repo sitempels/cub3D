@@ -1,15 +1,24 @@
 #include "cub3D.h"
 
-int	check_line(char *line)
+int	check_line(char *line, t_config *config)
 {
 	int			i;
 	static int	player_count;
 
+
+	if (detect_content(line, NULL))
+	{
+		if (config->map_end == true)
+		{
+			ft_printf_fd(STDERR_FILENO, "Error: Empty line in map or content after map\n");
+			return (1);
+		}
+	}
+	else
+		config->map_end = true;
 	i = 0;
 	while (line[i])
 	{
-		if (!detect_content(line, NULL))
-			return (printf("Error: empty line found in map\n"), 1);
 		if (!ft_strchr("01NSEW \n\t", line[i]))
 		{
 			ft_printf_fd(STDERR_FILENO,

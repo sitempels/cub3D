@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/15 01:13:59 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/15 16:13:00 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 	char		*line;
 	int			line_lenght;
 	int			curr_row;
-
+	int			ret;
+	int			map_end;
 
 	if (game->config->first_map)
 	{
@@ -100,7 +101,7 @@ int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 	if (line_lenght > *max_len)
 		*max_len = line_lenght;
 	curr_row = *rows;
-	if (check_line(line) == 1)
+	if (check_line(line, game->config) != 0)
 		return (gnl_cleanup(line), 1);
 	(*rows)++;
 	if (process_map_recursive(fd, game, rows, max_len) != 0)
