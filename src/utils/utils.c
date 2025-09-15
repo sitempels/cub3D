@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/15 01:32:20 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/15 19:28:07 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,4 +105,6 @@ void	free_config(t_config *config)
 		free(config->ea_texture);
 		config->ea_texture = NULL;
 	}
+	free(config);
+	config = NULL;
 }

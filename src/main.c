@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:01 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/12 01:29:24 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/15 19:24:21 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ int	main(int ac, char **av)
 	if (fd < 0)
 		return (perror("open"), 1);
 	if (parse_file(fd, &game) == 1)
-		return (close(fd), 1);
+		return (close(fd), cleanup_game(&game), 1);
 	close(fd);
+	if (floodfill(game));
+		return (cleanup_game(&game), 1);	
 	display_handler(&game);
 	cleanup_game(&game);
 	return (0);

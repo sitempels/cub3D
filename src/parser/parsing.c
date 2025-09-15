@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/15 16:08:19 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/15 19:29:31 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ int	parse_config(char *line, int *arr, t_config *config)
 				ft_printf_fd(STDERR_FILENO, "Error: Extra content after texture path\n");
 				return (1);
 			}
-			int	len = &line[i] - start;
+			int	len = &line[i + 1] - start; // sans + 1 n'enregistre que jusque "./path_texture.xp" sans le 'm'
 			char *path = malloc(sizeof(char) * (len + 1));
 			if (!path)
 				return (1);
@@ -227,15 +227,9 @@ int	parse_file(int fd, t_game *game)
 		return (1);
 	init_config(game->config);
 	if (process_config(fd, game->config) == 1)
-	{
-		free_config(game->config);
 		return (1);
-	}
 	if (process_map_recursive(fd, game, &game->max_y, &game->max_x) == 1)
-	{
-		free_config(game->config);
 		return (1);
-	}
 	print_map(game->map, game->max_y, game->max_x);
 	return (0);
 }

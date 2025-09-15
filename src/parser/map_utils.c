@@ -25,6 +25,8 @@ int	check_line(char *line, t_config *config)
 				"Error: Invalid character <%c> inserted\n", line[i]);
 			return (1);
 		}
+		if (line[i] == ' ' || line[i] == '\t')
+			
 		if (ft_strchr("NSEW", line[i]))
 		{
 			player_count++;
