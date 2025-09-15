@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/14 00:55:19 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/15 02:08:41 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	check_rgb(char *line, int *i, t_config *config, int type)
 	while (*start && ft_isblank(*start))
 		start++;
 	if (*start && *start != '\n' && *start != '\0')
-		return (ft_printf_fd(STDERR_FILENO, "Error: Extra content after RGB values"), 1);
+		return (ft_printf_fd(STDERR_FILENO, "Error: Extra content after RGB values\n"), 1);
 	*i = start - line;
 	return (0);
 }
@@ -150,11 +150,33 @@ int	parse_config(char *line, int *arr, t_config *config)
 		}
 		if (is_texture(type))
 		{
+			char	*start;
+			
 			if (!valid_file_extension(&line[i], ".xpm", 'X'))
 				return (1);
+			start = &line[i];
 			printf("Texture extension format validated\n");
 			while (ft_isalnum(line[i]) || line[i] == '.' || line[i] == '/' || line[i] == '_')
 				i++;
+			if (detect_content(&line[i], &first_char))
+			{
+				ft_printf_fd(STDERR_FILENO, "Error: Extra content after texture path\n");
+				return (1);
+			}
+			int	len = &line[i] - start;
+			char *path = malloc(sizeof(char) * (len + 1));
+			if (!path)
+				return (1);
+			ft_strlcpy(path, start, len);
+			path[len] = '\0';
+			if (type == NO)
+				config->no_texture = path;
+			else if (type == SO)
+				config->so_texture = path;
+			else if (type == WE)
+				config->we_texture = path;
+			else if (type == EA)
+				config->ea_texture = path;
 		}
 		else
 		{
@@ -162,12 +184,6 @@ int	parse_config(char *line, int *arr, t_config *config)
 				return (1);
 			printf("RGV value validated\n");
 		}
-		if (detect_content(&line[i], &first_char))
-		{
-			ft_printf_fd(STDERR_FILENO, "Invalid configuration informations.\n");
-			return (1);
-		}
-		//allocate_config();
 		break ;
 	}
 	return (0);
