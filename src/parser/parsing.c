@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/15 19:29:31 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/15 19:47:37 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,11 @@ int	parse_config(char *line, int *arr, t_config *config)
 			if (skip_and_save_type(type, arr, &i) != 0)
 				return (1);
 		}
+		else
+		{
+			ft_printf_fd(STDERR_FILENO, "Error: Incorrect config value\n");
+			return (1);
+		}
 		while (line[i] && ft_isblank(line[i]))
 			i++;
 		if (!line[i] || line[i] == '\n')
@@ -206,7 +211,7 @@ int	process_config(int fd, t_config *config)
 		if (ret < 0)
 			return (ft_printf_fd(STDERR_FILENO, "Error: Reading file"), 1);
 		if (parse_config(line, parsed_elements, config) == 1)
-			return (free(line), free_config(config), 1);
+			return (gnl_cleanup(line), 1);
 		free(line);
 		if (config->first_map && config_completed(parsed_elements))
 			return (0);
