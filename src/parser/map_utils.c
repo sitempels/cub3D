@@ -2,16 +2,14 @@
 
 int	check_line(char *line)
 {
-	int		i;
+	int			i;
 	static int	player_count;
-
-	//char	first_char;
 
 	i = 0;
 	while (line[i])
 	{
-/* 		if (!detect_content(line, &first_char) || first_char != '1')
-			return (printf("Error: invalid map\n"), 1); */
+		if (!detect_content(line, NULL))
+			return (printf("Error: empty line found in map\n"), 1);
 		if (!ft_strchr("01NSEW \n\t", line[i]))
 		{
 			ft_printf_fd(STDERR_FILENO,

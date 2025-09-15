@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:43 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/13 18:55:08 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/15 02:50:33 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ bool	detect_content(char *line, char *first_char)
 	{
 		if (!ft_isspace(line[i]))
 		{
-			*first_char = line[i];
+			if (first_char)
+				*first_char = line[i];
 			return (true);
 		}
 		i++;
