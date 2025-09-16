@@ -5,7 +5,6 @@ int	check_line(char *line, t_config *config)
 	int			i;
 	static int	player_count;
 
-
 	if (detect_content(line, NULL))
 	{
 		if (config->map_end == true)
@@ -15,7 +14,10 @@ int	check_line(char *line, t_config *config)
 		}
 	}
 	else
+	{
 		config->map_end = true;
+		return (0);
+	}
 	i = 0;
 	while (line[i])
 	{

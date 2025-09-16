@@ -7,14 +7,14 @@ int	floodfill(t_game *game, int	y, int x)
 		//printf("FAIL\n");
 		return (1);
 	}
-	if (game->map[y][x] == WALL || game->map[y][x] == OK)
+	if (game->map[y][x] == WALL || game->map[y][x] == FILLED)
 	{
 		//printf("OK\n");
 		return (0);
 	}
 	if (game->map[y][x] == EMPTY)
 		printf("EMPTY\n");
-	game->map[y][x] = OK;
+	game->map[y][x] = FILLED;
 	return (floodfill(game, y, x + 1) || floodfill(game, y, x -1)
 	|| floodfill(game, y + 1, x) ||floodfill(game, y - 1, x));
 }

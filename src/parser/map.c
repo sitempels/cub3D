@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/16 00:19:08 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/16 15:39:21 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,17 +102,23 @@ int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 	ret = check_line(line, game->config);
 	if (ret == 1)
 		return (gnl_cleanup(line), 1);
-	curr_row = *rows;
-	(*rows)++;
+	if (!game->config->map_end)
+	{
+		curr_row = *rows;
+		(*rows)++;
+	}
 	if (process_map_recursive(fd, game, rows, max_len) != 0)
 		return (gnl_cleanup(line), 1);
 	if (!game->map)
 		return (free(line), 1);
-	game->map[curr_row] = malloc(sizeof(int) * (*max_len));
-	if (!(game->map)[curr_row])
-		return (free(line), 1);
-	if (init_map(game, line, curr_row, line_lenght) != 0)
-		return (free(line), 1);
+	if (detect_content(line, NULL))
+	{
+		game->map[curr_row] = malloc(sizeof(int) * (*max_len));
+		if (!(game->map)[curr_row])
+			return (free(line), 1);
+		if (init_map(game, line, curr_row, line_lenght) != 0)
+			return (free(line), 1);
+	}
 	free(line);
 	return (0);
 }

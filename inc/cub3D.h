@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/16 00:22:29 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/16 14:08:56 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef enum e_type
 	E,
 	S,
 	W,
-	OK
+	FILLED
 }			t_type;
 
 typedef enum e_config_type
