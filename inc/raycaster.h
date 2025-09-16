@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 09:00:17 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/16 10:22:49 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/16 15:22:03 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define FLOOR_COLOR 0xedf0f5
 # define WALL_COLOR 0x428715
 # define PLAYER_COLOR 0xfa3737
+# define RAY_COLOR 0xb366ff
 # define SPEED 0.5
 # define SPEED_RATIO 2
 # define TURN_SPEED (10 * M_PI / 180)
