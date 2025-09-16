@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/16 17:41:59 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/16 20:26:19 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int			process_map_recursive(int fd, t_game *game, int *rows, int *max_len);
 int			check_line(char *line, t_config *config);
 int			ft_isblank(char c);
 int			check_map_closure(t_game *game);
-int			floodfill(t_game *game, int pos_y, int pos_x);
+int			floodfill(int **map, int pos_y, int pos_x, t_game *game);
 int			floodfill_ext(int **map, int y, int x, t_game *game);
 int			init_game(t_game *game, int rows);
 int			init_map(t_game *game, char *line, int curr_row, int line_lenght);
