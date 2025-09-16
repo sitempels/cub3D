@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/16 01:39:10 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/16 19:22:02 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,12 +236,16 @@ int	parse_file(int fd, t_game *game)
 	if (process_map_recursive(fd, game, &game->max_y, &game->max_x) == 1)
 		return (1);
 	print_map(game->map, game->max_y, game->max_x);
-	if (floodfill(game, (int)(game->player->pos[0] - 0.5), (int)(game->player->pos[1] - 0.5)) != 0)
+	if (check_map_closure(game) != 0)
+	{
+		return (1);
+	}
+/* 	if (floodfill(game, (int)(game->player->pos[0] - 0.5), (int)(game->player->pos[1] - 0.5)) != 0)
 	{
 		ft_printf_fd(STDERR_FILENO, "Error : Map is not closed\n");
 		return (1);
-	}
-	print_map(game->map, game->max_y, game->max_x);
+	} */
+	//print_map(game->map, game->max_y, game->max_x);
 	return (0);
 }
 
