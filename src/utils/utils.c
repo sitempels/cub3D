@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/15 19:28:07 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/16 02:03:59 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	cleanup_game(t_game *game)
 	if (game->map)
 	{
 		i = 0;
-		while (i < game->max_x)
+		while (i < game->max_y)
 		{
 			if (game->map[i])
 				free(game->map[i]);
