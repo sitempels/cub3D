@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 09:00:17 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/16 15:22:03 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/16 16:59:10 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,15 @@ typedef struct		s_dda
 	double			d_dist[2];
 	double			side_dist[2];
 	double			camera_x;
+	double			angle;
+	double			limit;
 }					t_dda;
+
+typedef struct		s_ray
+{
+	int				side;
+	double			dist;
+	unsigned int	color;
+}					t_ray;
 /*_______________________________FUNCT________________________________________*/
 #endif
