@@ -6,14 +6,14 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 09:00:17 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/11 11:22:52 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/16 10:22:49 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RAYCASTER_H
 # define RAYCASTER_H
 /*_______________________________MACRO________________________________________*/
-# define SIZE_MOD 16
+# define SIZE_MOD 32
 # define ESC_KEY 65307
 # define LEFT_KEY 0xff51
 # define UP_KEY 0xff52

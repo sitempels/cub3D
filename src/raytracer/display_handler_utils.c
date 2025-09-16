@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/11 16:34:16 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/16 11:04:44 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	{
 		double	turn;
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
-		turn = TURN_SPEED * (0xff52 - key_code );
+		turn = TURN_SPEED * (key_code - 0xff52);
 		safe_angle_add(&player->facing, turn);
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game);

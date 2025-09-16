@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/12 02:08:57 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/16 10:57:10 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@
 # define CELL_TYPE "01NSEW "
 # define SPACE " "
 # define FOV 66
-# define NORTH (M_PI / 2)
-# define SOUTH (3 * M_PI / 2)
+# define NORTH (3 * M_PI / 2)
+# define SOUTH (M_PI / 2)
 # define EAST 0
 # define WEST (M_PI)
-# define WIDTH 768
-# define HEIGHT 512
+# define WIDTH 1080
+# define HEIGHT 912
 
 
 /*_______________________________STRUCT_______________________________________*/
