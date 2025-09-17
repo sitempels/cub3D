@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/17 16:20:18 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/17 17:16:08 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	return (0);
 }
 
-void	safe_angle_add(double *angle, double mod)
+void	safe_angle_add(float *angle, float mod)
 {
 	*angle += mod;
 	if (*angle < 0)
