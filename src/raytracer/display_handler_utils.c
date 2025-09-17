@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/16 11:04:44 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/17 16:20:18 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,13 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	player = game->player;
 	if (key_code == UP_KEY || key_code == DOWN_KEY)
 	{
-		int	speed;
+		int	sens;
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		draw_player(game, data, FLOOR_COLOR);
-		speed = SPEED * SPEED_RATIO * (0xff53 - key_code);
-		player->pos[0] = player->pos[0] + cosf(player->facing) * speed;
-		player->pos[1] = player->pos[1] + sinf(player->facing) * speed;
+		sens = 0xff53 - key_code;
+		player->pos[0] = player->pos[0] + cosf(player->facing) * SPEED * sens;
+		player->pos[1] = player->pos[1] + sinf(player->facing) * SPEED * sens;
+		dda_collision(game);
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game);
 	}

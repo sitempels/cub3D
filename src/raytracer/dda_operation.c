@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:24:02 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/16 17:18:28 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/17 16:23:30 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,27 @@ static double	dda_init(t_game *game, t_dda *dda, t_ray *ray);
 static double	get_first_dist(t_game *game, t_dda *dda, t_ray *ray);
 static double	collision_dist(t_game *game, t_dda *dda, t_ray *ray);
 static void		draw_line(t_game *game, t_dda *dda, t_ray *ray);
-//static double	collision_detector(t_game *game, t_dda *dda, t_ray * ray);
 
 double	dda_operation(t_game *game, double facing)
 {
 	int		x;
+	double	camera_x;
+	double	plane[2];
 	t_dda	dda;
 	t_ray	ray;
 
+	dda.limit = 9999;
 	dda.dir[0] = cosf(facing);
 	dda.dir[1] = sinf(facing);
-	dda.plane[0] = - tan(game->fov * M_PI / 360) * sinf(facing);
-	dda.plane[1] = tan(game->fov * M_PI / 360) * cosf(facing);
-	dda.limit = 9999;
-
+	plane[0] = - tan(game->fov * M_PI / 360) * sinf(facing);
+	plane[1] = tan(game->fov * M_PI / 360) * cosf(facing);
 	ray.color = RAY_COLOR;
 	x = 0;
 	while (x <= game->screen_width)
 	{
-		dda.camera_x = (2 * x / (double)game->screen_width) - 1;
+		camera_x = (2 * x / (double)game->screen_width) - 1;
+		dda.raydir[0] = dda.dir[0] + plane[0] * camera_x;
+		dda.raydir[1] = dda.dir[1] + plane[1] * camera_x;
 		dda_init(game, &dda, &ray);
 		draw_line(game, &dda, &ray);
 		x++;
@@ -42,10 +44,30 @@ double	dda_operation(t_game *game, double facing)
 	return (0);
 }
 
+double	dda_collision(t_game *game)
+{
+	double		x;
+	t_dda	dda;
+	t_ray	ray;
+
+	dda.limit = COLL_DIST;
+	ray.color = 0x66ffff;
+	x = 0;
+	while (x <= 2 * M_PI)
+	{
+		dda.raydir[0] = cosf(x);
+		dda.raydir[1] = sinf(x);
+		dda_init(game, &dda, &ray);
+		if (ray.dist > 0)
+			game->player->pos[ray.side] += -dda.raydir[ray.side] * (COLL_DIST - ray.dist);
+		draw_line(game, &dda, &ray);
+		x += 0.01;
+	}
+	return (0);
+}
+
 static double	dda_init(t_game *game, t_dda *dda, t_ray *ray)
 {
-	dda->raydir[0] = dda->dir[0] + dda->plane[0] * dda->camera_x;
-	dda->raydir[1] = dda->dir[1] + dda->plane[1] * dda->camera_x;
 	dda->map[0] = (int)game->player->pos[0];
 	if (dda->raydir[0] == 0)
 		dda->d_dist[0] = 2000;
@@ -59,37 +81,7 @@ static double	dda_init(t_game *game, t_dda *dda, t_ray *ray)
 	get_first_dist(game, dda, ray);
 	return (0);
 }
-/*
-static double	collision_detector(t_game *game, t_dda *dda)
-{
-	double	x;
-	double	wall_dist;
 
-	x = 0;
-	dda.limit = 1;	
-	dda.plane[0] = - plane_y_size * sinf(game->player->facing);
-	dda.plane[1] = plane_y_size * cosf(game->player->facing);
-	while (x < 2 * M_PI)
-	{
-		dda->camera_x = (2 * x / (double)game->screen_width) - 1;
-		dda->raydir[0] = dda->dir[0] + dda->plane[0] * dda->camera_x;
-		dda->raydir[1] = dda->dir[1] + dda->plane[1] * dda->camera_x;
-		dda->map[0] = (int)game->player->pos[0];
-		if (dda->raydir[0] == 0)
-			dda->d_dist[0] = 2000;
-		else
-			dda->d_dist[0] = fabs(1 / dda->raydir[0]);
-		dda->map[1] = (int)game->player->pos[1];
-		if (dda->raydir[1] == 0)
-			dda->d_dist[1] = 2000;
-		else
-			dda->d_dist[1] = fabs(1 / dda->raydir[1]);
-		wall_dist = get_first_dist(game, dda, side);
-		draw_line(game, dda, wall_dist, *side);
-		x++;
-	}
-}
-*/
 static double	get_first_dist(t_game *game, t_dda * dda, t_ray *ray)
 {
 	int		i;
@@ -118,7 +110,7 @@ static double	collision_dist(t_game *game, t_dda *dda, t_ray *ray)
 	int		hit;
 
 	hit = 0;
-	while (hit == 0 && (ft_abs(ray->dist) < dda->limit))
+	while (hit == 0)
 	{
 		if (dda->side_dist[0] < dda->side_dist[1])
 			i = 0;
@@ -128,8 +120,12 @@ static double	collision_dist(t_game *game, t_dda *dda, t_ray *ray)
 		dda->map[i] += dda->step[i];
 		ray->side = i;
 		if (game->map[dda->map[1]][dda->map[0]] > 0)
+		{
 			hit = 1;
-		ray->dist = dda->side_dist[i] - dda->d_dist[i];
+			ray->dist = dda->side_dist[i] - dda->d_dist[i];
+			if (ray->dist > dda->limit)
+				ray->dist = 0;
+		}
 	}
 	return (0);
 }

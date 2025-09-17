@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 09:00:17 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/16 16:59:10 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/17 16:17:29 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,9 @@ typedef struct		s_dda
 	int				map[2];
 	int				step[2];
 	double			dir[2];
-	double			plane[2];
 	double			raydir[2];
 	double			d_dist[2];
 	double			side_dist[2];
-	double			camera_x;
 	double			angle;
 	double			limit;
 }					t_dda;

@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/16 16:11:49 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/17 16:21:07 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define WEST (M_PI)
 # define WIDTH 1080
 # define HEIGHT 912
+# define COLL_DIST 0.5
 
 
 /*_______________________________STRUCT_______________________________________*/
@@ -114,6 +115,7 @@ void		safe_angle_add(double *angle, double mod);
 void		draw_player(t_game *game, t_data *data, unsigned int color);
 void		draw_minimap(t_game *game, t_data *data);
 double		dda_operation(t_game *game, double facing);
+double		dda_collision(t_game *game);
 /*________________UTILS__*/
 void		print_map(int **matrix, int height, int width);
 void		print_int_arr(int *arr, int len);
