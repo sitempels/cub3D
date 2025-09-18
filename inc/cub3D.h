@@ -32,7 +32,7 @@
 # define FOV 66
 # define NORTH (3 * M_PI / 2)
 # define SOUTH (M_PI / 2)
-# define EAST 0
+# define EAST 0.000000000000000
 # define WEST (M_PI)
 # define WIDTH 1080
 # define HEIGHT 912
