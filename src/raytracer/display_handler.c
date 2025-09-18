@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/17 17:48:53 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/18 08:50:56 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ int	game_loop(t_game *game)
 	t_data	*data;
 
 	data = game->data;
-	dda_operation(game, game->player->facing);
-	draw_player(game, data, PLAYER_COLOR);
+	refresh_screen(game);
 	if (game->minimap == 1)
 		draw_minimap(game, data);
+	dda_operation(game, game->player->facing);
+	draw_player(game, data, PLAYER_COLOR);
 //	printf("player main_loop	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);

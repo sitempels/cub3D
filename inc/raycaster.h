@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 09:00:17 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/17 17:18:03 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/18 11:17:16 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define RAY_COLOR 0xb366ff
 # define SPEED 0.5
 # define SPEED_RATIO 2
-# define TURN_SPEED (1 / M_PI)
+# define TURN_SPEED 1
 /*_______________________________STRUCT_______________________________________*/
 typedef struct		s_data
 {

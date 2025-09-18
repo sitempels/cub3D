@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/17 17:56:47 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/18 11:38:38 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@
 # define CELL_TYPE "01NSEW "
 # define SPACE " "
 # define FOV 66
-# define NORTH (3 * M_PI / 2)
-# define SOUTH (M_PI / 2)
-# define EAST 0.000000000000000
-# define WEST (M_PI)
+# define NORTH 270
+# define SOUTH 90
+# define EAST 0
+# define WEST 180
 # define WIDTH 1080
 # define HEIGHT 912
 # define COLL_DIST 0.5
@@ -117,6 +117,8 @@ void		draw_player(t_game *game, t_data *data, unsigned int color);
 void		draw_minimap(t_game *game, t_data *data);
 float		dda_operation(t_game *game, float facing);
 float		dda_collision(t_game *game);
+void		refresh_screen(t_game *game);
+float		get_angle(int type, int facing);
 /*________________UTILS__*/
 void		print_map(int **matrix, int height, int width);
 void		print_int_arr(int *arr, int len);

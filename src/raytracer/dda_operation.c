@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:24:02 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/17 18:02:17 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/18 11:38:14 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,36 @@ static float	dda_init(t_game *game, t_dda *dda, t_ray *ray);
 static float	get_first_dist(t_game *game, t_dda *dda, t_ray *ray);
 static float	collision_dist(t_game *game, t_dda *dda, t_ray *ray);
 static void		draw_line(t_game *game, t_dda *dda, t_ray *ray);
-static void		draw_wall(t_game *game, t_ray *ray, int x);
-static void	refresh_screen(t_game *game);
+static void		draw_wall(t_game *game, t_dda *dda, t_ray *ray, int x);
+
+float	get_angle(int type, int facing)
+{
+	float	res;
+
+	if (type == 0)
+	{
+		if (facing == NORTH || facing == SOUTH)
+			res = 0;
+		else if (facing == EAST)
+			res = 1;
+		else if (facing == WEST)
+			res = -1;
+		else
+			res = cosf(facing * M_PI / 180);
+	}
+	if (type == 1)
+	{
+		if (facing == EAST || facing == WEST)
+			res = 0;
+		else if (facing == NORTH)
+			res = -1;
+		else if (facing == SOUTH)
+			res = 1;
+		else
+			res = sinf(facing * M_PI / 180);
+	}
+	return (res);
+}
 
 float	dda_operation(t_game *game, float facing)
 {
@@ -28,13 +56,12 @@ float	dda_operation(t_game *game, float facing)
 	t_ray	ray;
 
 	dda.limit = 500;
-	dda.dir[0] = cosf(facing);
-	dda.dir[1] = sinf(facing);
-	plane[0] = - tan(game->fov * M_PI / 360) * sinf(facing);
-	plane[1] = tan(game->fov * M_PI / 360) * cosf(facing);
+	dda.dir[0] = get_angle(0, facing);
+	dda.dir[1] = get_angle(1, facing);
+	plane[0] = - tan(game->fov * M_PI / 360) * get_angle(1, facing);
+	plane[1] = tan(game->fov * M_PI / 360) * get_angle(0, facing);
 	ray.color = RAY_COLOR;
 	x = 0;
-	refresh_screen(game);
 	while (x <= game->screen_width)
 	{
 		camera_x = (2 * x / (float)game->screen_width) - 1;
@@ -42,13 +69,13 @@ float	dda_operation(t_game *game, float facing)
 		dda.raydir[1] = dda.dir[1] + plane[1] * camera_x;
 		dda_init(game, &dda, &ray);
 		draw_line(game, &dda, &ray);
-		draw_wall(game, &ray, x);
+		draw_wall(game, &dda, &ray, x);
 		x++;
 	}
 	return (0);
 }
 
-static void	draw_wall(t_game *game, t_ray *ray, int x)
+static void	draw_wall(t_game *game, t_dda *dda, t_ray *ray, int x)
 {
 	int	wall_height;
 	int	wall_down;
@@ -63,9 +90,18 @@ static void	draw_wall(t_game *game, t_ray *ray, int x)
 	wall_up = wall_height / 2 + game->screen_height / 2;
 	if (wall_up < 0)
 		wall_up = game->screen_height - 1;
-	color = 0xff006600;
-	if (ray->side == 1)
-		color = 0x0f006600;
+	if (ray->side == 0 )
+	{
+		color = 0xff000066;
+		if (dda->raydir[ray->side] < 0)
+			color = 0xff000045;
+	}
+	if (ray->side == 1 )
+	{
+		color = 0xff006600;
+		if (dda->raydir[ray->side] < 0)
+			color = 0xff004500;
+	}
 	i = wall_down;
 	while (i <= wall_up)
 	{
@@ -75,7 +111,7 @@ static void	draw_wall(t_game *game, t_ray *ray, int x)
 	return ;
 }
 
-static void	refresh_screen(t_game *game)
+void	refresh_screen(t_game *game)
 {
 	int	i;
 	int	j;
@@ -101,22 +137,24 @@ static void	refresh_screen(t_game *game)
 
 float	dda_collision(t_game *game)
 {
-	float	x;
+	double	x;
 	t_dda	dda;
 	t_ray	ray;
 
+	dda.dir[0] = get_angle(0, game->player->facing);
+	dda.dir[1] = get_angle(1, game->player->facing);
 	dda.limit = COLL_DIST;
-	ray.color = 0x66ffff;
+	ray.color = 0x0f66ffff;
 	x = 0;
-	while (x <= 2 * M_PI)
+	while (x < 360)
 	{
-		dda.raydir[0] = cosf(x);
-		dda.raydir[1] = sinf(x);
+		dda.raydir[0] = dda.dir[0] + get_angle(0, x);
+		dda.raydir[1] = dda.dir[1] + get_angle(1, x);
 		dda_init(game, &dda, &ray);
-		if (ray.dist > 0)
+		if (ray.dist <= dda.limit)
 			game->player->pos[ray.side] += -dda.raydir[ray.side] * (COLL_DIST - ray.dist);
 		draw_line(game, &dda, &ray);
-		x += 1 / (2 * M_PI);
+		x++;
 	}
 	return (0);
 }
@@ -126,11 +164,11 @@ static float	dda_init(t_game *game, t_dda *dda, t_ray *ray)
 	dda->map[0] = (int)game->player->pos[0];
 	dda->map[1] = (int)game->player->pos[1];
 	if (dda->raydir[0] == 0)
-		dda->d_dist[0] = 2000;
+		dda->d_dist[0] = 20000;
 	else
 		dda->d_dist[0] = fabs(1 / dda->raydir[0]);
 	if (dda->raydir[1] == 0)
-		dda->d_dist[1] = 2000;
+		dda->d_dist[1] = 20000;
 	else
 		dda->d_dist[1] = fabs(1 / dda->raydir[1]);
 	get_first_dist(game, dda, ray);
@@ -175,13 +213,9 @@ static float	collision_dist(t_game *game, t_dda *dda, t_ray *ray)
 		dda->map[i] += dda->step[i];
 		ray->side = i;
 		if (game->map[dda->map[1]][dda->map[0]] > 0)
-		{
 			hit = 1;
-			ray->dist = dda->side_dist[i] - dda->d_dist[i];
-			if (ray->dist > dda->limit)
-				ray->dist = 0;
-		}
 	}
+	ray->dist = dda->side_dist[i] - dda->d_dist[i];
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/17 17:16:08 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/18 11:16:43 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		draw_player(game, data, FLOOR_COLOR);
 		sens = 0xff53 - key_code;
-		player->pos[0] = player->pos[0] + cosf(player->facing) * SPEED * sens;
-		player->pos[1] = player->pos[1] + sinf(player->facing) * SPEED * sens;
+		player->pos[0] = player->pos[0] + get_angle(0, player->facing) * SPEED * sens;
+		player->pos[1] = player->pos[1] + get_angle(1, player->facing) * SPEED * sens;
 		dda_collision(game);
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game);
@@ -68,9 +68,9 @@ void	safe_angle_add(float *angle, float mod)
 {
 	*angle += mod;
 	if (*angle < 0)
-		*angle += 2 * M_PI;
-	else if (*angle >= 2 * M_PI)
-		*angle -= 2 * M_PI;
+		*angle += 360;
+	else if (*angle >= 360)
+		*angle -= 360;
 }
 
 void	draw_player(t_game *game, t_data *data, unsigned int color)
