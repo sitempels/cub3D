@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/16 15:39:21 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/19 18:31:13 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int	init_game(t_game *game, int rows)
 	game->map = malloc(sizeof(int *) * (rows));
 	if (!game->map)
 		return (1);
-	game->max_x = max_len;
-	game->max_y = rows;
 	game->screen_width = WIDTH;
 	game->screen_height = HEIGHT;
 	game->minimap = 1;
@@ -46,8 +44,8 @@ void	pad_map_row(t_game *game, int y)
 void	init_player(t_game *game, int y, int x, double facing)
 {
 	game->player->facing = facing;
-	game->player->pos[0] = (y + 0.5);
-	game->player->pos[1] = (x + 0.5);
+	game->player->pos[0] = (x + 0.5);
+	game->player->pos[1] = (y + 0.5);
 	game->map[y][x] = FLOOR;
 }
 
