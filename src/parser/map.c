@@ -18,6 +18,10 @@ int	init_game(t_game *game, int rows)
 	game->map = malloc(sizeof(int *) * (rows));
 	if (!game->map)
 		return (1);
+	game->max_x = max_len;
+	game->max_y = rows;
+	game->screen_width = WIDTH;
+	game->screen_height = HEIGHT;
 	game->minimap = 1;
 	game->fov = FOV;
 	game->player = malloc(sizeof(t_player));

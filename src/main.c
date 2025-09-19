@@ -32,7 +32,11 @@ int	main(int ac, char **av)
 	if (parse_file(fd, &game) == 1)
 		return (close(fd), cleanup_game(&game), 1);
 	close(fd);
-	//display_handler(&game);
+	/*---INIITALIZER TO MOVE-------*/
+	game.minimap = 1;
+	game.fov_show = 0;
+	/*-----------------------------*/
+	display_handler(&game);
 	cleanup_game(&game);
 	return (0);
 }

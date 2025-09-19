@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/19 16:10:22 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/19 17:12:12 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,16 @@
 # define CELL_TYPE "01NSEW "
 # define SPACE " "
 # define FOV 66
-# define NORTH (M_PI_2)
-# define SOUTH (3 * M_PI_2)
 # define EAST 0
-# define WEST (M_PI)
-
+# define SOUTH 90
+# define WEST 180
+# define NORTH 270
+# define WIDTH 1080
+# define HEIGHT 912
+# define COLL_DIST 0.5
+# define SOIL_COLOR 0xffffffff
+# define SKY_COLOR 0x00000000
+# define MINI_SIZE 16
 
 /*_______________________________STRUCT_______________________________________*/
 
@@ -43,8 +48,13 @@ typedef struct		s_game
 	int				**map;
 	int				max_x;
 	int				max_y;
+	int				screen_width;
+	int				screen_height;
 	int				minimap;
-	double			fov;
+	int				mini_width;
+	int				mini_height;
+	int				fov;
+	int				fov_show;
 	struct s_player	*player;
 	struct s_data	*data;
 	struct s_config	*config;
@@ -68,8 +78,8 @@ typedef	struct		s_texture
 
 typedef	struct		s_player
 {
-	double 			facing;
-	double			pos[2];
+	float 			facing;
+	float			pos[2];
 }					t_player;
 
 /*_______________________________ENUM_________________________________________*/
@@ -120,12 +130,15 @@ int			close_all(t_game *game, t_data *data, int status);
 int			key_handler(int keycode, t_game *game);
 int			display_handler(t_game *game);
 int			game_loop(t_game *game);
-void		img_put(t_data *data, float x, float y, unsigned int color);
+void		img_put(t_data *data, int coord[2], int size_mod, unsigned int color);
 void		px_put(t_data *data, int x, int y, unsigned int color);
-void		safe_angle_add(double *angle, double mod);
+void		safe_angle_add(float *angle, float mod);
 void		draw_player(t_game *game, t_data *data, unsigned int color);
 void		draw_minimap(t_game *game, t_data *data);
-double		dda_operation(t_game *game, double facing);
+float		dda_operation(t_game *game, float facing);
+float		dda_collision(t_game *game);
+void		refresh_screen(t_game *game);
+double		get_angle(int type, int facing);
 /*________________UTILS__*/
 void		print_map(int **matrix, int height, int width);
 void		print_int_arr(int *arr, int len);

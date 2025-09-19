@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/11 13:36:53 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/19 17:07:50 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,12 @@ int	key_handler(int keycode, t_game *game)
 {
 	if (keycode == ESC_KEY)
 		return (close_all(game, game->data, 0));
-	if (keycode == UP_KEY)
-		return (move_player(game, game->data, UP_KEY));
-	if (keycode == DOWN_KEY)
-		return (move_player(game, game->data, DOWN_KEY));
-	if (keycode == LEFT_KEY)
-		return (move_player(game, game->data, LEFT_KEY));
-	if (keycode == RIGHT_KEY)
-		return (move_player(game, game->data, RIGHT_KEY));
+	if (LEFT_KEY <= keycode && keycode <= DOWN_KEY )
+		return (move_player(game, game->data, keycode));
+	if (keycode == 0x2c)
+		game->minimap = (game->minimap + 1) % 2;
+	if (keycode == 0x66)
+		game->fov_show = (game->fov_show + 1) % 2;
 	return (0);
 }
 
@@ -48,12 +46,14 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	player = game->player;
 	if (key_code == UP_KEY || key_code == DOWN_KEY)
 	{
-		int	speed;
+		int		sens;
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
-		draw_player(game, data, FLOOR_COLOR);
-		speed = (SPEED * SPEED_RATIO * (key_code - 0xff53));
-		player->pos[0] = player->pos[0] + sinf(player->facing) * speed;
-		player->pos[1] = player->pos[1] + cosf(player->facing) * speed;
+		if (game->minimap)
+			draw_player(game, data, FLOOR_COLOR);
+		sens = 0xff53 - key_code;
+		game->player->pos[0] += get_angle(0, player->facing) * SPEED * sens;
+		game->player->pos[1] += get_angle(1, player->facing) * SPEED * sens;
+		dda_collision(game);
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game);
 	}
@@ -61,7 +61,7 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	{
 		double	turn;
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
-		turn = TURN_SPEED * -1 * (key_code - 0xff52);
+		turn = TURN_SPEED * (key_code - 0xff52);
 		safe_angle_add(&player->facing, turn);
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game);
@@ -69,13 +69,13 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	return (0);
 }
 
-void	safe_angle_add(double *angle, double mod)
+void	safe_angle_add(float *angle, float mod)
 {
 	*angle += mod;
 	if (*angle < 0)
-		*angle += 2 * M_PI;
-	else if (*angle >= 2 * M_PI)
-		*angle -= 2 * M_PI;
+		*angle += 360;
+	else if (*angle >= 360)
+		*angle -= 360;
 }
 
 void	draw_player(t_game *game, t_data *data, unsigned int color)
@@ -85,15 +85,15 @@ void	draw_player(t_game *game, t_data *data, unsigned int color)
 	int	x;
 	int	y;
 
-	x = (game->player->pos[0] * (SIZE_MOD));
-	y = (game->player->pos[1] * (SIZE_MOD));
-	x = x - SIZE_MOD / 4;
-	y = y - SIZE_MOD / 4;
+	x = game->player->pos[0] * MINI_SIZE;
+	y = game->player->pos[1] * MINI_SIZE;
+	x = x - MINI_SIZE / 4;
+	y = y - MINI_SIZE / 4;
 	i = 0;
-	while (i < SIZE_MOD / 2)
+	while (i < MINI_SIZE / 2)
 	{
 		j = 0;
-		while (j < SIZE_MOD / 2)
+		while (j < MINI_SIZE / 2)
 		{
 			px_put(data, x + j, y + i, color);
 			j++;
@@ -105,23 +105,22 @@ void	draw_player(t_game *game, t_data *data, unsigned int color)
 
 void	draw_minimap(t_game *game, t_data *data)
 {
-	int	i;
-	int	j;
+	int	i[2];
 
-	i = 0;
-	while (i < game->max_x)
+	i[1] = 0;
+	while (i[1] < game->max_y)
 	{
-		j = 0;
-		while (j < game->max_y)
+		i[0] = 0;
+		while (i[0] < game->max_x)
 		{
-			if (game->map[i][j] == FLOOR)
-				img_put(data, i, j, FLOOR_COLOR);
-			if (game->map[i][j] == WALL)
-				img_put(data, i, j, WALL_COLOR);
-			j++;
+			if (game->map[i[1]][i[0]] == FLOOR)
+				img_put(data, i, MINI_SIZE, FLOOR_COLOR);
+			if (game->map[i[1]][i[0]] == WALL)
+				img_put(data, i, MINI_SIZE, WALL_COLOR);
+			i[0]++;
 		}
-		i++;
+		i[1]++;
 	}
-	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	draw_player(game, data, PLAYER_COLOR);
 	return ;
 }

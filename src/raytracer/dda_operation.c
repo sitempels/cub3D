@@ -5,80 +5,188 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/09 16:24:02 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/11 12:26:23 by stempels         ###   ########.fr       */
+/*   Created: 2025/09/18 15:05:50 by stempels          #+#    #+#             */
+/*   Updated: 2025/09/19 17:46:48 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-static double	dda_init(t_game *game, t_dda *dda, int *side);
-static double	get_first_dist(t_game *game, t_dda *dda, int *side);
-static double	collision_dist(t_game *game, t_dda *dda, int *side);
-static void	draw_line(t_game *game, t_dda *dda, double dist, int side);
+static float	dda_init(t_game *game, t_dda *dda, t_ray *ray);
+static float	get_first_dist(t_game *game, t_dda *dda, t_ray *ray);
+static float	collision_dist(t_game *game, t_dda *dda, t_ray *ray);
+static void		draw_line(t_game *game, t_dda *dda, t_ray *ray);
+static void		draw_wall(t_game *game, t_dda *dda, t_ray *ray, int x);
 
-double	dda_operation(t_game *game, double facing)
+double	get_angle(int type, int facing)
 {
-	int		side;
-	double	wall_dist;
-	double	plane_x_size;
-	double	plane_y_size;
+	double	res;
+
+	if (type == 0)
+	{
+		if (facing == NORTH || facing == SOUTH)
+			res = 0;
+		else if (facing == EAST)
+			res = 1;
+		else if (facing == WEST)
+			res = -1;
+		else
+			res = cosf(facing * M_PI / 180);
+	}
+	if (type == 1)
+	{
+		if (facing == EAST || facing == WEST)
+			res = 0;
+		else if (facing == NORTH)
+			res = -1;
+		else if (facing == SOUTH)
+			res = 1;
+		else
+			res = sinf(facing * M_PI / 180);
+	}
+	return (res);
+}
+
+float	dda_operation(t_game *game, float facing)
+ {
+	int		x;
+	float	camera_x;
+	float	plane[2];
 	t_dda	dda;
-//	double	time;
-//	double	old_time;
+	t_ray	ray;
 
-	if (0 < facing && facing < M_PI)
-		dda.dir[0] = -1;
-	else if (facing == 0 || facing == M_PI)
-		dda.dir[0] = 0;
-	else
-		dda.dir[0] = 1;
-	if (M_PI / 2 < facing && facing < 3 * M_PI / 2)
-		dda.dir[1] = -1;
-	else if (facing == M_PI / 2 || facing == 3 * M_PI / 2)
-		dda.dir[1] = 0;
-	else
-		dda.dir[1] = 1;
-
-	plane_x_size = 1;
-	plane_y_size = (game->fov * 180) / (M_PI * 100);
-	dda.plane[0] = plane_x_size * cosf(facing) - plane_y_size * sinf(facing);
-	dda.plane[1] = plane_x_size * sinf(facing) + plane_y_size * cosf(facing);
-	//time = 0;
-	//old_time = 0;
-	wall_dist = dda_init(game, &dda, &side);
+	dda.limit = 500;
+	dda.dir[0] = get_angle(0, facing);
+	dda.dir[1] = get_angle(1, facing);
+	plane[0] = - tan(game->fov * M_PI / 360) * get_angle(1, facing);
+	plane[1] = tan(game->fov * M_PI / 360) * get_angle(0, facing);
+	ray.color = RAY_COLOR;
+	x = 0;
+	while (x <= game->screen_width)
+ 	{
+		camera_x = (2 * x / (float)game->screen_width) - 1;
+		dda.raydir[0] = dda.dir[0] + plane[0] * camera_x;
+		dda.raydir[1] = dda.dir[1] + plane[1] * camera_x;
+		dda_init(game, &dda, &ray);
+		if (game->minimap && game->fov_show)
+			draw_line(game, &dda, &ray);
+		draw_wall(game, &dda, &ray, x);
+		x++;
+	}
 	return (0);
 }
 
-static double	dda_init(t_game *game, t_dda *dda, int *side)
+static void	draw_wall(t_game *game, t_dda *dda, t_ray *ray, int x)
 {
-	int		x;
-	double	wall_dist;
+	int	wall_height;
+	int	wall_down;
+	int	wall_up;
+	int	i;
+	unsigned int	color;
 
-	x = 0;
-	while (x < game->max_x)
+	wall_height = (int)(game->screen_height / ray->dist);
+	wall_down = -wall_height / 2 + game->screen_height / 2;
+	if (wall_down < 0)
+		wall_down = 0;
+	wall_up = wall_height / 2 + game->screen_height / 2;
+	if (wall_up < 0)
+		wall_up = game->screen_height - 1;
+	if (ray->side == 0 )
 	{
-		dda->camera_x = (2 * x) / ((double)game->max_x - 1);
-		dda->raydir[0] = dda->dir[0] + dda->plane[0] * dda->camera_x;
-		dda->raydir[1] = dda->dir[1] + dda->plane[1] * dda->camera_x;
-		dda->map[0] = (int)game->player->pos[0];
-		if (dda->raydir[0] == 0)
-			dda->d_dist[0] = 2000;
-		else
-			dda->d_dist[0] = fabs(1 / dda->raydir[0]);
-		dda->map[1] = (int)game->player->pos[1];
-		if (dda->raydir[1] == 0)
-			dda->d_dist[1] = 2000;
-		else
-			dda->d_dist[1] = fabs(1 / dda->raydir[1]);
-		wall_dist = get_first_dist(game, dda, side);
-		draw_line(game, dda, wall_dist, *side);
-		x++;
+		color = 0xff000066;
+		if (dda->raydir[ray->side] < 0)
+			color = 0xff000045;
 	}
-	return (wall_dist);
+	if (ray->side == 1 )
+	{
+		color = 0xff006600;
+		if (dda->raydir[ray->side] < 0)
+			color = 0xff004500;
+	}
+	i = wall_down;
+	while (i <= wall_up)
+	{
+		if (game->minimap)
+		{
+			if (x < game->mini_width)
+				if (i < game->mini_height)
+					i = game->mini_height + 4;
+		}
+		px_put(game->data, x, i, color);
+		i++;
+	}
+	return ;
 }
 
-static double	get_first_dist(t_game *game, t_dda * dda, int *side)
+void	refresh_screen(t_game *game)
+{
+	int	i;
+	int	j;
+	unsigned int	color;
+
+	i = 0;
+	while (i <= game->screen_width)
+	{
+		j = 0;
+		while (j <= game->screen_height)
+		{
+			if (j < game->screen_height / 2)
+				color = SKY_COLOR;
+			if (j >= game->screen_height / 2)
+				color = SOIL_COLOR;
+			px_put(game->data, i, j, color);
+			j++;
+		}
+		i++;
+	}
+	return ;
+}
+
+float	dda_collision(t_game *game)
+{
+	float	x;
+	t_dda	dda;
+	t_ray	ray;
+
+	dda.limit = COLL_DIST;
+	ray.color = 0x0f66ffff;
+	x = game->player->facing;
+	while (1)
+	{
+		dda.raydir[0] = get_angle(0, x);
+		dda.raydir[1] = get_angle(1, x);
+		dda_init(game, &dda, &ray);
+		if (ray.dist <= dda.limit)
+			game->player->pos[ray.side] += -dda.raydir[ray.side] * ((COLL_DIST - ray.dist));
+		else if (dda.raydir[ray.side] == 1 && ray.dist == 1 && COLL_DIST < 1)
+			game->player->pos[ray.side] += -dda.raydir[ray.side] * COLL_DIST;
+		draw_line(game, &dda, &ray);
+//		else if (ray.dist > dda.limit && ray.dist == dda.d_dist[ray.side])
+//			game->player->pos[ray.side] += -dda.raydir[ray.side] * (ray.dist - COLL_DIST);
+		safe_angle_add(&x, 1);
+		if (x == game->player->facing)
+			break ;
+	}
+	return (0);
+}
+
+static float	dda_init(t_game *game, t_dda *dda, t_ray *ray)
+{
+	dda->map[0] = (int)game->player->pos[0];
+	dda->map[1] = (int)game->player->pos[1];
+	if (dda->raydir[0] == 0)
+		dda->d_dist[0] = 900000000;
+	else
+		dda->d_dist[0] = fabs(1 / dda->raydir[0]);
+	if (dda->raydir[1] == 0)
+		dda->d_dist[1] = 900000000;
+	else
+		dda->d_dist[1] = fabs(1 / dda->raydir[1]);
+	get_first_dist(game, dda, ray);
+	return (0);
+}
+
+static float	get_first_dist(t_game *game, t_dda * dda, t_ray *ray)
 {
 	int		i;
 
@@ -94,51 +202,51 @@ static double	get_first_dist(t_game *game, t_dda * dda, int *side)
 		{
 			dda->step[i] = 1;
 			dda->side_dist[i] = (dda->map[i] + 1.0 - game->player->pos[i]) * dda->d_dist[i];
+//			dda->side_dist[i] = (game->player->pos[i] - dda->map[i]) * dda->d_dist[i];
 		}
 		i++;
 	}
-	return (collision_dist(game, dda, side));
+	return (collision_dist(game, dda, ray));
 }
 
-static double	collision_dist(t_game *game, t_dda *dda, int *side)
+static float	collision_dist(t_game *game, t_dda *dda, t_ray *ray)
 {
 	int		i;
-	int		hit;
 
-	hit = 0;
-	while (hit == 0 && (game->max_x > dda->map[0] && game->max_y > dda->map[1]))
+	while (1)
 	{
-		if (dda->side_dist[0] >= dda->side_dist[1])
-			i = 1;
-		else
+		if (dda->side_dist[0] < dda->side_dist[1])
 			i = 0;
+		else
+			i = 1;
 		dda->side_dist[i] += dda->d_dist[i];
 		dda->map[i] += dda->step[i];
-		*side = i;
-		if (game->map[dda->map[0]][dda->map[1]] > 0)
-			hit = 1;
+		ray->side = i;
+		if (game->map[dda->map[1]][dda->map[0]] == 1)
+			break ;
 	}
-	return (dda->side_dist[i] - dda->d_dist[i]);
+	ray->dist = dda->side_dist[i] - dda->d_dist[i];
+	return (0);
 }
 
-static void	draw_line(t_game *game, t_dda *dda, double dist, int side)
+static void	draw_line(t_game *game, t_dda *dda, t_ray *ray)
 {
-	int	x;
-	int	y;
-	double	dist_x;
-	double	dist_y;
+	float	x;
+	float	y;
+	float	dist_x;
+	float	dist_y;
 
-	x = game->player->pos[0] * SIZE_MOD;
-	y = game->player->pos[1] * SIZE_MOD;
+	x = game->player->pos[0] * MINI_SIZE;
+	y = game->player->pos[1] * MINI_SIZE;
 	dist_x = 0;
 	dist_y = 0;
-	while ((side == 0 && dist_x < dist * SIZE_MOD) || (side == 1 && dist_y < dist * SIZE_MOD))
+	while ((ray->side == 0 && dist_x < ray->dist * MINI_SIZE)
+		|| (ray->side == 1 && dist_y < ray->dist * MINI_SIZE))
 	{
-		px_put(game->data, x - (dist_x * dda->step[0]), y - (dist_y * dda->step[1]), 0x74a33e);
-		if (dda->raydir[0] != 0 && (dist_x < dist_y || dda->raydir[1] == 0))
+		px_put(game->data, x + (dist_x * dda->raydir[0]), y + (dist_y * dda->raydir[1]), ray->color);
+		if (dist_x < dist_y && (dda->raydir[0] != 0))
 			dist_x += dda->d_dist[0];
 		else
 			dist_y += dda->d_dist[1];
 	}
-	mlx_put_image_to_window(game->data->mlx, game->data->win, game->data->img, 0, 0);
 }
