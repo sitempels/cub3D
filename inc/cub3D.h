@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/19 16:20:18 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/19 17:12:12 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void		safe_angle_add(float *angle, float mod);
 void		draw_player(t_game *game, t_data *data, unsigned int color);
 void		draw_minimap(t_game *game, t_data *data);
 float		dda_operation(t_game *game, float facing);
-float		dda_collision(t_game *game, double move[2]);
+float		dda_collision(t_game *game);
 void		refresh_screen(t_game *game);
 double		get_angle(int type, int facing);
 /*________________UTILS__*/

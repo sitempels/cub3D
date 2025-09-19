@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:05:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/19 16:38:19 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/19 17:46:48 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void	refresh_screen(t_game *game)
 	return ;
 }
 
-float	dda_collision(t_game *game, double move[2])
+float	dda_collision(t_game *game)
 {
 	float	x;
 	t_dda	dda;
@@ -157,13 +157,10 @@ float	dda_collision(t_game *game, double move[2])
 		dda.raydir[1] = get_angle(1, x);
 		dda_init(game, &dda, &ray);
 		if (ray.dist <= dda.limit)
-		{
-			printf("move value pre	x: %f	y: %f\n", move[0], move[1]);
-		//	move[ray.side] += -dda.raydir[ray.side] * (2 * COLL_DIST - ray.dist);
-		//	move[1] += COLL_DIST - (-dda.raydir[1] * ray.dist);
-			printf("move value	x: %f	y: %f\nraydir value	x: %f	y: %f\nraydist: %f\n", move[0], move[1], dda.raydir[0], dda.raydir[1], ray.dist);
-			draw_line(game, &dda, &ray);
-		}
+			game->player->pos[ray.side] += -dda.raydir[ray.side] * ((COLL_DIST - ray.dist));
+		else if (dda.raydir[ray.side] == 1 && ray.dist == 1 && COLL_DIST < 1)
+			game->player->pos[ray.side] += -dda.raydir[ray.side] * COLL_DIST;
+		draw_line(game, &dda, &ray);
 //		else if (ray.dist > dda.limit && ray.dist == dda.d_dist[ray.side])
 //			game->player->pos[ray.side] += -dda.raydir[ray.side] * (ray.dist - COLL_DIST);
 		safe_angle_add(&x, 1);

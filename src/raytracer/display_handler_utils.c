@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/19 16:29:47 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/19 17:07:50 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,13 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	if (key_code == UP_KEY || key_code == DOWN_KEY)
 	{
 		int		sens;
-		double	move[2];
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		if (game->minimap)
 			draw_player(game, data, FLOOR_COLOR);
 		sens = 0xff53 - key_code;
-		move[0] = get_angle(0, player->facing) * SPEED * sens;
-		move[1] = get_angle(1, player->facing) * SPEED * sens;
-		dda_collision(game, move);
-		game->player->pos[0] += move[0];
-		game->player->pos[1] += move[1];
+		game->player->pos[0] += get_angle(0, player->facing) * SPEED * sens;
+		game->player->pos[1] += get_angle(1, player->facing) * SPEED * sens;
+		dda_collision(game);
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game);
 	}
