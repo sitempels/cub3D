@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:05:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/19 17:46:48 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/19 18:46:12 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,8 @@ float	dda_collision(t_game *game)
 		dda_init(game, &dda, &ray);
 		if (ray.dist <= dda.limit)
 			game->player->pos[ray.side] += -dda.raydir[ray.side] * ((COLL_DIST - ray.dist));
-		else if (dda.raydir[ray.side] == 1 && ray.dist == 1 && COLL_DIST < 1)
-			game->player->pos[ray.side] += -dda.raydir[ray.side] * COLL_DIST;
+		else if (dda.raydir[ray.side] == 1 && ray.dist == dda.d_dist[ray.side] && COLL_DIST < 1)
+			game->player->pos[ray.side] += -COLL_DIST;
 		draw_line(game, &dda, &ray);
 //		else if (ray.dist > dda.limit && ray.dist == dda.d_dist[ray.side])
 //			game->player->pos[ray.side] += -dda.raydir[ray.side] * (ray.dist - COLL_DIST);

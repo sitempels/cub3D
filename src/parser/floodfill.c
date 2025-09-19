@@ -31,7 +31,7 @@ int	check_map_closure(t_game *game)
 		ft_printf_fd(STDERR_FILENO, "Error : Map is not closed\n");
 		return (1);
 	}
-	if (floodfill(copy, (int) (game->player->pos[0] - 0.5), (int) (game->player->pos[1] - 0.5), game) != 0)
+	if (floodfill(copy, (int) (game->player->pos[1] - 0.5), (int) (game->player->pos[0] - 0.5), game) != 0)
 	{
 		ft_printf_fd(STDERR_FILENO, "Error : Map is not closed\n");
 		return (1);
