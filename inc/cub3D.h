@@ -57,23 +57,31 @@ typedef struct		s_game
 	int				fov_show;
 	struct s_player	*player;
 	struct s_data	*data;
+	struct s_config	*config;
 }					t_game;
 
 typedef	struct		s_config
 {
-	char			*no_texture;
-	char			*so_texture;
-	char			*we_texture;
-	char			*ea_texture;
-	int 			*floor_color;
-	int 			*ceiling_color;
+	char			*first_map;
+	char			*textures_path[4];
+	int 			floor_rgb[3];
+	int 			ceiling_rgb[3];
+	bool			map_end;
 }					t_config;
+
+typedef	struct		s_texture
+{
+	void			*wall;
+	int				height;
+	int				width;
+}					t_texture;
 
 typedef	struct		s_player
 {
 	float 			facing;
 	float			pos[2];
 }					t_player;
+
 /*_______________________________ENUM_________________________________________*/
 typedef enum e_type
 {
@@ -84,6 +92,7 @@ typedef enum e_type
 	E,
 	S,
 	W,
+	FILLED
 }			t_type;
 
 typedef enum e_config_type
@@ -101,12 +110,19 @@ typedef enum e_config_type
 char		*ft_strnstr_end(const char *haystack, const char *needle, size_t len);
 int			parse_file(int fd, t_game *game);
 int			process_map_recursive(int fd, t_game *game, int *rows, int *max_len);
-int			check_line(char *line);
-int			init_game(t_game *game, int rows, int max_len);
+int			check_line(char *line, t_config *config);
+int			ft_isblank(char c);
+int			check_map_closure(t_game *game);
+int			floodfill(int **map, int pos_y, int pos_x, t_game *game);
+int			floodfill_ext(int **map, int y, int x, t_game *game);
+int			init_game(t_game *game, int rows);
 int			init_map(t_game *game, char *line, int curr_row, int line_lenght);
 int			ft_strcmp(const char *s1, const char *s2);
+bool		is_texture(int type);
 bool		valid_file_extension(char *filename, char *ext, char del);
+bool		detect_content(char *line, char *first_char);
 void		init_player(t_game *game, int y, int x, double facing);
+void		init_config(t_config *config);
 
 /*________________PLAYER_*/
 /*________________RAYCAST*/
@@ -128,5 +144,6 @@ void		print_map(int **matrix, int height, int width);
 void		print_int_arr(int *arr, int len);
 void		cleanup_game(t_game *game);
 void		gnl_cleanup(char *line);
+void		free_config(t_config *config);
 
 #endif
