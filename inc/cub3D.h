@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/16 20:26:19 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/19 16:10:22 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,20 +53,25 @@ typedef struct		s_game
 typedef	struct		s_config
 {
 	char			*first_map;
-	char			*no_texture;
-	char			*so_texture;
-	char			*we_texture;
-	char			*ea_texture;
-	int 			floor_color[3];
-	int 			ceiling_color[3];
+	char			*textures_path[4];
+	int 			floor_rgb[3];
+	int 			ceiling_rgb[3];
 	bool			map_end;
 }					t_config;
+
+typedef	struct		s_texture
+{
+	void			*wall;
+	int				height;
+	int				width;
+}					t_texture;
 
 typedef	struct		s_player
 {
 	double 			facing;
 	double			pos[2];
 }					t_player;
+
 /*_______________________________ENUM_________________________________________*/
 typedef enum e_type
 {

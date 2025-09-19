@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/16 02:03:59 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/19 16:04:43 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,26 +84,6 @@ void	free_config(t_config *config)
 	{
 		free(config->first_map);
 		config->first_map = NULL;
-	}
-	if (config->no_texture)
-	{
-		free(config->no_texture);
-		config->no_texture = NULL;
-	}
-	if (config->so_texture)
-	{
-		free(config->so_texture);
-		config->so_texture = NULL;
-	}
-	if (config->we_texture)
-	{
-		free(config->we_texture);
-		config->we_texture = NULL;
-	}
-	if (config->ea_texture)
-	{
-		free(config->ea_texture);
-		config->ea_texture = NULL;
 	}
 	free(config);
 	config = NULL;

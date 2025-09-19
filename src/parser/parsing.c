@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/16 19:22:02 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/19 16:10:44 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,11 @@ int	check_rgb(char *line, int *i, t_config *config, int type)
 		if (!ft_isdigit(*start))
 			return (ft_printf_fd(STDERR_FILENO, "Error: Invalid RGB format\n"), 1);
 		if (type == C)
-			config->ceiling_color[count] = atoi(start);
+			config->ceiling_rgb[count] = atoi(start);
 		else
-			config->floor_color[count] = atoi(start);
-		if ((config->ceiling_color[count] < 0 || config->ceiling_color[count] > 255) ||
-				(config->floor_color[count] < 0 || config->floor_color[count] > 255))
+			config->floor_rgb[count] = atoi(start);
+		if ((config->ceiling_rgb[count] < 0 || config->ceiling_rgb[count] > 255) ||
+				(config->floor_rgb[count] < 0 || config->floor_rgb[count] > 255))
 				return (ft_printf_fd(STDERR_FILENO, "Error: RGB value out of range (0-255)\n"), 1);
 		while (*start && ft_isdigit(*start))
 			start++;
@@ -175,13 +175,13 @@ int	parse_config(char *line, int *arr, t_config *config)
 			ft_strlcpy(path, start, len);
 			path[len] = '\0';
 			if (type == NO)
-				config->no_texture = path;
+				config->textures_path[0] = path;
 			else if (type == SO)
-				config->so_texture = path;
+				config->textures_path[1] = path;
 			else if (type == WE)
-				config->we_texture = path;
+				config->textures_path[2] = path;
 			else if (type == EA)
-				config->ea_texture = path;
+				config->textures_path[3] = path;
 		}
 		else
 		{
@@ -256,15 +256,15 @@ void init_config(t_config *config)
 	if (config)
 	{
 		config->first_map = NULL;
-		config->no_texture = NULL;
+/* 		config->no_texture = NULL;
 		config->so_texture = NULL;
 		config->we_texture = NULL;
-		config->ea_texture = NULL;
+		config->ea_texture = NULL; */
 		i = 0;
 		while (i < 3)
 		{
-			config->floor_color[i] = 0;
-			config->ceiling_color[i] = 0;
+			config->floor_rgb[i] = 0;
+			config->ceiling_rgb[i] = 0;
 			i++;
 		}
 		config->map_end = false;
