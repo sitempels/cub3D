@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:01 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/19 17:15:10 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/16 02:03:48 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(int ac, char **av)
 	if (fd < 0)
 		return (perror("open"), 1);
 	if (parse_file(fd, &game) == 1)
-		return (close(fd), 1);
+		return (close(fd), cleanup_game(&game), 1);
 	close(fd);
 	/*---INIITALIZER TO MOVE-------*/
 	game.minimap = 1;

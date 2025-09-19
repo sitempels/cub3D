@@ -6,11 +6,12 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/12 01:14:57 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/19 16:04:43 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/cub3D.h"
+#include "cub3D.h"
+#include "get_next_line_bonus.h"
 
 void	print_int_arr(int *arr, int len)
 {
@@ -44,6 +45,12 @@ void	print_map(int **matrix, int height, int width)
 	printf("----------------------------------\n");
 }
 
+void	gnl_cleanup(char *line)
+{
+	free(line);
+	get_next_line(-1, NULL);
+}
+
 void	cleanup_game(t_game *game)
 {
 	int	i;
@@ -53,7 +60,7 @@ void	cleanup_game(t_game *game)
 	if (game->map)
 	{
 		i = 0;
-		while (i < game->max_x)
+		while (i < game->max_y)
 		{
 			if (game->map[i])
 				free(game->map[i]);
@@ -67,4 +74,17 @@ void	cleanup_game(t_game *game)
 		free(game->player);
 		game->player = NULL;
 	}
+	if (game->config)
+		free_config(game->config);
+}
+
+void	free_config(t_config *config)
+{
+	if (config->first_map)
+	{
+		free(config->first_map);
+		config->first_map = NULL;
+	}
+	free(config);
+	config = NULL;
 }
