@@ -144,6 +144,7 @@ void	refresh_screen(t_game *game)
 
 float	dda_collision(t_game *game, float move[2])
 {
+	float	test;
 	float	x;
 	float	camera;
 	t_dda	dda;
@@ -153,15 +154,16 @@ float	dda_collision(t_game *game, float move[2])
 	dda.dir[1] = get_angle(1, game->player->facing);
 	dda.limit = COLL_DIST;
 	ray.color = 0x0f66ffff;
-	x = -90;
-	while (x <= 90)
+	x = 0;
+	while (x <= 180)
 	{
-		camera = (2 * x / 90) - 1;
-		dda.raydir[0] = dda.dir[0] + get_angle(0, camera * M_PI / 180); 
-		dda.raydir[1] = dda.dir[1] + get_angle(1, camera * M_PI / 180); 
+		camera = (2 * x / 180) - 1;
+		dda.raydir[0] = dda.dir[0] + get_angle(0, x) * camera; 
+		dda.raydir[1] = dda.dir[1] + get_angle(1, x) * camera; 
 		dda_init(game, &dda, &ray);
-		if (ray.dist - COLL_DIST <= move[ray.side] * dda.step[ray.side])
-			move[ray.side] = (ray.dist - COLL_DIST) * dda.step[ray.side];
+		test = (ray.dist - COLL_DIST);
+		if (test <= move[ray.side] * dda.step[ray.side])
+			move[ray.side] = test * dda.raydir[ray.side];
 		draw_line(game, &dda, &ray);
 //		else if (ray.dist > dda.limit && ray.dist == dda.d_dist[ray.side])
 //			game->player->pos[ray.side] += -dda.raydir[ray.side] * (ray.dist - COLL_DIST);
