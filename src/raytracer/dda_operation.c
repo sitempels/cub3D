@@ -55,7 +55,6 @@ float	dda_operation(t_game *game, float facing)
 	t_dda	dda;
 	t_ray	ray;
 
-	dda.limit = 500;
 	dda.dir[0] = get_angle(0, facing);
 	dda.dir[1] = get_angle(1, facing);
 	plane[0] = - tan(game->fov * M_PI / 360) * get_angle(1, facing);
@@ -150,20 +149,24 @@ float	dda_collision(t_game *game, float move[2])
 	t_dda	dda;
 	t_ray	ray;
 
-	dda.dir[0] = get_angle(0, game->player->facing);
-	dda.dir[1] = get_angle(1, game->player->facing);
-	dda.limit = COLL_DIST;
+	dda.dir[0] = move[0] / SPEED;
+	dda.dir[1] = move[1] / SPEED;
 	ray.color = 0x0f66ffff;
 	x = 0;
 	while (x <= 180)
 	{
-		camera = (2 * x / 180) - 1;
+		if (x < 90)
+			camera = -1;
+		if (x == 90)
+			camera = 0;
+		if (x > 90)
+			camera = 1;
 		dda.raydir[0] = dda.dir[0] + get_angle(0, x) * camera; 
 		dda.raydir[1] = dda.dir[1] + get_angle(1, x) * camera; 
 		dda_init(game, &dda, &ray);
-		test = (ray.dist - COLL_DIST);
+		test = (ray.dist - COLL_DIST) * dda.raydir[ray.side];
 		if (test <= move[ray.side] * dda.step[ray.side])
-			move[ray.side] = test * dda.raydir[ray.side];
+			move[ray.side] = test;
 		draw_line(game, &dda, &ray);
 //		else if (ray.dist > dda.limit && ray.dist == dda.d_dist[ray.side])
 //			game->player->pos[ray.side] += -dda.raydir[ray.side] * (ray.dist - COLL_DIST);
