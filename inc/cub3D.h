@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/19 17:12:12 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/22 01:45:58 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,23 @@
 
 /*_______________________________STRUCT_______________________________________*/
 
-typedef struct		s_game
+typedef struct			s_game
 {
-	int				**map;
-	int				max_x;
-	int				max_y;
-	int				screen_width;
-	int				screen_height;
-	int				minimap;
-	int				mini_width;
-	int				mini_height;
-	int				fov;
-	int				fov_show;
-	struct s_player	*player;
-	struct s_data	*data;
-	struct s_config	*config;
-}					t_game;
+	int					**map;
+	int					max_x;
+	int					max_y;
+	int					screen_width;
+	int					screen_height;
+	int					minimap;
+	int					mini_width;
+	int					mini_height;
+	int					fov;
+	int					fov_show;
+	struct s_texture	*texture[4];	
+	struct s_player		*player;
+	struct s_data		*data;
+	struct s_config		*config;
+}						t_game;
 
 typedef	struct		s_config
 {
@@ -72,8 +73,12 @@ typedef	struct		s_config
 typedef	struct		s_texture
 {
 	void			*wall;
+	void			*addr_w;
 	int				height;
 	int				width;
+	int				bpp;
+	int				l_length;
+	int				endian;
 }					t_texture;
 
 typedef	struct		s_player

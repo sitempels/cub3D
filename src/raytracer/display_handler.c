@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/19 16:33:46 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/22 01:51:59 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,25 @@
 int	display_handler(t_game *game)
 {
 	t_data	data;
+	int		i;
 
 	game->data = &data;
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, game->screen_width, game->screen_height, "cub3D");
 	data.img = mlx_new_image(data.mlx, game->screen_width, game->screen_height);
 	data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.l_length, &data.endian); 
+	i = 0;
+	while (i < 4)
+	{
+		game->texture[i] = malloc(sizeof(t_texture));
+		if (!game->texture[i])
+			return (1);
+		game->texture[i]->wall = mlx_xpm_file_to_image(data.mlx, game->config->textures_path[i], &game->texture[i]->width, &game->texture[i]->height);
+		if (!game->texture[i]->wall)
+			return (1);
+		i++;
+	}
+	game->texture[i]->addr_w = mlx_get_data_addr(game->texture[i]->wall, &game->texture[i]->bpp, &game->texture[i]->l_length, &game->texture[i]->endian); 
 	game->mini_width = MINI_SIZE * game->max_x;
 	game->mini_height = MINI_SIZE * game->max_y;
 	mlx_hook(data.win, 2, 1L << 0, key_handler, game);
