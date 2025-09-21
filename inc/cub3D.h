@@ -60,6 +60,7 @@ typedef struct		s_game
 	int				fov;
 	int				fov_show;
 	int				show_fps;
+	long int		start_time;
 	long int		old_time;
 	long int		time;
 	double			frametime;
@@ -144,7 +145,7 @@ void		safe_angle_add(float *angle, float mod);
 void		draw_player(t_game *game, t_data *data, unsigned int color);
 void		draw_minimap(t_game *game, t_data *data);
 float		dda_operation(t_game *game, float facing);
-float		dda_collision(t_game *game);
+float		dda_collision(t_game *game, float move[2]);
 void		refresh_screen(t_game *game);
 double		get_angle(int type, int facing);
 /*________________UTILS__*/

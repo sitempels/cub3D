@@ -50,7 +50,7 @@ double	get_angle(int type, int facing)
 float	dda_operation(t_game *game, float facing)
  {
 	int		x;
-	float	camera_x;
+	float	camera;
 	float	plane[2];
 	t_dda	dda;
 	t_ray	ray;
@@ -63,10 +63,10 @@ float	dda_operation(t_game *game, float facing)
 	ray.color = RAY_COLOR;
 	x = 0;
 	while (x <= game->screen_width)
- 	{
-		camera_x = (2 * x / (float)game->screen_width) - 1;
-		dda.raydir[0] = dda.dir[0] + plane[0] * camera_x;
-		dda.raydir[1] = dda.dir[1] + plane[1] * camera_x;
+  	{
+		camera = (2 * x / (float)game->screen_width) - 1;
+		dda.raydir[0] = dda.dir[0] + plane[0] * camera;
+		dda.raydir[1] = dda.dir[1] + plane[1] * camera;
 		dda_init(game, &dda, &ray);
 		if (game->minimap && game->fov_show)
 			draw_line(game, &dda, &ray);
@@ -142,30 +142,30 @@ void	refresh_screen(t_game *game)
 	return ;
 }
 
-float	dda_collision(t_game *game)
+float	dda_collision(t_game *game, float move[2])
 {
 	float	x;
+	float	camera;
 	t_dda	dda;
 	t_ray	ray;
 
+	dda.dir[0] = get_angle(0, game->player->facing);
+	dda.dir[1] = get_angle(1, game->player->facing);
 	dda.limit = COLL_DIST;
 	ray.color = 0x0f66ffff;
-	x = game->player->facing;
-	while (1)
+	x = -90;
+	while (x <= 90)
 	{
-		dda.raydir[0] = get_angle(0, x);
-		dda.raydir[1] = get_angle(1, x);
+		camera = (2 * x / 90) - 1;
+		dda.raydir[0] = dda.dir[0] + get_angle(0, camera * M_PI / 180); 
+		dda.raydir[1] = dda.dir[1] + get_angle(1, camera * M_PI / 180); 
 		dda_init(game, &dda, &ray);
-		if (ray.dist <= dda.limit)
-			game->player->pos[ray.side] += -dda.raydir[ray.side] * ((COLL_DIST - ray.dist));
-		else if (dda.raydir[ray.side] == 1 && ray.dist == dda.d_dist[ray.side] && COLL_DIST < 1)
-			game->player->pos[ray.side] += -COLL_DIST;
+		if (ray.dist - COLL_DIST <= move[ray.side] * dda.step[ray.side])
+			move[ray.side] = (ray.dist - COLL_DIST) * dda.step[ray.side];
 		draw_line(game, &dda, &ray);
 //		else if (ray.dist > dda.limit && ray.dist == dda.d_dist[ray.side])
 //			game->player->pos[ray.side] += -dda.raydir[ray.side] * (ray.dist - COLL_DIST);
-		safe_angle_add(&x, 1);
-		if (x == game->player->facing)
-			break ;
+		x++;
 	}
 	return (0);
 }

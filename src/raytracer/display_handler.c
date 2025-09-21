@@ -14,9 +14,12 @@
 
 int	display_handler(t_game *game)
 {
+	struct timeval	tmp;
 	t_data	data;
 
 	game->data = &data;
+	gettimeofday(&tmp, NULL);
+	game->start_time = tmp.tv_sec * 100000 + tmp.tv_usec;
 	game->old_time = 0;
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, game->screen_width, game->screen_height, "cub3D");
@@ -27,6 +30,7 @@ int	display_handler(t_game *game)
 	mlx_hook(data.win, 2, 1L << 0, key_handler, game);
 	mlx_hook(data.win, 17, 0, close_all, &data);
 	mlx_loop_hook(data.mlx, game_loop, game);
+	get_fps(game);
 	mlx_loop(data.mlx);
 	return (0);
 }
@@ -37,7 +41,6 @@ int	game_loop(t_game *game)
 
 	data = game->data;
 	refresh_screen(game);
-	get_fps(game);
 	dda_operation(game, game->player->facing);
 	if (game->minimap == 1)
 		draw_minimap(game, data);
@@ -46,7 +49,7 @@ int	game_loop(t_game *game)
 	if (game->show_fps == 1)
 	{
 		mlx_string_put(data->mlx, data->win, game->screen_width - 128, 32, 0xffffff, "FPS");
-		mlx_string_put(data->mlx, data->win, game->screen_width - 64, 32, 0xffffff, ft_itoa((int)(game->frametime * 1000)));
+		mlx_string_put(data->mlx, data->win, game->screen_width - 64, 32, 0xffffff, ft_itoa((int)(game->frametime * 100)));
 	}
 	else
 		mlx_string_put(data->mlx, data->win, game->screen_width - 128, 32, 0xffffff, " ");
@@ -59,8 +62,8 @@ void	get_fps(t_game *game)
 	struct timeval	tmp;
 
 	gettimeofday(&tmp, NULL);
-	game->time = (tmp.tv_sec * 100000 + tmp.tv_usec);
-	game->frametime = ((double)game->time - (double)game->old_time) / 100000.0;
+	game->time = (tmp.tv_sec * 100000 + tmp.tv_usec) - game->start_time;
+	game->frametime = (double)(game->time - game->old_time) / 100000;
 	game->old_time = game->time;
 }
 

@@ -41,20 +41,23 @@ int	key_handler(int keycode, t_game *game)
 
 static int	move_player(t_game *game, t_data *data, int key_code)
 {
+	float		move[2];
 	t_player	*player;
 
 	player = game->player;
 	get_fps(game);
 	if (key_code == UP_KEY || key_code == DOWN_KEY)
-	{
+ 	{
 		int		sens;
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		if (game->minimap)
 			draw_player(game, data, FLOOR_COLOR);
 		sens = 0xff53 - key_code;
-		game->player->pos[0] += get_angle(0, player->facing) * SPEED * sens * game->frametime;
-		game->player->pos[1] += get_angle(1, player->facing) * SPEED * sens * game->frametime;
-		dda_collision(game);
+		move[0] = get_angle(0, player->facing) * SPEED * sens;
+		move[1] = get_angle(1, player->facing) * SPEED * sens;
+		dda_collision(game, move);
+		game->player->pos[0] += move[0]; 
+		game->player->pos[1] += move[1];
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game);
 	}
@@ -62,7 +65,7 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	{
 		double	turn;
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
-		turn = TURN_SPEED * (key_code - 0xff52) * game->frametime;
+		turn = TURN_SPEED * (key_code - 0xff52);
 		safe_angle_add(&player->facing, turn);
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game);
