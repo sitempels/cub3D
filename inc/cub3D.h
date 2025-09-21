@@ -24,6 +24,7 @@
 # include <math.h>
 # include <stdbool.h>
 # include <fcntl.h>
+# include <sys/time.h>
 
 /**/
 /*_______________________________MACRO________________________________________*/
@@ -40,6 +41,9 @@
 # define SOIL_COLOR 0xffffffff
 # define SKY_COLOR 0x00000000
 # define MINI_SIZE 16
+# define MLX_SYNC_IMAGE_WRITABLE 1
+# define MLX_SYNC_WIN_FLYSH_CMD 2
+# define MLX_SYNC_WIN_CMD_COPLETED 3
 
 /*_______________________________STRUCT_______________________________________*/
 
@@ -55,6 +59,10 @@ typedef struct		s_game
 	int				mini_height;
 	int				fov;
 	int				fov_show;
+	int				show_fps;
+	long int		old_time;
+	long int		time;
+	double			frametime;
 	struct s_player	*player;
 	struct s_data	*data;
 	struct s_config	*config;
@@ -145,5 +153,6 @@ void		print_int_arr(int *arr, int len);
 void		cleanup_game(t_game *game);
 void		gnl_cleanup(char *line);
 void		free_config(t_config *config);
+void	get_fps(t_game *game);
 
 #endif
