@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/19 16:10:44 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/22 01:39:38 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,11 +168,11 @@ int	parse_config(char *line, int *arr, t_config *config)
 				ft_printf_fd(STDERR_FILENO, "Error: Extra content after texture path\n");
 				return (1);
 			}
-			int	len = &line[i + 1] - start; // sans + 1 n'enregistre que jusque "./path_texture.xp" sans le 'm'
+			int	len = &line[i] - start;
 			char *path = malloc(sizeof(char) * (len + 1));
 			if (!path)
 				return (1);
-			ft_strlcpy(path, start, len);
+			ft_strlcpy(path, start, len + 1);
 			path[len] = '\0';
 			if (type == NO)
 				config->textures_path[0] = path;
@@ -240,12 +240,6 @@ int	parse_file(int fd, t_game *game)
 	{
 		return (1);
 	}
-/* 	if (floodfill(game, (int)(game->player->pos[0] - 0.5), (int)(game->player->pos[1] - 0.5)) != 0)
-	{
-		ft_printf_fd(STDERR_FILENO, "Error : Map is not closed\n");
-		return (1);
-	} */
-	//print_map(game->map, game->max_y, game->max_x);
 	return (0);
 }
 
@@ -256,10 +250,6 @@ void init_config(t_config *config)
 	if (config)
 	{
 		config->first_map = NULL;
-/* 		config->no_texture = NULL;
-		config->so_texture = NULL;
-		config->we_texture = NULL;
-		config->ea_texture = NULL; */
 		i = 0;
 		while (i < 3)
 		{

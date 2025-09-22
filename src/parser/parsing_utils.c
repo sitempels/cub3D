@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:43 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/15 02:50:33 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/22 01:00:24 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ bool	detect_content(char *line, char *first_char)
 
 bool	valid_file_extension(char *filename, char *ext, char flag)
 {
+	char *ptr;
+	
 	if (flag != 'X')
 	{
 		if (ft_strnstr_end(filename, ext, ft_strlen(filename)) != NULL)
@@ -39,7 +41,8 @@ bool	valid_file_extension(char *filename, char *ext, char flag)
 	}
 	else
 	{
-		if (ft_strnstr(filename, ext, ft_strlen(filename)) != NULL)
+		ptr = ft_strnstr(filename, ext, ft_strlen(filename));
+		if (ptr && (ptr[4] == ' ' || ptr[4] == '\n'))
 			return (true);
 	}
 	ft_printf_fd(STDERR_FILENO,
