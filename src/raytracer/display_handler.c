@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/22 12:36:33 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/22 18:38:04 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,17 @@ int	display_handler(t_game *game)
 			return (1);
 		game->texture[i]->wall = mlx_xpm_file_to_image(data.mlx, game->config->textures_path[i], &game->texture[i]->width, &game->texture[i]->height);
 		if (!game->texture[i]->wall)
+		{
+			printf("Error\n");
+			printf("Texture with path %s is not valid\n", game->config->textures_path[i]);
 			return (1);
+		}
 		game->texture[i]->addr_w = mlx_get_data_addr(game->texture[i]->wall, &game->texture[i]->bpp, &game->texture[i]->l_length, &game->texture[i]->endian);
+		if (!game->texture[i]->addr_w)
+		{
+			printf("Error\n");
+			return (1);
+		}
 		i++;
 	}
 	game->mini_width = MINI_SIZE * game->max_x;

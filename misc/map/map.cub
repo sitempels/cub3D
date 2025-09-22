@@ -1,8 +1,8 @@
 
-NO misc/textures/metal.xpm
-SO ./path_to_the_south_texture.xpm
-WE ./path_to_the_west_texture.xpm
-EA ./path_to_the_east_texture.xpm
+NO misc/textures/grassycliff.xpm
+SO misc/textures/metal.xpm
+WE misc/textures/grassycliff.xpm
+EA misc/textures/metal.xpm
 
 F 220,100,4 
 C 254,30,0
