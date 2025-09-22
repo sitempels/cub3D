@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/19 17:12:12 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:29:47 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define NORTH 270
 # define WIDTH 1080
 # define HEIGHT 912
-# define COLL_DIST 0.5
+# define COLL_DIST 0.1
 # define SOIL_COLOR 0xffffffff
 # define SKY_COLOR 0x00000000
 # define MINI_SIZE 16
@@ -145,7 +145,7 @@ void		safe_angle_add(float *angle, float mod);
 void		draw_player(t_game *game, t_data *data, unsigned int color);
 void		draw_minimap(t_game *game, t_data *data);
 float		dda_operation(t_game *game, float facing);
-float		dda_collision(t_game *game, float move[2]);
+float		dda_collision(t_game *game, float move[2], int sens);
 void		refresh_screen(t_game *game);
 double		get_angle(int type, int facing);
 /*________________UTILS__*/
