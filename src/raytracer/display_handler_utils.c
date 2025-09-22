@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/19 17:07:50 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/22 11:49:40 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,33 @@ int	key_handler(int keycode, t_game *game)
 	if (keycode == 0x2c)
 		game->minimap = (game->minimap + 1) % 2;
 	if (keycode == 0x66)
-		game->fov_show = (game->fov_show + 1) % 2;
+		game->show_fps = (game->show_fps + 1) % 2;
 	return (0);
 }
 
 static int	move_player(t_game *game, t_data *data, int key_code)
 {
+	float		move[2];
 	t_player	*player;
 
 	player = game->player;
+	get_fps(game);
+	if (game->minimap == 1)
+		draw_minimap(game, data);
 	if (key_code == UP_KEY || key_code == DOWN_KEY)
-	{
+ 	{
 		int		sens;
 		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		if (game->minimap)
 			draw_player(game, data, FLOOR_COLOR);
 		sens = 0xff53 - key_code;
-		game->player->pos[0] += get_angle(0, player->facing) * SPEED * sens;
-		game->player->pos[1] += get_angle(1, player->facing) * SPEED * sens;
-		dda_collision(game);
+		move[0] = get_angle(0, player->facing) * SPEED * sens;
+		move[1] = get_angle(1, player->facing) * SPEED * sens;
+		dda_collision(game, move, sens);
+		game->player->pos[0] += move[0]; 
+		game->player->pos[1] += move[1];
+		if (game->minimap)
+			draw_player(game, data, PLAYER_COLOR);
 		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game);
 	}

@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:05:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/19 17:46:48 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/22 12:39:51 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,11 @@ double	get_angle(int type, int facing)
 float	dda_operation(t_game *game, float facing)
  {
 	int		x;
-	float	camera_x;
+	float	camera;
 	float	plane[2];
 	t_dda	dda;
 	t_ray	ray;
 
-	dda.limit = 500;
 	dda.dir[0] = get_angle(0, facing);
 	dda.dir[1] = get_angle(1, facing);
 	plane[0] = - tan(game->fov * M_PI / 360) * get_angle(1, facing);
@@ -63,10 +62,10 @@ float	dda_operation(t_game *game, float facing)
 	ray.color = RAY_COLOR;
 	x = 0;
 	while (x <= game->screen_width)
- 	{
-		camera_x = (2 * x / (float)game->screen_width) - 1;
-		dda.raydir[0] = dda.dir[0] + plane[0] * camera_x;
-		dda.raydir[1] = dda.dir[1] + plane[1] * camera_x;
+  	{
+		camera = (2 * x / (float)game->screen_width) - 1;
+		dda.raydir[0] = dda.dir[0] + plane[0] * camera;
+		dda.raydir[1] = dda.dir[1] + plane[1] * camera;
 		dda_init(game, &dda, &ray);
 		if (game->minimap && game->fov_show)
 			draw_line(game, &dda, &ray);
@@ -130,6 +129,12 @@ void	refresh_screen(t_game *game)
 		j = 0;
 		while (j <= game->screen_height)
 		{
+			if (game->minimap)
+			{
+				if (i < game->mini_width)
+					if (j < game->mini_height)
+						j = game->mini_height + 4;
+			}
 			if (j < game->screen_height / 2)
 				color = SKY_COLOR;
 			if (j >= game->screen_height / 2)
@@ -142,30 +147,29 @@ void	refresh_screen(t_game *game)
 	return ;
 }
 
-float	dda_collision(t_game *game)
+float	dda_collision(t_game *game, float move[2], int	sens)
 {
+	float	test;
 	float	x;
+	float	camera;
 	t_dda	dda;
 	t_ray	ray;
 
-	dda.limit = COLL_DIST;
+	camera = game->player->facing;
+	safe_angle_add(&camera, -90);
 	ray.color = 0x0f66ffff;
-	x = game->player->facing;
-	while (1)
+	x = -90;
+	while (x <= 90)
 	{
-		dda.raydir[0] = get_angle(0, x);
-		dda.raydir[1] = get_angle(1, x);
+		dda.raydir[0] = get_angle(0, camera) * sens;
+		dda.raydir[1] = get_angle(1, camera) * sens;
 		dda_init(game, &dda, &ray);
-		if (ray.dist <= dda.limit)
-			game->player->pos[ray.side] += -dda.raydir[ray.side] * ((COLL_DIST - ray.dist));
-		else if (dda.raydir[ray.side] == 1 && ray.dist == 1 && COLL_DIST < 1)
-			game->player->pos[ray.side] += -dda.raydir[ray.side] * COLL_DIST;
+		test = (ray.dist - COLL_DIST);
+		if (test <= move[ray.side] * dda.step[ray.side])
+			move[ray.side] = test * dda.step[ray.side];
 		draw_line(game, &dda, &ray);
-//		else if (ray.dist > dda.limit && ray.dist == dda.d_dist[ray.side])
-//			game->player->pos[ray.side] += -dda.raydir[ray.side] * (ray.dist - COLL_DIST);
-		safe_angle_add(&x, 1);
-		if (x == game->player->facing)
-			break ;
+		x++;
+		safe_angle_add(&camera, 1);
 	}
 	return (0);
 }
@@ -202,7 +206,6 @@ static float	get_first_dist(t_game *game, t_dda * dda, t_ray *ray)
 		{
 			dda->step[i] = 1;
 			dda->side_dist[i] = (dda->map[i] + 1.0 - game->player->pos[i]) * dda->d_dist[i];
-//			dda->side_dist[i] = (game->player->pos[i] - dda->map[i]) * dda->d_dist[i];
 		}
 		i++;
 	}
@@ -233,6 +236,8 @@ static void	draw_line(t_game *game, t_dda *dda, t_ray *ray)
 {
 	float	x;
 	float	y;
+	float	px;
+	float	py;
 	float	dist_x;
 	float	dist_y;
 
@@ -243,7 +248,9 @@ static void	draw_line(t_game *game, t_dda *dda, t_ray *ray)
 	while ((ray->side == 0 && dist_x < ray->dist * MINI_SIZE)
 		|| (ray->side == 1 && dist_y < ray->dist * MINI_SIZE))
 	{
-		px_put(game->data, x + (dist_x * dda->raydir[0]), y + (dist_y * dda->raydir[1]), ray->color);
+		px = x + (dist_x * dda->raydir[0]);
+		py = y + (dist_y * dda->raydir[1]);
+		px_put(game->data, px, py, ray->color);
 		if (dist_x < dist_y && (dda->raydir[0] != 0))
 			dist_x += dda->d_dist[0];
 		else

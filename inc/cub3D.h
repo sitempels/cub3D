@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/22 01:45:58 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/22 12:29:47 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <math.h>
 # include <stdbool.h>
 # include <fcntl.h>
+# include <sys/time.h>
 
 /**/
 /*_______________________________MACRO________________________________________*/
@@ -36,30 +37,38 @@
 # define NORTH 270
 # define WIDTH 1080
 # define HEIGHT 912
-# define COLL_DIST 0.5
+# define COLL_DIST 0.1
 # define SOIL_COLOR 0xffffffff
 # define SKY_COLOR 0x00000000
 # define MINI_SIZE 16
+# define MLX_SYNC_IMAGE_WRITABLE 1
+# define MLX_SYNC_WIN_FLYSH_CMD 2
+# define MLX_SYNC_WIN_CMD_COPLETED 3
 
 /*_______________________________STRUCT_______________________________________*/
 
 typedef struct			s_game
 {
-	int					**map;
-	int					max_x;
-	int					max_y;
-	int					screen_width;
-	int					screen_height;
-	int					minimap;
-	int					mini_width;
-	int					mini_height;
-	int					fov;
-	int					fov_show;
-	struct s_texture	*texture[4];	
-	struct s_player		*player;
-	struct s_data		*data;
-	struct s_config		*config;
-}						t_game;
+	int				**map;
+	int				max_x;
+	int				max_y;
+	int				screen_width;
+	int				screen_height;
+	int				minimap;
+	int				mini_width;
+	int				mini_height;
+	int				fov;
+	int				fov_show;
+	int				show_fps;
+	long int		start_time;
+	long int		old_time;
+	long int		time;
+	double			frametime;
+  struct s_texture	*texture[4];
+	struct s_player	*player;
+	struct s_data	*data;
+	struct s_config	*config;
+}					t_game;
 
 typedef	struct		s_config
 {
@@ -141,7 +150,7 @@ void		safe_angle_add(float *angle, float mod);
 void		draw_player(t_game *game, t_data *data, unsigned int color);
 void		draw_minimap(t_game *game, t_data *data);
 float		dda_operation(t_game *game, float facing);
-float		dda_collision(t_game *game);
+float		dda_collision(t_game *game, float move[2], int sens);
 void		refresh_screen(t_game *game);
 double		get_angle(int type, int facing);
 /*________________UTILS__*/
@@ -150,5 +159,6 @@ void		print_int_arr(int *arr, int len);
 void		cleanup_game(t_game *game);
 void		gnl_cleanup(char *line);
 void		free_config(t_config *config);
+void	get_fps(t_game *game);
 
 #endif

@@ -34,7 +34,7 @@ int	main(int ac, char **av)
 	close(fd);
 	/*---INIITALIZER TO MOVE-------*/
 	game.minimap = 1;
-	game.fov_show = 0;
+	game.show_fps = 0;
 	/*-----------------------------*/
 	display_handler(&game);
 	cleanup_game(&game);
