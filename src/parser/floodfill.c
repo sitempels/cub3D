@@ -6,7 +6,7 @@ int	**copy_map(t_game *game)
 	int		y;
 	int		x;
 
-	copy = malloc(sizeof(int *) * game->max_y + 2);
+	copy = malloc(sizeof(int *) * (game->max_y + 2));
 	if (!copy)
 		return (NULL);
 	y = 0;
@@ -46,8 +46,8 @@ int	check_map_closure(t_game *game)
 		ft_printf_fd(STDERR_FILENO, "Error : Map is not closed\n");
 		return (1);
 	}
-	// FREE COPY MAP
-	print_map(copy, game->max_y + 2, game->max_x + 2);
+	print_map(copy, game->max_y + 2, game->max_x + 2); // SUPPRIMER PRINT
+	free_map(copy, game->max_y + 2);
 	return (0);
 }
 
@@ -60,7 +60,7 @@ int	floodfill(int **map, int y, int x, t_game *game, char flag)
 		else if (map[y][x] == WALL || map[y][x] == FILLED)
 			return (0);
 	}
-	else if ('E')
+	else if (flag == 'E')
 	{
 		if ((x < 0 || y < 0 || x >= game->max_x + 2 || y >= game->max_y + 2) || (map[y][x] == WALL || map[y][x] == FILLED))
 			return (0);

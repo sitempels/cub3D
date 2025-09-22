@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/22 18:57:12 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 01:37:09 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,22 @@ void	print_map(int **matrix, int height, int width)
 	printf("----------------------------------\n");
 }
 
+void	free_map(int **array, int size)
+{
+	int	i;
+	
+	if (!array)
+		return;
+	i = 0;
+	while (i < size)
+	{
+		if (array[i])
+			free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
 void	gnl_cleanup(char *line)
 {
 	free(line);
@@ -53,20 +69,11 @@ void	gnl_cleanup(char *line)
 
 void	cleanup_game(t_game *game)
 {
-	int	i;
-
 	if (!game)
 		return;
 	if (game->map)
 	{
-		i = 0;
-		while (i < game->max_y)
-		{
-			if (game->map[i])
-				free(game->map[i]);
-			i++;
-		}
-		free(game->map);
+		free_map(game->map, game->max_y);
 		game->map = NULL;
 	}
 	if (game->player)

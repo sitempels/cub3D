@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/22 21:59:15 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 01:35:41 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,9 +167,11 @@ double		get_angle(int type, int facing);
 /*________________UTILS__*/
 void		print_map(int **matrix, int height, int width);
 void		print_int_arr(int *arr, int len);
+
+void		free_map(int **array, int	size);
 void		cleanup_game(t_game *game);
 void		gnl_cleanup(char *line);
 void		free_config(t_config *config);
-void	get_fps(t_game *game);
+void		get_fps(t_game *game);
 
 #endif
