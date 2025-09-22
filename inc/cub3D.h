@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/22 12:29:47 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/22 21:59:15 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 
 /**/
 /*_______________________________MACRO________________________________________*/
+# define SUCCES 0
+# define ERROR 1
+# define ERR_MALLOC 2
 # define CELL_TYPE "01NSEW "
 # define SPACE " "
 # define FOV 66
@@ -123,20 +126,28 @@ typedef enum e_config_type
 /*________________PARSING*/
 char		*ft_strnstr_end(const char *haystack, const char *needle, size_t len);
 int			parse_file(int fd, t_game *game);
+int			process_config(int fd, t_config *config);
+int			parse_config(char *line, int *arr, t_config *config);
+int			parse_line(t_config *config, char *line, int *i, int type);
+int			fill_texture(t_config *config, char *line, int *i, int type);
+int			check_rgb(char *line, int *i, t_config *config, int type);
+int 		parse_rgb(char **start, int *count, int type, t_config *config);
 int			process_map_recursive(int fd, t_game *game, int *rows, int *max_len);
 int			check_line(char *line, t_config *config);
+int			skip_and_save_type(int type, int *arr, int *i);
 int			ft_isblank(char c);
 int			check_map_closure(t_game *game);
-int			floodfill(int **map, int pos_y, int pos_x, t_game *game);
-int			floodfill_ext(int **map, int y, int x, t_game *game);
+int			floodfill(int **map, int pos_y, int pos_x, t_game *game, char flag);
 int			init_game(t_game *game, int rows);
 int			init_map(t_game *game, char *line, int curr_row, int line_lenght);
+int			compare_types(char *line_pos);
 int			ft_strcmp(const char *s1, const char *s2);
 bool		is_texture(int type);
 bool		valid_file_extension(char *filename, char *ext, char del);
 bool		detect_content(char *line, char *first_char);
+bool		config_completed(int *parsed_elements);
 void		init_player(t_game *game, int y, int x, double facing);
-void		init_config(t_config *config);
+void		init_config(t_game *game);
 
 /*________________PLAYER_*/
 /*________________RAYCAST*/

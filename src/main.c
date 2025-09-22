@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:01 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/22 18:35:55 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/22 18:59:53 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int ac, char **av)
 	ft_memset(&game, 0, sizeof(t_game));
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
-		return (perror("open"), 1);
+		return (perror("Error\nOpen"), 1);
 	if (parse_file(fd, &game) == 1)
 		return (close(fd), cleanup_game(&game), 1);
 	close(fd);
