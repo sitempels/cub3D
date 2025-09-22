@@ -47,7 +47,7 @@
 
 /*_______________________________STRUCT_______________________________________*/
 
-typedef struct		s_game
+typedef struct			s_game
 {
 	int				**map;
 	int				max_x;
@@ -64,6 +64,7 @@ typedef struct		s_game
 	long int		old_time;
 	long int		time;
 	double			frametime;
+  struct s_texture	*texture[4];
 	struct s_player	*player;
 	struct s_data	*data;
 	struct s_config	*config;
@@ -81,8 +82,12 @@ typedef	struct		s_config
 typedef	struct		s_texture
 {
 	void			*wall;
+	void			*addr_w;
 	int				height;
 	int				width;
+	int				bpp;
+	int				l_length;
+	int				endian;
 }					t_texture;
 
 typedef	struct		s_player
