@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 03:29:21 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 14:22:28 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	parse_config(char *line, int *arr, t_config *config)
 		return (0);
 	if (first_char == '1')
 	{
-		printf("it's a map!! : %c\n", first_char); // COMMENTAIRE A SUPPRIMER
 		config->first_map = ft_strdup(line);
 		return (0);
 	}
@@ -70,10 +69,10 @@ int	process_config(int fd, t_config *config)
 	return (ft_error(MISSING_CONFIG, NULL), 1);
 }
 
-void init_config(t_game *game)
+void	init_config(t_game *game)
 {
 	int	i;
-	
+
 	game->config = malloc(sizeof(t_config));
 	if (!game->config)
 	{
@@ -92,7 +91,7 @@ void init_config(t_game *game)
 }
 
 int	parse_file(int fd, t_game *game)
-{	
+{
 	init_config(game);
 	if (process_config(fd, game->config) == ERROR)
 		return (1);

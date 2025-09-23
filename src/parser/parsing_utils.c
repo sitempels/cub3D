@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:43 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 02:46:32 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 14:34:24 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ bool	detect_content(char *line, char *first_char)
 	int	i;
 
 	i = 0;
-
 	if (!line)
 		return (false);
 	while (line[i])
@@ -35,8 +34,8 @@ bool	detect_content(char *line, char *first_char)
 
 bool	valid_file_extension(char *filename, char *ext, char flag)
 {
-	char *ptr;
-	
+	char	*ptr;
+
 	if (flag != 'X')
 	{
 		if (ft_strnstr_end(filename, ext, ft_strlen(filename)) != NULL)

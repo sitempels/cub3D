@@ -6,13 +6,13 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 19:13:21 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 02:55:59 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 13:51:21 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int parse_rgb(char **start, int *count, int type, t_config *config)
+int	parse_rgb(char **start, int *count, int type, t_config *config)
 {
 	if (!ft_isdigit(**start))
 		return (ft_error(ERR_RGB, NULL), 1);
@@ -20,9 +20,9 @@ int parse_rgb(char **start, int *count, int type, t_config *config)
 		config->ceiling_rgb[*count] = atoi(*start);
 	else
 		config->floor_rgb[*count] = atoi(*start);
-	if ((config->ceiling_rgb[*count] < 0 || config->ceiling_rgb[*count] > 255) ||
-			(config->floor_rgb[*count] < 0 || config->floor_rgb[*count] > 255))
-			return (ft_error(RANGE_RGB, NULL), 1);
+	if ((config->ceiling_rgb[*count] < 0 || config->ceiling_rgb[*count] > 255)
+		|| (config->floor_rgb[*count] < 0 || config->floor_rgb[*count] > 255))
+		return (ft_error(RANGE_RGB, NULL), 1);
 	while (**start && ft_isdigit(**start))
 		(*start)++;
 	(*count)++;
@@ -30,7 +30,7 @@ int parse_rgb(char **start, int *count, int type, t_config *config)
 	{
 		while (**start && ft_isblank(**start))
 			(*start)++;
-		if (**start  != ',')
+		if (**start != ',')
 			return (ft_error(FRMT_RGB, NULL), 1);
 		(*start)++;
 		while (**start && ft_isblank(**start))
@@ -52,7 +52,7 @@ int	check_rgb(char *line, int *i, t_config *config, int type)
 	{
 		if (parse_rgb(&start, &count, type, config) == ERROR)
 			return (1);
-	}			
+	}
 	if (count != 3)
 		return (ft_error(RGB_COUNT, NULL), 1);
 	while (*start && ft_isblank(*start))
@@ -66,18 +66,21 @@ int	check_rgb(char *line, int *i, t_config *config, int type)
 int	fill_texture(t_config *config, char *line, int *i, int type)
 {
 	char	*start;
+	char	*path;
 	char	first_char;
-			
+	int		len;
+
 	if (!valid_file_extension(&line[*i], ".xpm", 'X'))
 		return (1);
 	start = &line[*i];
 	printf("Texture extension format validated\n"); // COMMENTAIRE A SUPPRIMER
-	while (ft_isalnum(line[*i]) || line[*i] == '.' || line[*i] == '/' || line[*i] == '_')
+	while (ft_isalnum(line[*i]) || line[*i] == '.' || line[*i] == '-'
+		|| line[*i] == '/' || line[*i] == '_')
 		(*i)++;
 	if (detect_content(&line[*i], &first_char))
 		return (ft_error(EXTRA_CONTENT, NULL), 1);
-	int	len = &line[*i] - start;
-	char *path = malloc(sizeof(char) * (len + 1));
+	len = &line[*i] - start;
+	path = malloc(sizeof(char) * (len + 1));
 	if (!path)
 		return (1);
 	ft_strlcpy(path, start, len + 1);
