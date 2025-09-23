@@ -1,0 +1,110 @@
+
+# include "cub3D.h"
+
+static int			get_wall_text(t_dda *dda, t_ray *ray);
+static void			texture_mapping(t_game *game, t_dda *dda, t_ray *ray, int wall[4]);
+static void			print_wall(t_game *game, int wall[4], int tex[2], double tex_pos[3]);
+static unsigned int	get_color(t_game *game, int wall, int pos[2]);
+
+void	draw_wall(t_game *game, t_dda *dda, t_ray *ray)
+ {
+	int	wall[4];
+
+	wall[0] = (int)(game->screen_height / ray->dist);
+	wall[1] = -wall[0] / 2 + game->screen_height / 2;
+	if (wall[1] < 0)
+		wall[1] = 0;
+	if (game->minimap)
+		if (ray->x < game->mini_width)
+			if (wall[1] < game->mini_height + game->mini_size)
+				wall[1] = game->mini_height + game->mini_size;
+	wall[2] = wall[0] / 2 + game->screen_height / 2;
+	if (wall[2] >= game->screen_height)
+		wall[2] = game->screen_height - 1;
+	texture_mapping(game, dda, ray, wall);
+	return ;
+ }
+
+static void	texture_mapping(t_game *game, t_dda *dda, t_ray *ray, int wall[4])
+{
+	int		tex[2];
+	double	wall_x;
+	double	tex_pos[3];
+
+	wall[3] = get_wall_text(dda, ray);
+	if (ray->side == 0)
+		wall_x = game->player->pos[1] + ray->dist * dda->raydir[1];
+	else
+		wall_x = game->player->pos[0] + ray->dist * dda->raydir[0];
+	wall_x -= (int)wall_x;
+	if (game->texture[wall[3]])
+	{
+		tex[0] = (int)(wall_x * (double)(game->texture[wall[3]]->width));
+		if (ray->side == 0 && dda->raydir[0] > 0)
+			tex[0] = game->texture[wall[3]]->width - tex[0] - 1;
+		if (ray->side == 1 && dda->raydir[1] < 0)
+			tex[0] = game->texture[wall[3]]->width - tex[0] - 1;
+		tex_pos[1] = 1.0 * game->texture[wall[3]]->height / wall[0];
+		tex_pos[0] = (wall[1] - game->screen_height / 2 + wall[0] / 2);
+		tex_pos[0] *= tex_pos[1];
+	}
+	tex_pos[2] = ray->x;
+	print_wall(game, wall, tex, tex_pos);
+	return ;
+}
+
+static void	print_wall(t_game *game, int wall[4], int tex[2], double tex_pos[3])
+{
+	int				y;
+	unsigned int	color;
+
+	y = wall[1];
+	while (y < wall[2])
+	{
+		if (game->texture[wall[3]])
+		{
+			tex[1] = (int)tex_pos[0];
+			tex_pos[0] += tex_pos[1];
+		}
+		color = get_color(game, wall[3], tex);
+		px_put(game->data, tex_pos[2], y, color);
+		y++;
+	}
+	return ;
+}
+
+static int	get_wall_text(t_dda *dda, t_ray *ray)
+{
+	int	wall_text;
+
+	if (ray->side == 0)
+ 	{
+		wall_text = EA;
+		if (dda->raydir[ray->side] < 0)
+			wall_text = WE;
+	}
+	if (ray->side == 1)
+ 	{
+		wall_text = SO;
+		if (dda->raydir[ray->side] < 0)
+			wall_text = NO;
+	}
+	return (wall_text);
+ }
+
+static unsigned int	get_color(t_game *game, int wall, int pos[2])
+{
+	int				p_pos;
+	unsigned int	color;
+	t_texture		texture;
+
+	if (!game->texture[wall])
+		color = game->default_color[wall];
+	else
+	{
+		texture = *game->texture[wall];
+		p_pos = (pos[1] * texture.l_length) + pos[0] * (texture.bpp / 8);
+		color = *(unsigned int *)&texture.addr_w[p_pos];
+	}
+	return (color);
+}

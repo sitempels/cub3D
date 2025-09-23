@@ -53,6 +53,7 @@ typedef struct		s_dda
 typedef struct		s_ray
 {
 	int				side;
+	int				x;
 	float			dist;
 	unsigned int	color;
 }					t_ray;

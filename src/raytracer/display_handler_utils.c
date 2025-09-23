@@ -51,7 +51,6 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	t_player	*player;
 
 	player = game->player;
-//	get_fps(game);
 	if (game->minimap == 1)
 		draw_minimap(game, data);
 	if (key_code == UP_KEY || key_code == DOWN_KEY)
@@ -59,8 +58,8 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 		if (game->minimap)
 			draw_player(game, data, FLOOR_COLOR);
 		sens = 0xff53 - key_code;
-		move[0] = get_angle(0, player->facing) * SPEED * sens;
-		move[1] = get_angle(1, player->facing) * SPEED * sens;
+		move[0] = get_angle(0, player->facing) * SPEED * sens;// * game->frametime;
+		move[1] = get_angle(1, player->facing) * SPEED * sens;// * game->frametime;
 		dda_collision(game, move, sens);
 		game->player->pos[0] += move[0]; 
 		game->player->pos[1] += move[1];
@@ -122,13 +121,18 @@ void	draw_minimap(t_game *game, t_data *data)
 		while (i[0] < game->max_x)
 		{
 			if (game->map[i[1]][i[0]] == FLOOR)
-				img_put(data, i, MINI_SIZE, FLOOR_COLOR);
-			if (game->map[i[1]][i[0]] == WALL)
-				img_put(data, i, MINI_SIZE, WALL_COLOR);
+				img_put(data, i, game->mini_size, FLOOR_COLOR);
+			else if (game->map[i[1]][i[0]] == WALL)
+				img_put(data, i, game->mini_size, WALL_COLOR);
+			else
+				img_put(data, i, game->mini_size, MINI_BACKGROUND);
 			i[0]++;
 		}
 		i[1]++;
 	}
+	i[0] = -1;
+	while (++i[0] < game->max_x)
+		img_put(data, i, game->mini_size, MINI_BACKGROUND);
 	draw_player(game, data, PLAYER_COLOR);
 	return ;
 }

@@ -20,7 +20,7 @@ int	display_handler(t_game *game)
 
 	game->data = &data;
 	gettimeofday(&tmp, NULL);
-	game->start_time = tmp.tv_sec;
+	game->start_time = tmp.tv_sec * 100000 + tmp.tv_usec;;
 	game->old_time = 0;
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, game->screen_width, game->screen_height, "cub3D");
@@ -60,31 +60,38 @@ int	game_loop(t_game *game)
 	t_data	*data;
 
 	data = game->data;
-	get_fps(game);
 	refresh_screen(game);
 	dda_operation(game, game->player->facing);
-	printf("player main_loop	facing: %f posx: %f posy: %f\ntimeframe: %f frame_show: %d\n", game->player->facing, game->player->pos[0], game->player->pos[1], game->frametime, game->show_fps);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	get_fps(game);
+	printf("old_time: %ld	frametime: %f\n", game->old_time, game->frametime);
 	if (game->show_fps == 1)
 	{
 		mlx_string_put(data->mlx, data->win, game->screen_width - 128, 32, 0xffffff, "FPS");
-		mlx_string_put(data->mlx, data->win, game->screen_width - 64, 32, 0xffffff, ft_itoa((int)game->frametime));
+		mlx_string_put(data->mlx, data->win, game->screen_width - 64, 32, 0xffffff, ft_itoa((int)(1 / game->frametime)));
 	}
-	else
-		mlx_string_put(data->mlx, data->win, game->screen_width - 128, 32, 0xffffff, " ");
+//	else
+//		mlx_string_put(data->mlx, data->win, game->screen_width - 128, 32, 0xffffff, " ");
 	mlx_do_sync(data->mlx);
+	if (game->minimap)
+		draw_minimap(game, data);
 	return (0);
 }
 
 void	get_fps(t_game *game)
 {
-	long			time;
-	struct timeval	tmp;
+	unsigned long int	diff;
+	unsigned long int	time;
+	struct timeval		tmp;
 
 	gettimeofday(&tmp, NULL);
-	time = tmp.tv_sec - game->start_time;
-	game->frametime = 1000 / ((double)time - (double)game->old_time);
-	game->old_time = time;
+	time = tmp.tv_sec * 100000 + tmp.tv_usec - game->start_time;
+	diff = time - game->old_time;
+	if (diff > 0)
+	{
+		game->frametime = diff / 100000;
+		game->old_time = time;
+	}
 }
 
 void	img_put(t_data *data, int coord[2], int size_mod, unsigned int color)
