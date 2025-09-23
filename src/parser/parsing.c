@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 18:01:50 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 00:42:28 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,12 @@ void	init_config(t_game *game)
 		exit(1);
 	}
 	game->config->first_map = NULL;
+	i = 0;
+	while (i < 4)
+	{
+		game->config->textures_path[i] = NULL;
+		i++;
+	}
 	i = 0;
 	while (i < 3)
 	{

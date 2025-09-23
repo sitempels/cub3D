@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:51:51 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 23:47:13 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 01:04:19 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,14 @@ int	check_map_closure(t_game *game)
 	game->map = copy_map(copy, game);
 	if (!game->map)
 		return (1);
-	if (floodfill(game, 0, 0, 'E') != 0)
-		return (ft_error(UNCLOSED_MAP, NULL), 1);
-	if (floodfill(game, (int)(game->player->pos[1] - 0.5)
+	if (floodfill(game, 0, 0, 'E')
+		|| floodfill(game, (int)(game->player->pos[1] - 0.5)
 		, (int)(game->player->pos[0] - 0.5), 'I') != 0)
+	{
+		free_map(game->map, game->max_y + 2);
+		game->map = copy;
 		return (ft_error(UNCLOSED_MAP, NULL), 1);
+	}
 	print_map(game->map, game->max_y + 2, game->max_x + 2); // SUPPRIMER PRINT
 	free_map(game->map, game->max_y + 2);
 	game->map = copy;
