@@ -6,16 +6,16 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 18:37:44 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 23:03:31 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 #include "get_next_line_bonus.h"
 
-int	check_line(char *line, t_config *config)
+static int	check_line(char *line, t_config *config)
 {
-	int			i;
+	int	i;
 
 	if (detect_content(line, NULL))
 	{
@@ -78,10 +78,7 @@ int	process_map_recursive(int fd, t_game *game)
 	if (!line)
 		return (init_game(game, game->max_y), 0);
 	if (!game->config->map_end)
-	{
-		curr_row = game->max_y;
-		(game->max_y)++;
-	}
+		curr_row = (game->max_y)++;
 	if (process_map_recursive(fd, game) != 0)
 		return (gnl_cleanup(line), 1);
 	if (!game->map)

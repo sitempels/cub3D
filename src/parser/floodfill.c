@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:51:51 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 18:51:08 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 23:47:13 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ int	**copy_map(int **map, t_game *game)
 		copy[y] = malloc(sizeof(int) * (game->max_x + 2));
 		if (!copy[y])
 			return (NULL);
-		x = 0;
-		while (x < game->max_x + 2)
+		x = -1;
+		while (++x < game->max_x + 2)
 		{
-			if (x == 0 || x == game->max_x + 1 || y == 0 || y == game->max_y + 1)
+			if (x == 0 || x == game->max_x + 1
+				|| y == 0 || y == game->max_y + 1)
 				copy[y][x] = -1;
 			else
 				copy[y][x] = map[y - 1][x - 1];
-			x++;
 		}
 		y++;
 	}
