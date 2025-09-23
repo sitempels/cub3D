@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/23 01:35:41 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 01:57:05 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "libft.h"
 # include "raycaster.h"
 # include "mlx.h"
+# include "error.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdarg.h>
@@ -168,6 +169,7 @@ double		get_angle(int type, int facing);
 void		print_map(int **matrix, int height, int width);
 void		print_int_arr(int *arr, int len);
 
+void		ft_error(char *msg, char *var);
 void		free_map(int **array, int	size);
 void		cleanup_game(t_game *game);
 void		gnl_cleanup(char *line);

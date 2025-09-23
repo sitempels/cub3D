@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:43 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/22 20:36:28 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 02:46:32 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ bool	valid_file_extension(char *filename, char *ext, char flag)
 		if (ptr && (ptr[4] == ' ' || ptr[4] == '\n'))
 			return (true);
 	}
-	ft_printf_fd(STDERR_FILENO,
-		"Error: incorrect or missing file extension. Expected: %s\n", ext);
+	ft_error(ERR_FILE, ext);
 	return (false);
 }
 

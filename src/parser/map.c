@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/19 18:32:56 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/23 02:45:40 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 	else
 	{
 		if ((get_next_line(fd, &line)) < 0)
-			return (printf("Error: Reading file\n"), 1);
+			return (ft_error(RD_FILE, NULL), 1);
 		else if (!line)
 			return (init_game(game, *rows));
 	}

@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 21:43:37 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/22 21:44:43 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 02:15:50 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,7 @@ int	skip_and_save_type(int type, int *arr, int *i)
 		*i += 1;
 	}
 	else
-	{
-		ft_printf_fd(STDERR_FILENO, "Error: This type has already been parsed\n");
-		return (1);
-	}
+		return (ft_error(DOUBLE_TYPE, NULL), 1);
 	return (0);
 }
 

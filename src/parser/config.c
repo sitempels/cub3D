@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 19:13:21 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/22 21:44:17 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 02:55:59 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 int parse_rgb(char **start, int *count, int type, t_config *config)
 {
 	if (!ft_isdigit(**start))
-		return (ft_printf_fd(STDERR_FILENO, "Error: Invalid RGB format\n"), 1);
+		return (ft_error(ERR_RGB, NULL), 1);
 	if (type == C)
 		config->ceiling_rgb[*count] = atoi(*start);
 	else
 		config->floor_rgb[*count] = atoi(*start);
 	if ((config->ceiling_rgb[*count] < 0 || config->ceiling_rgb[*count] > 255) ||
 			(config->floor_rgb[*count] < 0 || config->floor_rgb[*count] > 255))
-			return (ft_printf_fd(STDERR_FILENO, "Error: RGB value out of range (0-255)\n"), 1);
+			return (ft_error(RANGE_RGB, NULL), 1);
 	while (**start && ft_isdigit(**start))
 		(*start)++;
 	(*count)++;
@@ -31,7 +31,7 @@ int parse_rgb(char **start, int *count, int type, t_config *config)
 		while (**start && ft_isblank(**start))
 			(*start)++;
 		if (**start  != ',')
-			return (ft_printf_fd(STDERR_FILENO, "Error: RGB values must be separated by a comma\n"), 1);
+			return (ft_error(FRMT_RGB, NULL), 1);
 		(*start)++;
 		while (**start && ft_isblank(**start))
 			(*start)++;
@@ -48,18 +48,17 @@ int	check_rgb(char *line, int *i, t_config *config, int type)
 	count = 0;
 	while (*start && ft_isblank(*start))
 		start++;
-
 	while (count < 3)
 	{
 		if (parse_rgb(&start, &count, type, config) == ERROR)
 			return (1);
 	}			
 	if (count != 3)
-		return (ft_printf_fd(STDERR_FILENO, "Error: RGB must have exactly 3 values\n"), 1);
+		return (ft_error(RGB_COUNT, NULL), 1);
 	while (*start && ft_isblank(*start))
 		start++;
 	if (*start && *start != '\n' && *start != ' ')
-		return (ft_printf_fd(STDERR_FILENO, "Error: Extra content after RGB values\n"), 1);
+		return (ft_error(RGB_EXTRA, NULL), 1);
 	*i = start - line;
 	return (0);
 }
@@ -76,10 +75,7 @@ int	fill_texture(t_config *config, char *line, int *i, int type)
 	while (ft_isalnum(line[*i]) || line[*i] == '.' || line[*i] == '/' || line[*i] == '_')
 		(*i)++;
 	if (detect_content(&line[*i], &first_char))
-	{
-		ft_printf_fd(STDERR_FILENO, "Error: Extra content after texture path\n");
-		return (1);
-	}
+		return (ft_error(EXTRA_CONTENT, NULL), 1);
 	int	len = &line[*i] - start;
 	char *path = malloc(sizeof(char) * (len + 1));
 	if (!path)
@@ -92,12 +88,11 @@ int	fill_texture(t_config *config, char *line, int *i, int type)
 
 int	parse_line(t_config *config, char *line, int *i, int type)
 {
-
 	while (line[*i] && ft_isblank(line[*i]))
 		(*i)++;
 	if (!line[*i] || line[*i] == '\n')
 	{
-		ft_printf_fd(STDERR_FILENO, "Error: Missing config value\n");
+		ft_error(MISSING_CONFIG, NULL);
 		return (1);
 	}
 	if (is_texture(type))

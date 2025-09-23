@@ -37,15 +37,9 @@ int	check_map_closure(t_game *game)
 	if (!copy)
 		return (1);
 	if (floodfill(copy, 0, 0, game, 'E') != 0)
-	{
-		ft_printf_fd(STDERR_FILENO, "Error : Map is not closed\n");
-		return (1);
-	}
+		return (ft_error(UNCLOSED_MAP, NULL), 1);
 	if (floodfill(copy, (int) (game->player->pos[1] - 0.5), (int) (game->player->pos[0] - 0.5), game, 'I') != 0)
-	{
-		ft_printf_fd(STDERR_FILENO, "Error : Map is not closed\n");
-		return (1);
-	}
+		return (ft_error(UNCLOSED_MAP, NULL), 1);
 	print_map(copy, game->max_y + 2, game->max_x + 2); // SUPPRIMER PRINT
 	free_map(copy, game->max_y + 2);
 	return (0);

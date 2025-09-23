@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:01 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/22 18:59:53 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 02:02:46 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,13 @@ int	main(int ac, char **av)
 	t_game	game;
 
 	if (ac != 2)
-	{
-		ft_printf_fd(STDERR_FILENO,
-			"Wrong number of arguments\nUsage : ./cub3d <filename.cub>\n");
-		return (1);
-	}
+		return (ft_error(USAGE, NULL), 1);
 	if (!valid_file_extension(av[1], ".cub", '\0'))
 		return (1);
 	ft_memset(&game, 0, sizeof(t_game));
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
-		return (perror("Error\nOpen"), 1);
+		return (ft_error(ERR_OPEN, NULL), 1);
 	if (parse_file(fd, &game) == 1)
 		return (close(fd), cleanup_game(&game), 1);
 	close(fd);

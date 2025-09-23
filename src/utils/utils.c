@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 01:37:09 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 02:08:44 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,15 @@ void	print_map(int **matrix, int height, int width)
 		i++;
 	}
 	printf("----------------------------------\n");
+}
+
+void	ft_error(char *msg, char *var)
+{
+	ft_printf_fd(STDERR_FILENO, "Error\n");
+	if (var)
+		ft_printf_fd(STDERR_FILENO, msg, var);
+	else
+		ft_printf_fd(STDERR_FILENO, msg);
 }
 
 void	free_map(int **array, int size)
