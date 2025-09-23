@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 16:40:26 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 18:10:59 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ void	ft_error(char *msg, char *var)
 void	free_map(int **array, int size)
 {
 	int	i;
-	
+
 	if (!array)
-		return;
+		return ;
 	i = 0;
 	while (i < size)
 	{
@@ -79,7 +79,7 @@ void	gnl_cleanup(char *line)
 void	cleanup_game(t_game *game)
 {
 	if (!game)
-		return;
+		return ;
 	if (game->map)
 	{
 		free_map(game->map, game->max_y);
@@ -97,7 +97,7 @@ void	cleanup_game(t_game *game)
 void	free_config(t_config *config)
 {
 	int	i;
-	
+
 	if (config->first_map)
 	{
 		free(config->first_map);

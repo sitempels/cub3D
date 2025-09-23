@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 14:56:30 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 18:01:50 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ void	init_config(t_game *game)
 	game->config = malloc(sizeof(t_config));
 	if (!game->config)
 	{
-		ft_error(ERR_INIT_CONFIG, NULL);
-		exit(ERR_MALLOC);
+		ft_error(ERR_MALLOC, NULL);
+		exit(1);
 	}
 	game->config->first_map = NULL;
 	i = 0;
@@ -87,6 +87,7 @@ void	init_config(t_game *game)
 		game->config->ceiling_rgb[i] = 0;
 		i++;
 	}
+	game->config->player_count = 0;
 	game->config->map_end = false;
 }
 

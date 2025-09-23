@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/23 16:51:31 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 17:59:48 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,6 @@
 /*_______________________________MACRO________________________________________*/
 # define SUCCES 0
 # define ERROR 1
-# define ERR_MALLOC 2
-# define CELL_TYPE "01NSEW "
-# define SPACE " "
 # define FOV 66
 # define EAST 0
 # define SOUTH 90
@@ -80,6 +77,7 @@ typedef	struct		s_config
 	char			*textures_path[4];
 	int 			floor_rgb[3];
 	int 			ceiling_rgb[3];
+	int				player_count;
 	bool			map_end;
 }					t_config;
 

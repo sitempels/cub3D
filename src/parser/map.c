@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 16:53:24 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 17:55:08 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 int	check_line(char *line, t_config *config)
 {
 	int			i;
-	static int	player_count;
 
 	if (detect_content(line, NULL))
 	{
@@ -33,8 +32,8 @@ int	check_line(char *line, t_config *config)
 					"Error\nInvalid character <%c> inserted\n", line[i]), 1);
 		if (ft_strchr("NSEW", line[i]))
 		{
-			player_count++;
-			if (player_count > 1)
+			config->player_count++;
+			if (config->player_count > 1)
 				return (ft_error(MULT_PLAYERS, NULL), 1);
 		}
 		i++;

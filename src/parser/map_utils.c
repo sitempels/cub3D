@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 14:37:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 16:52:11 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 18:04:26 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	init_game(t_game *game, int rows)
 {
+	if (game->config->player_count == 0)
+		return (ft_error(NO_PLAYER, NULL), 1);
 	game->map = malloc(sizeof(int *) * (rows));
 	if (!game->map)
 		return (1);

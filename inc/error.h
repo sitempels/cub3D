@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:24:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 13:24:35 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 18:09:24 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 # define ERROR_H
 
 # define USAGE "Wrong number of arguments\nUsage : ./cub3d <filename.cub>\n"
+# define ERR_MALLOC "Memory allocation failed\n"
 # define ERR_FILE "Incorrect or missing file extension. Expected: %s\n"
-# define ERR_OPEN "Open failed"
-# define ERR_INIT_CONFIG "Init configuration failed\n"
+# define ERR_OPEN "Open failed\n"
+//# define ERR_INIT_CONFIG "Init configuration failed\n"
 # define EMPTY_FILE "Empty file\n"
 # define RD_FILE "Reading file"
 # define MISSING_CONFIG "Incomplete configuration\n"
@@ -24,6 +25,7 @@
 # define DOUBLE_TYPE "This type has already been parsed\n"
 # define EXTRA_CONTENT "Extra content after texture path\n"
 # define ERR_MAP "Empty line in map or content after map\n"
+# define NO_PLAYER "The map must contain a player represented by N, S, W or E\n"
 # define MULT_PLAYERS "Multiple players found\n"
 # define ERR_RGB "Invalid RGB format, must be a digit\n"
 # define RANGE_RGB "RGB value out of range (0-255)\n"
