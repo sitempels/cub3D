@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_handler_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/22 11:49:40 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/23 16:25:06 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	close_all(t_game *game, t_data *data, int status)
 	if (data->win)
 		mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
+	cleanup_game(game);
 	exit(status);
 }
 

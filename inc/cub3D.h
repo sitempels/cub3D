@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/23 14:56:51 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 16:51:31 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int			check_line(char *line, t_config *config);
 int			skip_and_save_type(int type, int *arr, int *i);
 int			ft_isblank(char c);
 int			check_map_closure(t_game *game);
-int			floodfill(int **map, int pos_y, int pos_x, t_game *game, char flag);
+int			floodfill(t_game *game, int pos_y, int pos_x, char flag);
 int			init_game(t_game *game, int rows);
 int			init_map(t_game *game, char *line, int curr_row, int line_lenght);
 int			compare_types(char *line_pos);
@@ -147,7 +147,6 @@ bool		is_texture(int type);
 bool		valid_file_extension(char *filename, char *ext, char del);
 bool		detect_content(char *line, char *first_char);
 bool		config_completed(int *parsed_elements);
-void		init_player(t_game *game, int y, int x, double facing);
 void		init_config(t_game *game);
 
 /*________________PLAYER_*/

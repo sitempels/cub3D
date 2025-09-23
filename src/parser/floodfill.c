@@ -6,13 +6,13 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:51:51 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 14:58:12 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 16:52:42 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int	**copy_map(t_game *game)
+int	**copy_map(int **map, t_game *game)
 {
 	int		**copy;
 	int		y;
@@ -30,11 +30,10 @@ int	**copy_map(t_game *game)
 		x = 0;
 		while (x < game->max_x + 2)
 		{
-			if (x == 0 || x == game->max_x + 1
-				|| y == 0 || y == game->max_y + 1)
+			if (x == 0 || x == game->max_x + 1 || y == 0 || y == game->max_y + 1)
 				copy[y][x] = -1;
 			else
-				copy[y][x] = game->map[y - 1][x - 1];
+				copy[y][x] = map[y - 1][x - 1];
 			x++;
 		}
 		y++;
@@ -46,21 +45,27 @@ int	check_map_closure(t_game *game)
 {
 	int	**copy;
 
-	copy = copy_map(game);
-	if (!copy)
+	copy = game->map;
+	game->map = copy_map(copy, game);
+	if (!game->map)
 		return (1);
-	if (floodfill(copy, 0, 0, game, 'E') != 0)
+	if (floodfill(0, 0, game, 'E') != 0)
 		return (ft_error(UNCLOSED_MAP, NULL), 1);
-	if (floodfill(copy, (int)(game->player->pos[1] - 0.5)
+	if (floodfill((int)(game->player->pos[1] - 0.5)
 		, (int)(game->player->pos[0] - 0.5), game, 'I') != 0)
 		return (ft_error(UNCLOSED_MAP, NULL), 1);
-	print_map(copy, game->max_y + 2, game->max_x + 2); // SUPPRIMER PRINT
-	free_map(copy, game->max_y + 2);
+	print_map(game->map, game->max_y + 2, game->max_x + 2); // SUPPRIMER PRINT
+	free_map(game->map, game->max_y + 2);
+	game->map = copy;
+	print_map(game->map, game->max_y, game->max_x); // SUPPRIMER PRINT
 	return (0);
 }
 
-int	floodfill(int **map, int y, int x, t_game *game, char flag)
+int	floodfill(t_game *game, int y, int x, char flag)
 {
+	int	**map;
+
+	map = game->map;
 	if (flag == 'I')
 	{
 		if (x < 0 || y < 0 || x >= game->max_x + 2 || y >= game->max_x + 2)
@@ -77,8 +82,8 @@ int	floodfill(int **map, int y, int x, t_game *game, char flag)
 			return (1);
 	}
 	map[y][x] = FILLED;
-	return (floodfill(map, y, x + 1, game, flag)
-		|| floodfill(map, y, x -1, game, flag)
-		|| floodfill(map, y + 1, x, game, flag)
-		|| floodfill(map, y - 1, x, game, flag));
+	return (floodfill(game, y, x + 1, flag)
+		|| floodfill(game, y, x -1, flag)
+		|| floodfill(game, y + 1, x, flag)
+		|| floodfill(game, y - 1, x, flag));
 }

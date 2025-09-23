@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:01 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 02:02:46 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 16:22:19 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ int	main(int ac, char **av)
 	if (parse_file(fd, &game) == 1)
 		return (close(fd), cleanup_game(&game), 1);
 	close(fd);
+	print_map(game.map, game.max_y, game.max_x); // SUPPRIMER PRINT
 	/*---INIITALIZER TO MOVE-------*/
 	game.minimap = 1;
 	game.show_fps = 0;
 	/*-----------------------------*/
 	if (display_handler(&game) != 0)
-		return (1);
+		return (cleanup_game(&game), 1);
 	cleanup_game(&game);
 	return (0);
 }

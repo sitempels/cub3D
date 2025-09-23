@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 19:13:21 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 13:51:21 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 16:36:41 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int	fill_texture(t_config *config, char *line, int *i, int type)
 	if (!path)
 		return (1);
 	ft_strlcpy(path, start, len + 1);
-	path[len] = '\0';
 	config->textures_path[type] = path;
 	return (0);
 }
