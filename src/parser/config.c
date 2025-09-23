@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 19:13:21 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 16:36:41 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 19:13:38 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 
 int	parse_rgb(char **start, int *count, int type, t_config *config)
 {
-	if (!ft_isdigit(**start))
+	if (!ft_isdigit(**start) && **start != '+' && **start != '-')
 		return (ft_error(ERR_RGB, NULL), 1);
 	if (type == C)
-		config->ceiling_rgb[*count] = atoi(*start);
+		config->ceiling_rgb[*count] = ft_atoi(*start);
 	else
-		config->floor_rgb[*count] = atoi(*start);
+		config->floor_rgb[*count] = ft_atoi(*start);
 	if ((config->ceiling_rgb[*count] < 0 || config->ceiling_rgb[*count] > 255)
 		|| (config->floor_rgb[*count] < 0 || config->floor_rgb[*count] > 255))
 		return (ft_error(RANGE_RGB, NULL), 1);
+	if (**start == '+')
+		(*start)++;
 	while (**start && ft_isdigit(**start))
 		(*start)++;
 	(*count)++;

@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 17:55:08 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 18:37:44 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	check_line(char *line, t_config *config)
 	{
 		if (!ft_strchr("01NSEW \n\t", line[i]))
 			return (ft_printf_fd(STDERR_FILENO,
-					"Error\nInvalid character <%c> inserted\n", line[i]), 1);
+					"Error\nInvalid character <%c> on the map\n", line[i]), 1);
 		if (ft_strchr("NSEW", line[i]))
 		{
 			config->player_count++;
