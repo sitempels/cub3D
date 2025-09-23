@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:05:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/22 12:39:51 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/23 16:42:04 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static float	get_first_dist(t_game *game, t_dda *dda, t_ray *ray);
 static float	collision_dist(t_game *game, t_dda *dda, t_ray *ray);
 static void		draw_line(t_game *game, t_dda *dda, t_ray *ray);
 static void		draw_wall(t_game *game, t_dda *dda, t_ray *ray, int x);
+static unsigned int	get_color(t_game *game, int wall, int pos[2], int y);
+static int	get_wall_text(t_dda *dda, t_ray *ray);
 
 double	get_angle(int type, int facing)
 {
@@ -61,13 +63,13 @@ float	dda_operation(t_game *game, float facing)
 	plane[1] = tan(game->fov * M_PI / 360) * get_angle(0, facing);
 	ray.color = RAY_COLOR;
 	x = 0;
-	while (x <= game->screen_width)
+	while (x < game->screen_width)
   	{
 		camera = (2 * x / (float)game->screen_width) - 1;
 		dda.raydir[0] = dda.dir[0] + plane[0] * camera;
 		dda.raydir[1] = dda.dir[1] + plane[1] * camera;
 		dda_init(game, &dda, &ray);
-		if (game->minimap && game->fov_show)
+		if (game->minimap && game->show_fov)
 			draw_line(game, &dda, &ray);
 		draw_wall(game, &dda, &ray, x);
 		x++;
@@ -76,45 +78,101 @@ float	dda_operation(t_game *game, float facing)
 }
 
 static void	draw_wall(t_game *game, t_dda *dda, t_ray *ray, int x)
-{
+ {
 	int	wall_height;
 	int	wall_down;
 	int	wall_up;
-	int	i;
+	int	y;
 	unsigned int	color;
 
 	wall_height = (int)(game->screen_height / ray->dist);
 	wall_down = -wall_height / 2 + game->screen_height / 2;
 	if (wall_down < 0)
 		wall_down = 0;
+	if (game->minimap)
+		if (x < game->mini_width)
+			if (wall_down < game->mini_height + 16)
+				wall_down = game->mini_height + 16;
 	wall_up = wall_height / 2 + game->screen_height / 2;
-	if (wall_up < 0)
+	if (wall_up >= game->screen_height)
 		wall_up = game->screen_height - 1;
-	if (ray->side == 0 )
+	int		tex[2];
+	int		wall_side;
+	double	wall_x;
+	double	step;
+	double	tex_pos;
+
+	wall_side = get_wall_text(dda, ray);
+	if (ray->side == 0)
+		wall_x = game->player->pos[1] + ray->dist * dda->raydir[1];
+	else
+		wall_x = game->player->pos[0] + ray->dist * dda->raydir[0];
+	wall_x -= (int)wall_x;
+	if (game->texture[wall_side])
 	{
-		color = 0xff000066;
-		if (dda->raydir[ray->side] < 0)
-			color = 0xff000045;
+		tex[0] = (int)(wall_x * (double)(game->texture[wall_side]->width));
+		if (ray->side == 0 && dda->raydir[0] > 0)
+			tex[0] = game->texture[wall_side]->width - tex[0] - 1;
+		if (ray->side == 1 && dda->raydir[1] < 0)
+			tex[0] = game->texture[wall_side]->width - tex[0] - 1;
+		step = 1.0 * game->texture[wall_side]->height / wall_height;
+		tex_pos = (wall_down - game->screen_height / 2 + wall_height / 2) * step;
 	}
-	if (ray->side == 1 )
+	y = wall_down;
+	while (y < wall_up)
 	{
-		color = 0xff006600;
-		if (dda->raydir[ray->side] < 0)
-			color = 0xff004500;
-	}
-	i = wall_down;
-	while (i <= wall_up)
-	{
-		if (game->minimap)
+		if (game->texture[wall_side])
 		{
-			if (x < game->mini_width)
-				if (i < game->mini_height)
-					i = game->mini_height + 4;
+			tex[1] = (int)tex_pos;// & (game->texture[wall_side]->height - 1);
+			tex_pos += step;
 		}
-		px_put(game->data, x, i, color);
-		i++;
+		color = get_color(game, wall_side, tex, y);
+		px_put(game->data, x, y, color);
+		y++;
 	}
 	return ;
+}
+/*
+}
+
+static void	draw_texture(t_game *game, t_dda *dda, t_ray *ray, int x)
+{
+*/
+static unsigned int	get_color(t_game *game, int wall, int pos[2], int y)
+{
+	int				p_pos;
+	unsigned int	color;
+	t_texture		texture;
+
+	if (!game->texture[wall])
+		color = game->default_color[wall];
+	else
+	{
+		texture = *game->texture[wall];
+		p_pos = (pos[1] * texture.l_length) + pos[0] * (texture.bpp / 8);
+//		p_pos = (y * texture.l_length) + pos[0] * (texture.bpp / 8);
+		color = *(unsigned int *)&texture.addr_w[p_pos];
+	}
+	return (color);
+}
+
+static int	get_wall_text(t_dda *dda, t_ray *ray)
+{
+	int	wall_text;
+
+	if (ray->side == 0)
+ 	{
+		wall_text = EA;
+		if (dda->raydir[ray->side] < 0)
+			wall_text = WE;
+	}
+	if (ray->side == 1)
+ 	{
+		wall_text = SO;
+		if (dda->raydir[ray->side] < 0)
+			wall_text = NO;
+	}
+	return (wall_text);
 }
 
 void	refresh_screen(t_game *game)
@@ -167,7 +225,8 @@ float	dda_collision(t_game *game, float move[2], int	sens)
 		test = (ray.dist - COLL_DIST);
 		if (test <= move[ray.side] * dda.step[ray.side])
 			move[ray.side] = test * dda.step[ray.side];
-		draw_line(game, &dda, &ray);
+		if (game->minimap && game->show_col)
+			draw_line(game, &dda, &ray);
 		x++;
 		safe_angle_add(&camera, 1);
 	}

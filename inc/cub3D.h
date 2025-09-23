@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/22 12:29:47 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/23 12:03:42 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,15 @@ typedef struct			s_game
 	int				mini_width;
 	int				mini_height;
 	int				fov;
-	int				fov_show;
+	int				show_fov;
 	int				show_fps;
+	int				show_col;
 	long int		start_time;
 	long int		old_time;
 	long int		time;
+	unsigned int	default_color[4];
 	double			frametime;
-  struct s_texture	*texture[4];
+	struct s_texture	*texture[4];
 	struct s_player	*player;
 	struct s_data	*data;
 	struct s_config	*config;
@@ -82,7 +84,7 @@ typedef	struct		s_config
 typedef	struct		s_texture
 {
 	void			*wall;
-	void			*addr_w;
+	char			*addr_w;
 	int				height;
 	int				width;
 	int				bpp;

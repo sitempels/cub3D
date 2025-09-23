@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/22 11:49:40 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/22 13:55:50 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,26 @@ int	key_handler(int keycode, t_game *game)
 		game->minimap = (game->minimap + 1) % 2;
 	if (keycode == 0x66)
 		game->show_fps = (game->show_fps + 1) % 2;
+	if (keycode == 0x67)
+		game->show_fov = (game->show_fov + 1) % 2;
+	if (keycode == 0x68)
+		game->show_col = (game->show_col + 1) % 2;
 	return (0);
 }
 
 static int	move_player(t_game *game, t_data *data, int key_code)
 {
+	int			sens;
 	float		move[2];
+	double		turn;
 	t_player	*player;
 
 	player = game->player;
-	get_fps(game);
+//	get_fps(game);
 	if (game->minimap == 1)
 		draw_minimap(game, data);
 	if (key_code == UP_KEY || key_code == DOWN_KEY)
  	{
-		int		sens;
-		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		if (game->minimap)
 			draw_player(game, data, FLOOR_COLOR);
 		sens = 0xff53 - key_code;
@@ -62,16 +66,12 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 		game->player->pos[1] += move[1];
 		if (game->minimap)
 			draw_player(game, data, PLAYER_COLOR);
-		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game);
 	}
 	else if (key_code == LEFT_KEY || key_code == RIGHT_KEY)
 	{
-		double	turn;
-		printf("player before	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		turn = TURN_SPEED * (key_code - 0xff52);
 		safe_angle_add(&player->facing, turn);
-		printf("player after	facing: %f posx: %f posy: %f\n", game->player->facing, game->player->pos[0], game->player->pos[1]);
 		game_loop(game);
 	}
 	return (0);

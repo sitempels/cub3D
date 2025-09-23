@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:01 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/16 02:03:48 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/22 13:28:42 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ int	main(int ac, char **av)
 	close(fd);
 	/*---INIITALIZER TO MOVE-------*/
 	game.minimap = 1;
-	game.show_fps = 0;
+	game.show_fps = 1;
+	game.show_fov = 1;
+	game.show_col = 1;
 	/*-----------------------------*/
 	display_handler(&game);
 	cleanup_game(&game);
