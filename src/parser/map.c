@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 02:45:40 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 15:05:44 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,27 @@ int	init_map(t_game *game, char *line, int curr_row, int line_lenght)
 	}
 	return (0);
 }
+/* int	get_line_map(t_game *game, char *line, )
+{
+	if (game->config->first_map)
+	{
+		line = ft_strdup(game->config->first_map);
+		free(game->config->first_map);
+		game->config->first_map = NULL;
+	}
+	else
+	{
+		if ((get_next_line(fd, &line)) < 0)
+			return (ft_error(RD_FILE, NULL), 1);
+		else if (!line)
+			return (init_game(game, game->max_y));
+	}
+	line_lenght = ft_strlen(line);
+	if (line_lenght > game->max_x)
+		game->max_x = line_lenght;
+} */
 
-int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
+int	process_map_recursive(int fd, t_game *game)
 {
 	char		*line;
 	int			line_lenght;
@@ -96,26 +115,27 @@ int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
 		if ((get_next_line(fd, &line)) < 0)
 			return (ft_error(RD_FILE, NULL), 1);
 		else if (!line)
-			return (init_game(game, *rows));
+			return (init_game(game, game->max_y));
 	}
 	line_lenght = ft_strlen(line);
-	if (line_lenght > *max_len)
-		*max_len = line_lenght;
+	if (line_lenght > game->max_x)
+		game->max_x = line_lenght;
+		
 	ret = check_line(line, game->config);
 	if (ret == 1)
 		return (gnl_cleanup(line), 1);
 	if (!game->config->map_end)
 	{
-		curr_row = *rows;
-		(*rows)++;
+		curr_row = game->max_y;
+		(game->max_y)++;
 	}
-	if (process_map_recursive(fd, game, rows, max_len) != 0)
+	if (process_map_recursive(fd, game) != 0)
 		return (gnl_cleanup(line), 1);
 	if (!game->map)
 		return (free(line), 1);
 	if (detect_content(line, NULL))
 	{
-		game->map[curr_row] = malloc(sizeof(int) * (*max_len));
+		game->map[curr_row] = malloc(sizeof(int) * (game->max_x));
 		if (!(game->map)[curr_row])
 			return (free(line), 1);
 		if (init_map(game, line, curr_row, line_lenght) != 0)
