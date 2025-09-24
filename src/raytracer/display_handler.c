@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 13:51:53 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 14:25:11 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	display_handler(t_game *game)
 	game->old_time = 0;
 	data.mlx = mlx_init();
 	i = 0;
-	while (i < 1)
+	while (i < 4)
 	{
 		game->texture[i] = malloc(sizeof(t_texture));
 		if (!game->texture[i])
