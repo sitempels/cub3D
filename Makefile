@@ -6,7 +6,7 @@
 #    By: agaland <agaland@student.s19.be>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/22 21:45:37 by agaland          ###   ########.fr        #
+#    Updated: 2025/09/24 16:16:12 by agaland          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ PLAYER_DIR = player
 SRC_PLAYER = $(addprefix $(PLAYER_DIR)/,)
 #
 UTILS_DIR = utils
-SRC_UTILS = $(addprefix $(UTILS_DIR)/, utils)
+SRC_UTILS = $(addprefix $(UTILS_DIR)/, utils print)
 
 GNL_DIR = gnl
 SRC_GNL = $(addprefix $(GNL_DIR)/, get_next_line_bonus get_next_line_utils_bonus)

@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:43 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 14:34:24 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 16:19:43 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,6 @@ int	ft_isblank(char c)
 {
 	if (c == ' ' || c == '\t')
 		return (1);
-	return (0);
-}
-
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	size_t	i;
-
-	i = 0;
-	while (s1[i] || s2[i])
-	{
-		if (s1[i] != s2[i])
-			return ((unsigned char) s1[i] - (unsigned char) s2[i]);
-		i++;
-	}
 	return (0);
 }
 

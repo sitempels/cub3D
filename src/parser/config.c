@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 19:13:21 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 23:07:37 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 15:39:36 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	check_rgb(char *line, int *i, t_config *config, int type)
 	return (0);
 }
 
-int	fill_texture(t_config *config, char *line, int *i, int type)
+int	fill_texture(t_game *game, char *line, int *i, int type)
 {
 	char	*start;
 	char	*path;
@@ -84,13 +84,13 @@ int	fill_texture(t_config *config, char *line, int *i, int type)
 	len = &line[*i] - start;
 	path = malloc(sizeof(char) * (len + 1));
 	if (!path)
-		return (1);
+		malloc_exit(game, line);
 	ft_strlcpy(path, start, len + 1);
-	config->textures_path[type] = path;
+	game->config->textures_path[type] = path;
 	return (0);
 }
 
-int	parse_line(t_config *config, char *line, int *i, int type)
+int	parse_line(t_game *game, char *line, int *i, int type)
 {
 	while (line[*i] && ft_isblank(line[*i]))
 		(*i)++;
@@ -101,12 +101,12 @@ int	parse_line(t_config *config, char *line, int *i, int type)
 	}
 	if (is_texture(type))
 	{
-		if (fill_texture(config, line, i, type) == ERROR)
+		if (fill_texture(game, line, i, type) == ERROR)
 			return (1);
 	}
 	else
 	{
-		if (check_rgb(line, i, config, type) == ERROR)
+		if (check_rgb(line, i, game->config, type) == ERROR)
 			return (1);
 		printf("RGB value validated\n"); // COMMENTAIRE A SUPPRIMER
 	}

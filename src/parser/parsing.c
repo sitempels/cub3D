@@ -6,14 +6,14 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/24 11:55:49 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 16:40:11 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 #include "get_next_line_bonus.h"
 
-int	parse_config(char *line, int *arr, t_config *config)
+int	parse_config(char *line, int *arr, t_game *game)
 {
 	int		i;
 	int		type;
@@ -23,7 +23,9 @@ int	parse_config(char *line, int *arr, t_config *config)
 		return (0);
 	if (first_char == '1')
 	{
-		config->first_map = ft_strdup(line);
+		game->config->first_map = ft_strdup(line);
+		if (!game->config->first_map)
+			malloc_exit(game, line);
 		return (0);
 	}
 	i = 0;
@@ -31,18 +33,16 @@ int	parse_config(char *line, int *arr, t_config *config)
 		i++;
 	type = compare_types(&line[i]);
 	if (type >= 0)
-	{
 		if (skip_and_save_type(type, arr, &i) != 0)
 			return (1);
-	}
 	else
 		return (ft_error(ERR_CONFIG, NULL), 1);
-	if (parse_line(config, line, &i, type) == ERROR)
+	if (parse_line(game, line, &i, type) == ERROR)
 		return (1);
 	return (0);
 }
 
-int	process_config(int fd, t_config *config)
+int	process_config(int fd, t_game *game)
 {
 	char	*line;
 	int		parsed_elements[6];
@@ -58,11 +58,11 @@ int	process_config(int fd, t_config *config)
 		ret = get_next_line(fd, &line);
 		if (ret < 0)
 			return (ft_error(RD_FILE, NULL), 1);
-		if (parse_config(line, parsed_elements, config) == ERROR)
+		if (parse_config(line, parsed_elements, game) == ERROR)
 			return (gnl_cleanup(line), 1);
-		if (config->first_map && config_completed(parsed_elements))
+		if (game->config->first_map && config_completed(parsed_elements))
 			return (free(line), 0);
-		else if (config->first_map)
+		else if (game->config->first_map)
 			break ;
 		free(line);
 	}
@@ -75,10 +75,7 @@ void	init_config(t_game *game)
 
 	game->config = malloc(sizeof(t_config));
 	if (!game->config)
-	{
-		ft_error(ERR_MALLOC, NULL);
-		exit(1);
-	}
+		malloc_exit(game, NULL);
 	game->config->first_map = NULL;
 	i = 0;
 	while (i < 4)
@@ -100,7 +97,7 @@ void	init_config(t_game *game)
 int	parse_file(int fd, t_game *game)
 {
 	init_config(game);
-	if (process_config(fd, game->config) == ERROR)
+	if (process_config(fd, game) == ERROR)
 		return (1);
 	if (process_map_recursive(fd, game) == 1)
 		return (1);

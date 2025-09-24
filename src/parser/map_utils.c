@@ -6,13 +6,13 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 14:37:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/23 18:04:26 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 16:33:09 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int	init_game(t_game *game, int rows)
+int	init_game(t_game *game, int rows, char *line)
 {
 	if (game->config->player_count == 0)
 		return (ft_error(NO_PLAYER, NULL), 1);

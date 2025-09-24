@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/24 00:50:38 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 16:32:34 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static int	get_line_map(t_game *game, int fd, char **line, int *line_lenght)
 	if (game->config->first_map)
 	{
 		*line = ft_strdup(game->config->first_map);
+		if (!line)
+			malloc_exit(game, NULL);
 		free(game->config->first_map);
 		game->config->first_map = NULL;
 	}
@@ -76,18 +78,18 @@ int	process_map_recursive(int fd, t_game *game)
 	if (get_line_map(game, fd, &line, &line_lenght) == ERROR)
 		return (1);
 	if (!line)
-		return (init_game(game, game->max_y), 0);
+		return (init_game(game, game->max_y, line), 0);
 	if (!game->config->map_end)
 		curr_row = (game->max_y)++;
 	if (process_map_recursive(fd, game) != 0)
 		return (gnl_cleanup(line), 1);
 	if (!game->map)
-		return (free(line), 1);
+		return (gnl_cleanup(line), ft_error(ERR_MALLOC, NULL), 1);
 	if (detect_content(line, NULL))
 	{
 		game->map[curr_row] = malloc(sizeof(int) * (game->max_x));
 		if (!(game->map)[curr_row])
-			return (free(line), 1);
+			malloc_exit(game, line);
 		if (init_map(game, line, curr_row, line_lenght) != 0)
 			return (free(line), 1);
 	}
