@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 14:58:21 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/24 18:02:11 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "error.h"
 # include <unistd.h>
 # include <stdlib.h>
+# include <string.h>
 # include <stdarg.h>
 # include <stdio.h>
 # include <math.h>
@@ -37,15 +38,19 @@
 # define WEST 180
 # define NORTH 270
 # define WIDTH 1080
-# define HEIGHT 912
+# define HEIGHT 720
 # define COLL_DIST 0.1
-# define SOIL_COLOR 0xffffffff
-# define SKY_COLOR 0x00000000
-# define MINI_BACKGROUND 0xff0ff000
 # define MINI_SIZE 16
 # define MLX_SYNC_IMAGE_WRITABLE 1
 # define MLX_SYNC_WIN_FLYSH_CMD 2
 # define MLX_SYNC_WIN_CMD_COPLETED 3
+/**/
+/*____________COLORS_*/
+# define RAY_COLOR 0xb366ff
+# define PLAYER_COLOR 0xfa3737
+# define WALL_COLOR 0xff003600
+# define FLOOR_COLOR 0xffe8ddb3
+# define MINI_BACKGROUND 0x4a4946
 
 /*_______________________________STRUCT_______________________________________*/
 
@@ -153,19 +158,22 @@ void		init_config(t_game *game);
 /*________________HOOK___*/
 int			close_all(t_game *game, t_data *data, int status);
 int			key_handler(int keycode, t_game *game);
+/*________________PLAYER*/
+int			move_player(t_game *game, t_data *data, int camera);
+int			turn_player(t_game *game, t_data *data, int key_code);
 /*________________RAYCAST*/
-int			display_handler(t_game *game);
+int			cub3d(t_game *game);
 int			game_loop(t_game *game);
 void		dda_operation(t_game *game, float facing);
-void		dda_collision(t_game *game, float move[2], int sens);
+void		dda_collision(t_game *game, float move[2], float camera);
 void		img_put(t_data *data, int coord[2], int size_mod, unsigned int color);
 void		px_put(t_data *data, int x, int y, unsigned int color);
-void		safe_angle_add(float *angle, float mod);
 void		draw_player(t_game *game, t_data *data, unsigned int color);
 void		draw_minimap(t_game *game, t_data *data);
 void		draw_wall(t_game *game, t_dda *dda, t_ray *ray);
 void		draw_line(t_game *game, t_dda *dda, t_ray *ray);
 void		refresh_screen(t_game *game);
+float		safe_angle_add(float *angle, float mod);
 double		get_angle(int type, int facing);
 /*________________UTILS__*/
 void		print_map(int **matrix, int height, int width);

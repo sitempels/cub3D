@@ -6,7 +6,7 @@
 #    By: agaland <agaland@student.s19.be>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/22 21:45:37 by agaland          ###   ########.fr        #
+#    Updated: 2025/09/24 16:26:37 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ PARSER_DIR = parser
 SRC_PARSER = $(addprefix $(PARSER_DIR)/, parsing parsing_utils config config_utils map map_utils floodfill)
 #
 PLAYER_DIR = player
-SRC_PLAYER = $(addprefix $(PLAYER_DIR)/,)
+SRC_PLAYER = $(addprefix $(PLAYER_DIR)/, movement)
 #
 UTILS_DIR = utils
 SRC_UTILS = $(addprefix $(UTILS_DIR)/, utils)

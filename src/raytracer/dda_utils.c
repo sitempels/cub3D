@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dda_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/24 15:56:44 by stempels          #+#    #+#             */
+/*   Updated: 2025/09/24 16:13:40 by stempels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 double	get_angle(int type, int facing)
@@ -59,30 +71,27 @@ void	refresh_screen(t_game *game)
 
 void	draw_line(t_game *game, t_dda *dda, t_ray *ray)
 {
-	float	x;
-	float	y;
-	float	px;
-	float	py;
-	float	dist_x;
-	float	dist_y;
+	float	pos[2];
+	float	p_px[2];
+	float	dist[2];
 
-	x = game->player->pos[0] * game->mini_size;
-	y = game->player->pos[1] * game->mini_size;
-	dist_x = 0;
-	dist_y = 0;
-	while ((ray->side == 0 && dist_x < ray->dist * game->mini_size)
-		|| (ray->side == 1 && dist_y < ray->dist * game->mini_size))
+	pos[0] = game->player->pos[0] * game->mini_size;
+	pos[1] = game->player->pos[1] * game->mini_size;
+	dist[0] = 0;
+	dist[1] = 0;
+	while ((ray->side == 0 && dist[0] < ray->dist * game->mini_size)
+		|| (ray->side == 1 && dist[1] < ray->dist * game->mini_size))
 	{
-		px = x + (dist_x * dda->raydir[0]);
-		py = y + (dist_y * dda->raydir[1]);
-		px_put(game->data, px, py, ray->color);
-		if (dist_x < dist_y && (dda->raydir[0] != 0))
-			dist_x += dda->d_dist[0];
+		p_px[0] = pos[0] + (dist[0] * dda->raydir[0]);
+		p_px[1] = pos[1] + (dist[1] * dda->raydir[1]);
+		px_put(game->data, p_px[0], p_px[1], ray->color);
+		if (dist[0] < dist[1] && (dda->raydir[0] != 0))
+			dist[0] += dda->d_dist[0];
 		else
-			dist_y += dda->d_dist[1];
+			dist[1] += dda->d_dist[1];
 	}
-	if (dda->raydir[ray->side] > 0) 
-		px_put(game->data, px + 1, py + 1, ray->color);
+	if (dda->raydir[ray->side] > 0)
+		px_put(game->data, p_px[0] + 1, p_px[1] + 1, ray->color);
 }
 
 unsigned int	convert_int(int rgb[3])
