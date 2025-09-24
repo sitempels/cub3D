@@ -30,7 +30,11 @@ int	main(int ac, char **av)
 	close(fd);
 	/*---INIITALIZER TO MOVE-------*/
 	game.minimap = 1;
-	game.show_fps = 0;
+	game.mini_size = MINI_SIZE;
+	game.show_fps = 1;
+	game.show_fov = 1;
+	game.show_col = 1;
+	game.frametime = 1;
 	/*-----------------------------*/
 	if (display_handler(&game) != 0)
 		return (cleanup_game(&game), 1);

@@ -37,7 +37,7 @@ EVENT_DIR = event
 SRC_EVENT = $(addprefix $(EVENT_DIR)/,)
 #
 RAYTRACER_DIR = raytracer
-SRC_RAYTRACER = $(addprefix $(RAYTRACER_DIR)/, display_handler display_handler_utils dda_operation)
+SRC_RAYTRACER = $(addprefix $(RAYTRACER_DIR)/, display_handler display_handler_utils dda_operation dda_utils draw_wall)
 #
 PARSER_DIR = parser
 SRC_PARSER = $(addprefix $(PARSER_DIR)/, parsing parsing_utils config config_utils map map_utils floodfill)
