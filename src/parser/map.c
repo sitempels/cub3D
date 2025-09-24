@@ -6,121 +6,90 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/19 18:32:56 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/24 00:50:38 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 #include "get_next_line_bonus.h"
 
-int	init_game(t_game *game, int rows)
+static int	check_line(char *line, t_config *config)
 {
-	game->map = malloc(sizeof(int *) * (rows));
-	if (!game->map)
-		return (1);
-	game->screen_width = WIDTH;
-	game->screen_height = HEIGHT;
-	game->minimap = 1;
-	game->fov = FOV;
-	game->player = malloc(sizeof(t_player));
-	if (!game->player)
-		return (1);
-	ft_memset(game->player, 0, sizeof(t_player));
-	return (0);
-}
+	int	i;
 
-void	pad_map_row(t_game *game, int y)
-{
-	int	x;
-
-	x = 0;
-	while (x < game->max_x)
+	if (detect_content(line, NULL))
 	{
-		game->map[y][x] = -1;
-		x++;
+		if (config->map_end == true)
+			return (ft_error(ERR_MAP, NULL), 1);
 	}
-}
-
-void	init_player(t_game *game, int y, int x, double facing)
-{
-	game->player->facing = facing;
-	game->player->pos[0] = (x + 0.5);
-	game->player->pos[1] = (y + 0.5);
-	game->map[y][x] = FLOOR;
-}
-
-int	init_map(t_game *game, char *line, int curr_row, int line_lenght)
-{
-	int	j;
-
-	pad_map_row(game, curr_row);
-	j = 0;
-	while (j < line_lenght)
+	else
+		return (config->map_end = true, 0);
+	i = 0;
+	while (line[i])
 	{
-		if (line[j] == ' ' || line[j] == '\n' || line[j] == '\t')
-			game->map[curr_row][j] = EMPTY;
-		else if (line[j] == '0')
-			game->map[curr_row][j] = FLOOR;
-		else if (line[j] == '1')
-			game->map[curr_row][j] = WALL;
-		else if (line[j] == 'N')
-			init_player(game, curr_row, j, NORTH);
-		else if (line[j] == 'S')
-			init_player(game, curr_row, j, SOUTH);
-		else if (line[j] == 'E')
-			init_player(game, curr_row, j, EAST);
-		else if (line[j] == 'W')
-			init_player(game, curr_row, j, WEST);
-		else
-			return (1);
-		j++;
+		if (!ft_strchr("01NSEW \n\t", line[i]))
+			return (ft_printf_fd(STDERR_FILENO,
+					"Error\nInvalid character <%c> on the map\n", line[i]), 1);
+		if (ft_strchr("NSEW", line[i]))
+		{
+			config->player_count++;
+			if (config->player_count > 1)
+				return (ft_error(MULT_PLAYERS, NULL), 1);
+		}
+		i++;
 	}
 	return (0);
 }
 
-int	process_map_recursive(int fd, t_game *game, int *rows, int *max_len)
+static int	get_line_map(t_game *game, int fd, char **line, int *line_lenght)
 {
-	char		*line;
-	int			line_lenght;
-	int			curr_row;
-	int			ret;
+	int	ret;
 
 	if (game->config->first_map)
 	{
-		line = ft_strdup(game->config->first_map);
+		*line = ft_strdup(game->config->first_map);
 		free(game->config->first_map);
 		game->config->first_map = NULL;
 	}
 	else
 	{
-		if ((get_next_line(fd, &line)) < 0)
-			return (printf("Error: Reading file\n"), 1);
-		else if (!line)
-			return (init_game(game, *rows));
+		if ((get_next_line(fd, line)) < 0)
+			return (ft_error(RD_FILE, NULL), 1);
+		else if (!*line)
+			return (0);
 	}
-	line_lenght = ft_strlen(line);
-	if (line_lenght > *max_len)
-		*max_len = line_lenght;
-	ret = check_line(line, game->config);
+	*line_lenght = ft_strlen(*line);
+	if (*line_lenght > game->max_x)
+		game->max_x = *line_lenght;
+	ret = check_line(*line, game->config);
 	if (ret == 1)
-		return (gnl_cleanup(line), 1);
+		return (gnl_cleanup(*line), 1);
+	return (0);
+}
+
+int	process_map_recursive(int fd, t_game *game)
+{
+	char		*line;
+	int			line_lenght;
+	int			curr_row;
+
+	if (get_line_map(game, fd, &line, &line_lenght) == ERROR)
+		return (1);
+	if (!line)
+		return (init_game(game, game->max_y), 0);
 	if (!game->config->map_end)
-	{
-		curr_row = *rows;
-		(*rows)++;
-	}
-	if (process_map_recursive(fd, game, rows, max_len) != 0)
+		curr_row = (game->max_y)++;
+	if (process_map_recursive(fd, game) != 0)
 		return (gnl_cleanup(line), 1);
 	if (!game->map)
 		return (free(line), 1);
 	if (detect_content(line, NULL))
 	{
-		game->map[curr_row] = malloc(sizeof(int) * (*max_len));
+		game->map[curr_row] = malloc(sizeof(int) * (game->max_x));
 		if (!(game->map)[curr_row])
 			return (free(line), 1);
 		if (init_map(game, line, curr_row, line_lenght) != 0)
 			return (free(line), 1);
 	}
-	free(line);
-	return (0);
+	return (free(line), 0);
 }

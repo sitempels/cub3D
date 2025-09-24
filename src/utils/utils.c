@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/19 16:04:43 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 18:30:32 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,31 @@ void	print_map(int **matrix, int height, int width)
 	printf("----------------------------------\n");
 }
 
+void	ft_error(char *msg, char *var)
+{
+	ft_printf_fd(STDERR_FILENO, "Error\n");
+	if (var)
+		ft_printf_fd(STDERR_FILENO, msg, var);
+	else
+		ft_printf_fd(STDERR_FILENO, msg);
+}
+
+void	free_map(int **array, int size)
+{
+	int	i;
+
+	if (!array)
+		return ;
+	i = 0;
+	while (i < size)
+	{
+		if (array[i])
+			free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
 void	gnl_cleanup(char *line)
 {
 	free(line);
@@ -53,20 +78,11 @@ void	gnl_cleanup(char *line)
 
 void	cleanup_game(t_game *game)
 {
-	int	i;
-
 	if (!game)
-		return;
+		return ;
 	if (game->map)
 	{
-		i = 0;
-		while (i < game->max_y)
-		{
-			if (game->map[i])
-				free(game->map[i]);
-			i++;
-		}
-		free(game->map);
+		free_map(game->map, game->max_y);
 		game->map = NULL;
 	}
 	if (game->player)
@@ -80,10 +96,19 @@ void	cleanup_game(t_game *game)
 
 void	free_config(t_config *config)
 {
+	int	i;
+
 	if (config->first_map)
 	{
 		free(config->first_map);
 		config->first_map = NULL;
+	}
+	i = 0;
+	while (i < 4)
+	{
+		if (config->textures_path[i])
+			free(config->textures_path[i]);
+		i++;
 	}
 	free(config);
 	config = NULL;

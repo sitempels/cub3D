@@ -48,9 +48,9 @@ void	refresh_screen(t_game *game)
 						j = game->mini_height + game->mini_size;
 			}
 			if (j < game->screen_height / 2)
-				color = SKY_COLOR;
+				color = convert_int(game->config->floor_rgb);
 			if (j >= game->screen_height / 2)
-				color = SOIL_COLOR;
+				color = convert_int(game->config->ceiling_rgb);
 			px_put(game->data, i, j, color);
 		}
 	}
@@ -83,4 +83,15 @@ void	draw_line(t_game *game, t_dda *dda, t_ray *ray)
 	}
 	if (dda->raydir[ray->side] > 0) 
 		px_put(game->data, px + 1, py + 1, ray->color);
+}
+
+unsigned int	convert_int(int rgb[3])
+{
+	unsigned int	res;
+
+	res = 0;
+	res = (rgb[0]);
+	res = (res << 8) + rgb[1];
+	res = (res << 8) + rgb[2];
+	return (res);
 }

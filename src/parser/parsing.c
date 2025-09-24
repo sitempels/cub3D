@@ -6,191 +6,39 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/22 01:39:38 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 11:55:49 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 #include "get_next_line_bonus.h"
 
-int	compare_types(char *line_pos)
-{
-	if (ft_strncmp(line_pos, "NO ", 3) == 0)
-		return (NO);
-	if (ft_strncmp(line_pos, "SO ", 3) == 0)
-		return (SO);
-	if (ft_strncmp(line_pos, "WE ", 3) == 0)
-		return (WE);
-	if (ft_strncmp(line_pos, "EA ", 3) == 0)
-		return (EA);
-	if (ft_strncmp(line_pos, "F ", 2) == 0)
-		return (F);
-	if (ft_strncmp(line_pos, "C ", 2) == 0)
-		return (C);
-	return (-1);
-}
-
-bool	config_completed(int *parsed_elements)
-{
-	int	i;
-
-	i = 0;
-	while (i <= C)
-	{
-		if (parsed_elements[i] == -1)
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
-int	skip_and_save_type(int type, int *arr, int *i)
-{
-	if (is_texture(type) && arr[type] == -1)
-	{
-		arr[type] = type;
-		*i += 2;
-	}
-	else if ((type == F || type == C) && arr[type] == -1)
-	{
-		arr[type] = type;
-		*i += 1;
-	}
-	else
-	{
-		ft_printf_fd(STDERR_FILENO, "Error: This type has already been parsed\n");
-		return (1);
-	}
-	return (0);
-}
-
-bool	is_texture(int type)
-{
-	if (type == NO || type == SO || type == WE || type == EA)
-		return (true);
-	return (false);
-}
-
-int	check_rgb(char *line, int *i, t_config *config, int type)
-{
-	int		count;
-	char	*start;
-
-	start = &line[*i];
-	count = 0;
-	while (*start && ft_isblank(*start))
-		start++;
-
-	while (count < 3)
-	{
-		if (!ft_isdigit(*start))
-			return (ft_printf_fd(STDERR_FILENO, "Error: Invalid RGB format\n"), 1);
-		if (type == C)
-			config->ceiling_rgb[count] = atoi(start);
-		else
-			config->floor_rgb[count] = atoi(start);
-		if ((config->ceiling_rgb[count] < 0 || config->ceiling_rgb[count] > 255) ||
-				(config->floor_rgb[count] < 0 || config->floor_rgb[count] > 255))
-				return (ft_printf_fd(STDERR_FILENO, "Error: RGB value out of range (0-255)\n"), 1);
-		while (*start && ft_isdigit(*start))
-			start++;
-		count++;
-		if (count < 3)
-		{
-			while (*start && ft_isblank(*start))
-				start++;
-			if (*start  != ',')
-				return (ft_printf_fd(STDERR_FILENO, "Error: RGB values must be separated by a comma\n"), 1);
-			start++;
-			while (*start && ft_isblank(*start))
-				start++;
-		}
-	}			
-	if (count != 3)
-		return (ft_printf_fd(STDERR_FILENO, "Error: RGB must have exactly 3 values\n"), 1);
-	while (*start && ft_isblank(*start))
-		start++;
-	if (*start && *start != '\n' && *start != '\0')
-		return (ft_printf_fd(STDERR_FILENO, "Error: Extra content after RGB values\n"), 1);
-	*i = start - line;
-	return (0);
-}
-
 int	parse_config(char *line, int *arr, t_config *config)
 {
 	int		i;
-	char	first_char;
 	int		type;
+	char	first_char;
 
 	if (!detect_content(line, &first_char))
 		return (0);
 	if (first_char == '1')
 	{
-		printf("it's a map!! : %c\n", first_char);
 		config->first_map = ft_strdup(line);
 		return (0);
 	}
 	i = 0;
-	while (line[i])
+	while (line[i] && ft_isblank(line[i]))
+		i++;
+	type = compare_types(&line[i]);
+	if (type >= 0)
 	{
-		while (line[i] && ft_isblank(line[i]))
-			i++;
-		type = compare_types(&line[i]);
-		if (type >= 0)
-		{
-			if (skip_and_save_type(type, arr, &i) != 0)
-				return (1);
-		}
-		else
-		{
-			ft_printf_fd(STDERR_FILENO, "Error: Incorrect config value\n");
+		if (skip_and_save_type(type, arr, &i) != 0)
 			return (1);
-		}
-		while (line[i] && ft_isblank(line[i]))
-			i++;
-		if (!line[i] || line[i] == '\n')
-		{
-			ft_printf_fd(STDERR_FILENO, "Error: Missing config value\n");
-			return (1);
-		}
-		if (is_texture(type))
-		{
-			char	*start;
-			
-			if (!valid_file_extension(&line[i], ".xpm", 'X'))
-				return (1);
-			start = &line[i];
-			printf("Texture extension format validated\n");
-			while (ft_isalnum(line[i]) || line[i] == '.' || line[i] == '/' || line[i] == '_')
-				i++;
-			if (detect_content(&line[i], &first_char))
-			{
-				ft_printf_fd(STDERR_FILENO, "Error: Extra content after texture path\n");
-				return (1);
-			}
-			int	len = &line[i] - start;
-			char *path = malloc(sizeof(char) * (len + 1));
-			if (!path)
-				return (1);
-			ft_strlcpy(path, start, len + 1);
-			path[len] = '\0';
-			if (type == NO)
-				config->textures_path[0] = path;
-			else if (type == SO)
-				config->textures_path[1] = path;
-			else if (type == WE)
-				config->textures_path[2] = path;
-			else if (type == EA)
-				config->textures_path[3] = path;
-		}
-		else
-		{
-			if (check_rgb(line, &i, config, type) != 0)
-				return (1);
-			printf("RGV value validated\n");
-		}
-		break ;
 	}
+	else
+		return (ft_error(ERR_CONFIG, NULL), 1);
+	if (parse_line(config, line, &i, type) == ERROR)
+		return (1);
 	return (0);
 }
 
@@ -209,54 +57,55 @@ int	process_config(int fd, t_config *config)
 	{
 		ret = get_next_line(fd, &line);
 		if (ret < 0)
-			return (ft_printf_fd(STDERR_FILENO, "Error: Reading file"), 1);
-		if (parse_config(line, parsed_elements, config) == 1)
+			return (ft_error(RD_FILE, NULL), 1);
+		if (parse_config(line, parsed_elements, config) == ERROR)
 			return (gnl_cleanup(line), 1);
-		free(line);
 		if (config->first_map && config_completed(parsed_elements))
-			return (0);
-		if (config->first_map)
-		{
-			ft_printf_fd(STDERR_FILENO, "Error: incomplete configuration\n");
-			return (1);
-		}
+			return (free(line), 0);
+		else if (config->first_map)
+			break ;
+		free(line);
 	}
-	ft_printf_fd(STDERR_FILENO, "Error: incomplete configuration\n");
-	return (ret);
+	return (gnl_cleanup(line), ft_error(MISSING_CONFIG, NULL), 1);
+}
+
+void	init_config(t_game *game)
+{
+	int	i;
+
+	game->config = malloc(sizeof(t_config));
+	if (!game->config)
+	{
+		ft_error(ERR_MALLOC, NULL);
+		exit(1);
+	}
+	game->config->first_map = NULL;
+	i = 0;
+	while (i < 4)
+	{
+		game->config->textures_path[i] = NULL;
+		i++;
+	}
+	i = 0;
+	while (i < 3)
+	{
+		game->config->floor_rgb[i] = 0;
+		game->config->ceiling_rgb[i] = 0;
+		i++;
+	}
+	game->config->player_count = 0;
+	game->config->map_end = false;
 }
 
 int	parse_file(int fd, t_game *game)
-{	
-	game->config = malloc(sizeof(t_config));
-	if (!game->config)
-		return (1);
-	init_config(game->config);
-	if (process_config(fd, game->config) == 1)
-		return (1);
-	if (process_map_recursive(fd, game, &game->max_y, &game->max_x) == 1)
-		return (1);
-	print_map(game->map, game->max_y, game->max_x);
-	if (check_map_closure(game) != 0)
-	{
-		return (1);
-	}
-	return (0);
-}
-
-void init_config(t_config *config)
 {
-	int	i;
-	
-	if (config)
-	{
-		config->first_map = NULL;
-		i = 0;
-		while (i < 3)
-		{
-			config->floor_rgb[i] = 0;
-			config->ceiling_rgb[i] = 0;
-			i++;
-		}
-		config->map_end = false;
-	}
+	init_config(game);
+	if (process_config(fd, game->config) == ERROR)
+		return (1);
+	if (process_map_recursive(fd, game) == 1)
+		return (1);
+	print_map(game->map, game->max_y, game->max_x); //A SUPPRIMER
+	if (check_map_closure(game) != 0)
+		return (1);
+	return (0);
 }
