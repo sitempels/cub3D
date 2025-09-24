@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/24 00:42:28 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 11:55:49 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,13 @@ int	process_config(int fd, t_config *config)
 			return (ft_error(RD_FILE, NULL), 1);
 		if (parse_config(line, parsed_elements, config) == ERROR)
 			return (gnl_cleanup(line), 1);
-		free(line);
 		if (config->first_map && config_completed(parsed_elements))
-			return (0);
+			return (free(line), 0);
 		else if (config->first_map)
 			break ;
+		free(line);
 	}
-	return (ft_error(MISSING_CONFIG, NULL), 1);
+	return (gnl_cleanup(line), ft_error(MISSING_CONFIG, NULL), 1);
 }
 
 void	init_config(t_game *game)
