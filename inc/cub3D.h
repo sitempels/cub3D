@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/23 23:04:19 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 14:58:21 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,5 +177,5 @@ void		cleanup_game(t_game *game);
 void		gnl_cleanup(char *line);
 void		free_config(t_config *config);
 void		get_fps(t_game *game);
-
+unsigned int	convert_int(int rgb[3]);
 #endif
