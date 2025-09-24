@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:43 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/22 01:00:24 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/23 14:34:24 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ bool	detect_content(char *line, char *first_char)
 	int	i;
 
 	i = 0;
+	if (!line)
+		return (false);
 	while (line[i])
 	{
 		if (!ft_isspace(line[i]))
@@ -32,8 +34,8 @@ bool	detect_content(char *line, char *first_char)
 
 bool	valid_file_extension(char *filename, char *ext, char flag)
 {
-	char *ptr;
-	
+	char	*ptr;
+
 	if (flag != 'X')
 	{
 		if (ft_strnstr_end(filename, ext, ft_strlen(filename)) != NULL)
@@ -45,8 +47,7 @@ bool	valid_file_extension(char *filename, char *ext, char flag)
 		if (ptr && (ptr[4] == ' ' || ptr[4] == '\n'))
 			return (true);
 	}
-	ft_printf_fd(STDERR_FILENO,
-		"Error: incorrect or missing file extension. Expected: %s\n", ext);
+	ft_error(ERR_FILE, ext);
 	return (false);
 }
 

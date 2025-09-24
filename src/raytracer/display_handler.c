@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 14:11:02 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/24 13:51:53 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@ int	display_handler(t_game *game)
 	game->start_time = tmp.tv_sec * 1000000 + tmp.tv_usec;;
 	game->old_time = 0;
 	data.mlx = mlx_init();
-	data.win = mlx_new_window(data.mlx, game->screen_width, game->screen_height, "cub3D");
-	data.img = mlx_new_image(data.mlx, game->screen_width, game->screen_height);
-	data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.l_length, &data.endian); 
 	i = 0;
 	while (i < 1)
 	{
@@ -34,18 +31,21 @@ int	display_handler(t_game *game)
 			return (1);
 		game->texture[i]->wall = mlx_xpm_file_to_image(data.mlx, game->config->textures_path[i], &game->texture[i]->width, &game->texture[i]->height);
 		if (!game->texture[i]->wall)
-			return (1);
+			return (ft_error(ERR_TEXT, game->config->textures_path[i]), 1);
 		game->texture[i]->addr_w = mlx_get_data_addr(game->texture[i]->wall, &game->texture[i]->bpp, &game->texture[i]->l_length, &game->texture[i]->endian);
+		if (!game->texture[i]->addr_w)
+			return (ft_printf_fd(STDERR_FILENO, "Error\n"), 1);
 		i++;
 	}
+	data.win = mlx_new_window(data.mlx, game->screen_width, game->screen_height, "cub3D");
+	data.img = mlx_new_image(data.mlx, game->screen_width, game->screen_height);
+	data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.l_length, &data.endian); 
 	game->default_color[NO] = 0xff000050;
 	game->default_color[SO] = 0xff000025;
 	game->default_color[EA] = 0xff005000;
 	game->default_color[WE] = 0xff002500;
 	game->mini_width = MINI_SIZE * game->max_x;
 	game->mini_height = MINI_SIZE * game->max_y;
-//	if (game->minimap == 1)
-//		draw_minimap(game, &data);
 	mlx_hook(data.win, 2, 1L << 0, key_handler, game);
 	mlx_hook(data.win, 17, 0, close_all, &data);
 	mlx_loop_hook(data.mlx, game_loop, game);
@@ -70,8 +70,6 @@ int	game_loop(t_game *game)
 		mlx_string_put(data->mlx, data->win, game->screen_width - 128, 32, 0xffffff, "FPS");
 		mlx_string_put(data->mlx, data->win, game->screen_width - 64, 32, 0xffffff, ft_itoa((int)(1 / game->frametime)));
 	}
-//	else
-//		mlx_string_put(data->mlx, data->win, game->screen_width - 128, 32, 0xffffff, " ");
 	mlx_do_sync(data->mlx);
 	if (game->minimap)
 	{

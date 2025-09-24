@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/23 12:03:42 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/23 23:04:19 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "libft.h"
 # include "raycaster.h"
 # include "mlx.h"
+# include "error.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdarg.h>
@@ -28,8 +29,8 @@
 
 /**/
 /*_______________________________MACRO________________________________________*/
-# define CELL_TYPE "01NSEW "
-# define SPACE " "
+# define SUCCES 0
+# define ERROR 1
 # define FOV 66
 # define EAST 0
 # define SOUTH 90
@@ -79,6 +80,7 @@ typedef	struct		s_config
 	char			*textures_path[4];
 	int 			floor_rgb[3];
 	int 			ceiling_rgb[3];
+	int				player_count;
 	bool			map_end;
 }					t_config;
 
@@ -126,20 +128,27 @@ typedef enum e_config_type
 /*________________PARSING*/
 char		*ft_strnstr_end(const char *haystack, const char *needle, size_t len);
 int			parse_file(int fd, t_game *game);
-int			process_map_recursive(int fd, t_game *game, int *rows, int *max_len);
-int			check_line(char *line, t_config *config);
+int			process_config(int fd, t_config *config);
+int			parse_config(char *line, int *arr, t_config *config);
+int			parse_line(t_config *config, char *line, int *i, int type);
+int			fill_texture(t_config *config, char *line, int *i, int type);
+int			check_rgb(char *line, int *i, t_config *config, int type);
+int 		parse_rgb(char **start, int *count, int type, t_config *config);
+int			process_map_recursive(int fd, t_game *game);
+//int			check_line(char *line, t_config *config);
+int			skip_and_save_type(int type, int *arr, int *i);
 int			ft_isblank(char c);
 int			check_map_closure(t_game *game);
-int			floodfill(int **map, int pos_y, int pos_x, t_game *game);
-int			floodfill_ext(int **map, int y, int x, t_game *game);
+int			floodfill(t_game *game, int pos_y, int pos_x, char flag);
 int			init_game(t_game *game, int rows);
 int			init_map(t_game *game, char *line, int curr_row, int line_lenght);
+int			compare_types(char *line_pos);
 int			ft_strcmp(const char *s1, const char *s2);
 bool		is_texture(int type);
 bool		valid_file_extension(char *filename, char *ext, char del);
 bool		detect_content(char *line, char *first_char);
-void		init_player(t_game *game, int y, int x, double facing);
-void		init_config(t_config *config);
+bool		config_completed(int *parsed_elements);
+void		init_config(t_game *game);
 
 /*________________HOOK___*/
 int			close_all(t_game *game, t_data *data, int status);
@@ -161,9 +170,12 @@ double		get_angle(int type, int facing);
 /*________________UTILS__*/
 void		print_map(int **matrix, int height, int width);
 void		print_int_arr(int *arr, int len);
+
+void		ft_error(char *msg, char *var);
+void		free_map(int **array, int	size);
 void		cleanup_game(t_game *game);
 void		gnl_cleanup(char *line);
 void		free_config(t_config *config);
-void	get_fps(t_game *game);
+void		get_fps(t_game *game);
 
 #endif
