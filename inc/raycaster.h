@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 09:00:17 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/18 15:43:08 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/24 14:10:07 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 # define WALL_COLOR 0x428715
 # define PLAYER_COLOR 0xfa3737
 # define RAY_COLOR 0xb366ff
-# define SPEED 0.5
+# define SPEED 5.0
 # define SPEED_RATIO 2.0
-# define TURN_SPEED 5.0
+# define TURN_SPEED 90.0
 /*_______________________________STRUCT_______________________________________*/
 typedef struct		s_data
 {

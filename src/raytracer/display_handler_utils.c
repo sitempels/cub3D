@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/22 13:55:50 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/24 14:12:52 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,8 @@ int	key_handler(int keycode, t_game *game)
 
 static int	move_player(t_game *game, t_data *data, int key_code)
 {
-	int			sens;
 	float		move[2];
-	double		turn;
+	double		sens;
 	t_player	*player;
 
 	player = game->player;
@@ -55,11 +54,9 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 		draw_minimap(game, data);
 	if (key_code == UP_KEY || key_code == DOWN_KEY)
  	{
-		if (game->minimap)
-			draw_player(game, data, FLOOR_COLOR);
 		sens = 0xff53 - key_code;
-		move[0] = get_angle(0, player->facing) * SPEED * sens;// * game->frametime;
-		move[1] = get_angle(1, player->facing) * SPEED * sens;// * game->frametime;
+		move[0] = get_angle(0, player->facing) * SPEED * sens * game->frametime;
+		move[1] = get_angle(1, player->facing) * SPEED * sens * game->frametime;
 		dda_collision(game, move, sens);
 		game->player->pos[0] += move[0]; 
 		game->player->pos[1] += move[1];
@@ -69,8 +66,10 @@ static int	move_player(t_game *game, t_data *data, int key_code)
 	}
 	else if (key_code == LEFT_KEY || key_code == RIGHT_KEY)
 	{
-		turn = TURN_SPEED * (key_code - 0xff52);
-		safe_angle_add(&player->facing, turn);
+		sens = TURN_SPEED * (key_code - 0xff52) * game->frametime;
+		safe_angle_add(&player->facing, sens);
+		if (game->minimap)
+			draw_player(game, data, PLAYER_COLOR);
 		game_loop(game);
 	}
 	return (0);
@@ -133,6 +132,6 @@ void	draw_minimap(t_game *game, t_data *data)
 	i[0] = -1;
 	while (++i[0] < game->max_x)
 		img_put(data, i, game->mini_size, MINI_BACKGROUND);
-	draw_player(game, data, PLAYER_COLOR);
+//	draw_player(game, data, PLAYER_COLOR);
 	return ;
 }

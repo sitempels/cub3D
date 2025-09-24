@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/23 16:18:06 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/24 14:11:02 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	display_handler(t_game *game)
 
 	game->data = &data;
 	gettimeofday(&tmp, NULL);
-	game->start_time = tmp.tv_sec * 100000 + tmp.tv_usec;;
+	game->start_time = tmp.tv_sec * 1000000 + tmp.tv_usec;;
 	game->old_time = 0;
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, game->screen_width, game->screen_height, "cub3D");
@@ -74,7 +74,10 @@ int	game_loop(t_game *game)
 //		mlx_string_put(data->mlx, data->win, game->screen_width - 128, 32, 0xffffff, " ");
 	mlx_do_sync(data->mlx);
 	if (game->minimap)
+	{
 		draw_minimap(game, data);
+		draw_player(game, data, PLAYER_COLOR);
+	}
 	return (0);
 }
 
@@ -85,13 +88,10 @@ void	get_fps(t_game *game)
 	struct timeval		tmp;
 
 	gettimeofday(&tmp, NULL);
-	time = tmp.tv_sec * 100000 + tmp.tv_usec - game->start_time;
+	time = (tmp.tv_sec * 1000000 + tmp.tv_usec - game->start_time) / 1000;
 	diff = time - game->old_time;
-	if (diff > 0)
-	{
-		game->frametime = diff / 100000;
-		game->old_time = time;
-	}
+	game->frametime = ((double)diff / 1000);
+	game->old_time = time;
 }
 
 void	img_put(t_data *data, int coord[2], int size_mod, unsigned int color)
