@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 16:01:37 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 18:37:17 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@
 # define SOUTH 90
 # define WEST 180
 # define NORTH 270
-# define WIDTH 1080
-# define HEIGHT 912
+# define WIDTH 1220
+# define HEIGHT 720
 # define COLL_DIST 0.1
 # define SOIL_COLOR 0xffffffff
 # define SKY_COLOR 0x00000000
@@ -140,7 +140,7 @@ int			skip_and_save_type(int type, int *arr, int *i);
 int			ft_isblank(char c);
 int			check_map_closure(t_game *game);
 int			floodfill(t_game *game, int pos_y, int pos_x, char flag);
-int			init_game(t_game *game, int rows, char *line);
+int			init_game(t_game *game, int rows);
 int			init_map(t_game *game, char *line, int curr_row, int line_lenght);
 int			compare_types(char *line_pos);
 int			ft_strcmp(const char *s1, const char *s2);

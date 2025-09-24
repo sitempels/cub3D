@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/24 16:32:34 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 18:34:24 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	process_map_recursive(int fd, t_game *game)
 	if (get_line_map(game, fd, &line, &line_lenght) == ERROR)
 		return (1);
 	if (!line)
-		return (init_game(game, game->max_y, line), 0);
+		return (init_game(game, game->max_y));
 	if (!game->config->map_end)
 		curr_row = (game->max_y)++;
 	if (process_map_recursive(fd, game) != 0)

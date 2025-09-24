@@ -1,8 +1,8 @@
 
-NO misc/textures/grassycliff.xpm
-SO misc/textures/metal.xpm
-WE misc/textures/grassycliff.xpm
-EA misc/textures/metal.xpm
+NO misc/textures/stone_brick_32..xpm
+SO misc/textures/grass_block.xpm
+WE misc/textures/stone_brick_32..xpm
+EA misc/textures/grass_block.xpm
 
 F 220,100,4
 C 254,30,0

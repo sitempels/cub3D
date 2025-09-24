@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:24:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/24 13:51:16 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 17:32:20 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define RANGE_RGB "RGB value out of range (0-255)\n"
 # define FRMT_RGB "RGB values must be separated by a comma\n"
 # define RGB_COUNT "RGB must have exactly 3 values\n"
-# define RGB_EXTRA "Extra content after RGB values\n"
+# define RGB_EXTRA "Extra content before or after RGB values\n"
 # define UNCLOSED_MAP "Map is not closed\n"
 # define ERR_TEXT "Texture with path %s is not valid\n"
 

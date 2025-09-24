@@ -6,7 +6,7 @@
 #    By: agaland <agaland@student.s19.be>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/24 16:16:12 by agaland          ###   ########.fr        #
+#    Updated: 2025/09/24 18:12:00 by agaland          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ TYPE = EXEC
 #----------------------------COMPILER------------------------------------------#
 CC = cc
 debug: CC = gcc
-CCFLAGS = -Wall -Wextra -Werror -fPIE
+CCFLAGS = -Wall -Wextra -Werror -fPIE -O3 -march=native -flto
 debug: CCFLAGS = -g3 -fPIE
 CPPFLAGS = $(INC_FLAG)
 #

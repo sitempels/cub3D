@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/24 16:40:11 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/24 17:55:05 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,10 @@ int	parse_config(char *line, int *arr, t_game *game)
 	while (line[i] && ft_isblank(line[i]))
 		i++;
 	type = compare_types(&line[i]);
-	if (type >= 0)
-		if (skip_and_save_type(type, arr, &i) != 0)
-			return (1);
-	else
+	if (type < 0)
 		return (ft_error(ERR_CONFIG, NULL), 1);
+	else if (skip_and_save_type(type, arr, &i) != 0)
+		return (1);
 	if (parse_line(game, line, &i, type) == ERROR)
 		return (1);
 	return (0);
