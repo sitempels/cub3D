@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/22 12:29:47 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/23 12:03:42 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # define COLL_DIST 0.1
 # define SOIL_COLOR 0xffffffff
 # define SKY_COLOR 0x00000000
+# define MINI_BACKGROUND 0xff0ff000
 # define MINI_SIZE 16
 # define MLX_SYNC_IMAGE_WRITABLE 1
 # define MLX_SYNC_WIN_FLYSH_CMD 2
@@ -55,16 +56,18 @@ typedef struct			s_game
 	int				screen_width;
 	int				screen_height;
 	int				minimap;
+	int				mini_size;
 	int				mini_width;
 	int				mini_height;
 	int				fov;
-	int				fov_show;
+	int				show_fov;
 	int				show_fps;
-	long int		start_time;
-	long int		old_time;
-	long int		time;
+	int				show_col;
+	unsigned long int		start_time;
+	unsigned long int		old_time;
+	unsigned int	default_color[4];
 	double			frametime;
-  struct s_texture	*texture[4];
+	struct s_texture	*texture[4];
 	struct s_player	*player;
 	struct s_data	*data;
 	struct s_config	*config;
@@ -82,7 +85,7 @@ typedef	struct		s_config
 typedef	struct		s_texture
 {
 	void			*wall;
-	void			*addr_w;
+	char			*addr_w;
 	int				height;
 	int				width;
 	int				bpp;
@@ -138,19 +141,21 @@ bool		detect_content(char *line, char *first_char);
 void		init_player(t_game *game, int y, int x, double facing);
 void		init_config(t_config *config);
 
-/*________________PLAYER_*/
-/*________________RAYCAST*/
+/*________________HOOK___*/
 int			close_all(t_game *game, t_data *data, int status);
 int			key_handler(int keycode, t_game *game);
+/*________________RAYCAST*/
 int			display_handler(t_game *game);
 int			game_loop(t_game *game);
+void		dda_operation(t_game *game, float facing);
+void		dda_collision(t_game *game, float move[2], int sens);
 void		img_put(t_data *data, int coord[2], int size_mod, unsigned int color);
 void		px_put(t_data *data, int x, int y, unsigned int color);
 void		safe_angle_add(float *angle, float mod);
 void		draw_player(t_game *game, t_data *data, unsigned int color);
 void		draw_minimap(t_game *game, t_data *data);
-float		dda_operation(t_game *game, float facing);
-float		dda_collision(t_game *game, float move[2], int sens);
+void		draw_wall(t_game *game, t_dda *dda, t_ray *ray);
+void		draw_line(t_game *game, t_dda *dda, t_ray *ray);
 void		refresh_screen(t_game *game);
 double		get_angle(int type, int facing);
 /*________________UTILS__*/
