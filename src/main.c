@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:01 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/24 18:19:08 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/24 19:01:18 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,26 +55,27 @@ static void	game_init(t_game *game)
 
 static int	mlx_initialisation(t_game *game)
 {
-	t_data	data;
+	t_data	*data;
 
-	memset(&data, 0, sizeof(t_data));
-	game->data = &data;
-	data.mlx = mlx_init();
-	if (!data.mlx)
+	data = (t_data *) malloc(sizeof(t_data));
+	memset(data, 0, sizeof(t_data));
+	game->data = data;
+	data->mlx = mlx_init();
+	if (!data->mlx)
 		return (1);
 	if (texture_init(game))
 		return (1);
-	data.win = mlx_new_window(data.mlx, game->screen_width,
+	data->win = mlx_new_window(data->mlx, game->screen_width,
 			game->screen_height, "cub3D");
-	if (!data.win)
+	if (!data->win)
 		return (1);
-	data.img = mlx_new_image(data.mlx, game->screen_width,
+	data->img = mlx_new_image(data->mlx, game->screen_width,
 			game->screen_height);
-	if (!data.img)
+	if (!data->img)
 		return (1);
-	data.addr = mlx_get_data_addr(data.img, &data.bpp,
-			&data.l_length, &data.endian);
-	if (!data.addr)
+	data->addr = mlx_get_data_addr(data->img, &data->bpp,
+			&data->l_length, &data->endian);
+	if (!data->addr)
 		return (1);
 	return (0);
 }

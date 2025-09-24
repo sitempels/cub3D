@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 18:26:54 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/24 18:56:22 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,3 @@ void	draw_minimap(t_game *game, t_data *data)
 	return ;
 }
 
-void	px_put(t_data *data, int x, int y, unsigned int color)
-{
-	char	*dst;
-
-	if (x < 0 || x > WIDTH || y < 0 || y > HEIGHT)
-		return ;
-	dst = data->addr + (y * data->l_length + x * (data->bpp / 8));
-	*(unsigned int *)dst = color;
-	return ;
-}

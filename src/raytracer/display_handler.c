@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 18:27:51 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/24 19:06:40 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,17 @@ static void	print_fps(t_game *game, t_data *data);
 
 int	cub3d(t_game *game)
 {
-	t_data			data;
+	t_data	*data;
 	struct timeval	tmp;
 
+	data = game->data;
 	gettimeofday(&tmp, NULL);
 	game->start_time = tmp.tv_sec * 1000000 + tmp.tv_usec;
 	game->old_time = 0;
-	mlx_hook(data.win, 2, 1L << 0, key_handler, game);
-//	mlx_hook(data.win, 17, 0,/**/ , &data);
-	mlx_loop_hook(data.mlx, game_loop, game);
-	mlx_loop(data.mlx);
+	mlx_hook(data->win, 2, 1L << 0, key_handler, game);
+//	mlx_hook(data->win, 17, 0,/**/ , &data);
+	mlx_loop_hook(data->mlx, game_loop, game);
+	mlx_loop(data->mlx);
 	return (0);
 }
 
@@ -95,4 +96,15 @@ void	img_put(t_data *data, int coord[2], int size_mod, unsigned int color)
 		}
 		i++;
 	}
+}
+
+void	px_put(t_data *data, int x, int y, unsigned int color)
+{
+	char	*dst;
+
+	if (x < 0 || x > WIDTH || y < 0 || y > HEIGHT)
+		return ;
+	dst = data->addr + (y * data->l_length + x * (data->bpp / 8));
+	*(unsigned int *)dst = color;
+	return ;
 }

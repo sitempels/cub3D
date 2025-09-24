@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:55:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 16:25:43 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/24 19:10:02 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	print_wall(t_game *game, int wall[4], int tex[2], double tex_pos[3])
 	t_texture		texture;
 
 	y = wall[1];
-	while (y < wall[2])
+	while (y <= wall[2])
 	{
 		tex[1] = (int)tex_pos[0];
 		tex_pos[0] += tex_pos[1];

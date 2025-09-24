@@ -6,7 +6,7 @@
 #    By: agaland <agaland@student.s19.be>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/24 16:26:37 by stempels         ###   ########.fr        #
+#    Updated: 2025/09/24 18:43:30 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,7 +92,7 @@ run: $(NAME)
 	@./$(NAME)
 #
 leak: debug
-	@valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-origins=yes --track-fds=yes --suppressions=./valgrind.supp ./debug_$(NAME_PROJECT)
+	@valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-origins=yes --track-fds=yes ./debug_$(NAME_PROJECT)
 #
 vgdb: debug
 	@valgrind --vgdb-error=0 --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=./valgrind.supp ./debug_$(NAME_PROJECT)
