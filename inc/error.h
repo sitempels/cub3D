@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:24:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/25 15:36:31 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/25 16:14:46 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define USAGE "Wrong number of arguments\nUsage : ./cub3d <filename.cub>\n"
 # define ERR_MALLOC "Memory allocation failed\n"
 # define ERR_FILE "Incorrect or missing file extension. Expected: %s\n"
+# define ERR_DIR "Is a directory\n"
 # define ERR_OPEN "Open failed\n"
 # define EMPTY_FILE "Empty file\n"
 # define RD_FILE "Reading file\n"

@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 18:37:17 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/25 16:14:15 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,6 @@ int			fill_texture(t_game *game, char *line, int *i, int type);
 int			check_rgb(char *line, int *i, t_config *config, int type);
 int 		parse_rgb(char **start, int *count, int type, t_config *config);
 int			process_map_recursive(int fd, t_game *game);
-//int			check_line(char *line, t_config *config);
 int			skip_and_save_type(int type, int *arr, int *i);
 int			ft_isblank(char c);
 int			check_map_closure(t_game *game);
