@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/25 16:14:15 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/25 19:10:55 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define NORTH 270
 # define WIDTH 1920
 # define HEIGHT 1080
-# define COLL_DIST 0.1
+# define COLL_DIST 0.2
 # define MINI_SIZE 16
 # define MINI_BORDER_L 16
 # define MLX_SYNC_IMAGE_WRITABLE 1

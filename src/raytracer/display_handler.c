@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 15:18:38 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/25 18:59:03 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,13 @@ int	game_loop(t_game *game)
 	data = game->data;
 	refresh_screen(game);
 	dda_operation(game, game->player->facing);
-	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
-	get_fps(game);
-	printf("old_time: %ld	frametime: %f\n", game->old_time, game->frametime);
-	if (game->show_fps == 1)
-		print_fps(game, data);
 	if (game->minimap)
 		draw_player(game, data, PLAYER_COLOR);
+	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	mlx_do_sync(data->mlx);
+	get_fps(game);
+	if (game->show_fps == 1)
+		print_fps(game, data);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:52:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/25 18:03:21 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 18:57:44 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,13 @@ static void	free_texture(t_game *game)
 {
 	int	i;
 
+	i = 0;
+	while (i < 4)
 	{
 		if (game->texture[i])
 		{
-			mlx_destroy_image(game->data->mlx, game->texture[i]->wall);
+			if (game->texture[i]->wall)
+				mlx_destroy_image(game->data->mlx, game->texture[i]->wall);
 			free(game->texture[i]);
 			game->texture[i] = NULL;
 		}

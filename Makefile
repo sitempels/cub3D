@@ -6,7 +6,7 @@
 #    By: agaland <agaland@student.s19.be>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/24 18:12:00 by agaland          ###   ########.fr        #
+#    Updated: 2025/09/25 19:04:07 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,17 +33,11 @@ INC_FLAG = -I$(INC_DIR)
 MAIN = main
 SRC_DIR = src
 #
-EVENT_DIR = event
-SRC_EVENT = $(addprefix $(EVENT_DIR)/,)
-#
 RAYTRACER_DIR = raytracer
-SRC_RAYTRACER = $(addprefix $(RAYTRACER_DIR)/, display_handler display_handler_utils dda_operation dda_utils draw_wall draw_utils)
+SRC_RAYTRACER = $(addprefix $(RAYTRACER_DIR)/, display_handler display_handler_utils dda_operation dda_utils draw_wall draw_utils movement)
 #
 PARSER_DIR = parser
 SRC_PARSER = $(addprefix $(PARSER_DIR)/, parsing parsing_utils config config_utils map map_utils floodfill)
-#
-PLAYER_DIR = player
-SRC_PLAYER = $(addprefix $(PLAYER_DIR)/, movement)
 #
 UTILS_DIR = utils
 SRC_UTILS = $(addprefix $(UTILS_DIR)/, utils print)
@@ -51,7 +45,7 @@ SRC_UTILS = $(addprefix $(UTILS_DIR)/, utils print)
 GNL_DIR = gnl
 SRC_GNL = $(addprefix $(GNL_DIR)/, get_next_line_bonus get_next_line_utils_bonus)
 #
-SRCS ::= $(MAIN) $(SRC_EVENT) $(SRC_RAYTRACER) $(SRC_PARSER) $(SRC_PLAYER) $(SRC_UTILS) $(SRC_GNL)
+SRCS ::= $(MAIN) $(SRC_RAYTRACER) $(SRC_PARSER) $(SRC_UTILS) $(SRC_GNL)
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 
 #
 #----------------------------OBJ-----------------------------------------------#
