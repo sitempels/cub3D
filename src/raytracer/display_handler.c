@@ -12,48 +12,26 @@
 
 #include "cub3D.h"
 
+static void	print_fps(t_game *game, t_data *data);
 
-
-int	display_handler(t_game *game)
+int	cub3d(t_game *game)
 {
+	t_data			*data;
 	struct timeval	tmp;
-	t_data	data;
-	int		i;
 
-	game->data = &data;
+	data = game->data;
 	gettimeofday(&tmp, NULL);
-	game->start_time = tmp.tv_sec * 1000000 + tmp.tv_usec;;
+	game->start_time = tmp.tv_sec * 1000000 + tmp.tv_usec;
 	game->old_time = 0;
-	data.mlx = mlx_init();
-	i = 0;
-	while (i < 4)
+	if (game->minimap)
 	{
-		game->texture[i] = malloc(sizeof(t_texture));
-		if (!game->texture[i])
-			return (1);
-		game->texture[i]->wall = mlx_xpm_file_to_image(data.mlx, game->config->textures_path[i], &game->texture[i]->width, &game->texture[i]->height);
-		if (!game->texture[i]->wall)
-			return (ft_error(ERR_TEXT, game->config->textures_path[i]), 1);
-		game->texture[i]->addr_w = mlx_get_data_addr(game->texture[i]->wall, &game->texture[i]->bpp, &game->texture[i]->l_length, &game->texture[i]->endian);
-		if (!game->texture[i]->addr_w)
-			return (ft_printf_fd(STDERR_FILENO, "Error\n"), 1);
-		i++;
+		draw_minimap(game, data);
+		draw_player(game, data, PLAYER_COLOR);
 	}
-	data.win = mlx_new_window(data.mlx, game->screen_width, game->screen_height, "cub3D");
-	data.img = mlx_new_image(data.mlx, game->screen_width, game->screen_height);
-	data.addr = mlx_get_data_addr(data.img, &data.bpp, &data.l_length, &data.endian); 
-	game->default_color[NO] = 0xff000050;
-	game->default_color[SO] = 0xff000025;
-	game->default_color[EA] = 0xff005000;
-	game->default_color[WE] = 0xff002500;
-	game->mini_width = MINI_SIZE * game->max_x;
-	game->mini_height = MINI_SIZE * game->max_y;
-	mlx_hook(data.win, 2, 1L << 0, key_handler, game);
-	mlx_hook(data.win, 17, 0, close_all, &data);
-	mlx_loop_hook(data.mlx, game_loop, game);
-	if (game->minimap == 1)
-		draw_minimap(game, &data);
-	mlx_loop(data.mlx);
+	mlx_hook(data->win, 2, 1L << 0, key_handler, game);
+	mlx_hook(data->win, 17, 0, close_all, game);
+	mlx_loop_hook(data->mlx, game_loop, game);
+	mlx_loop(data->mlx);
 	return (0);
 }
 
@@ -68,16 +46,10 @@ int	game_loop(t_game *game)
 	get_fps(game);
 	printf("old_time: %ld	frametime: %f\n", game->old_time, game->frametime);
 	if (game->show_fps == 1)
-	{
-		mlx_string_put(data->mlx, data->win, game->screen_width - 128, 32, 0xffffff, "FPS");
-		mlx_string_put(data->mlx, data->win, game->screen_width - 64, 32, 0xffffff, ft_itoa((int)(1 / game->frametime)));
-	}
-	mlx_do_sync(data->mlx);
+		print_fps(game, data);
 	if (game->minimap)
-	{
-		draw_minimap(game, data);
 		draw_player(game, data, PLAYER_COLOR);
-	}
+	mlx_do_sync(data->mlx);
 	return (0);
 }
 
@@ -89,36 +61,29 @@ void	get_fps(t_game *game)
 
 	gettimeofday(&tmp, NULL);
 	time = (tmp.tv_sec * 1000000 + tmp.tv_usec - game->start_time) / 1000;
-	diff = time - game->old_time;
-	game->frametime = ((double)diff / 1000);
-	game->old_time = time;
-}
-
-void	img_put(t_data *data, int coord[2], int size_mod, unsigned int color)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < size_mod)
+	if (time <= game->old_time)
+		game->frametime = 0;
+	else
 	{
-		j = 0;
-		while (j < size_mod)
-		{
-			px_put(data, (coord[0] + 1) * size_mod - i, (coord[1] + 1) * size_mod - j, color);
-			j++;
-		}
-		i++;
+		diff = time - game->old_time;
+		game->frametime = ((double)diff / 1000);
+		game->old_time = time;
 	}
 }
 
-void	px_put(t_data *data, int x, int y, unsigned int color)
+static void	print_fps(t_game *game, t_data *data)
 {
-	char	*dst;
+	char	*frame;
 
-	if (x < 0 || x > WIDTH || y < 0 || y > HEIGHT)
+	frame = 0;
+	if (game->frametime)
+		frame = ft_itoa((int)(1 / game->frametime));
+	if (!frame)
 		return ;
-	dst = data->addr + (y * data->l_length + x * (data->bpp / 8));
-	*(unsigned int *)dst = color;
+	mlx_string_put(data->mlx, data->win, game->screen_width - 128,
+		32, 0xd5b60a, "FPS");
+	mlx_string_put(data->mlx, data->win, game->screen_width - 64,
+		32, 0xd5b60a, frame);
+	free(frame);
 	return ;
 }

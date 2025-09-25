@@ -37,13 +37,13 @@ EVENT_DIR = event
 SRC_EVENT = $(addprefix $(EVENT_DIR)/,)
 #
 RAYTRACER_DIR = raytracer
-SRC_RAYTRACER = $(addprefix $(RAYTRACER_DIR)/, display_handler display_handler_utils dda_operation dda_utils draw_wall)
+SRC_RAYTRACER = $(addprefix $(RAYTRACER_DIR)/, display_handler display_handler_utils dda_operation dda_utils draw_wall draw_utils)
 #
 PARSER_DIR = parser
 SRC_PARSER = $(addprefix $(PARSER_DIR)/, parsing parsing_utils config config_utils map map_utils floodfill)
 #
 PLAYER_DIR = player
-SRC_PLAYER = $(addprefix $(PLAYER_DIR)/,)
+SRC_PLAYER = $(addprefix $(PLAYER_DIR)/, movement)
 #
 UTILS_DIR = utils
 SRC_UTILS = $(addprefix $(UTILS_DIR)/, utils print)
@@ -92,7 +92,7 @@ run: $(NAME)
 	@./$(NAME)
 #
 leak: debug
-	@valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-origins=yes --track-fds=yes --suppressions=./valgrind.supp ./debug_$(NAME_PROJECT)
+	@valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-origins=yes --track-fds=yes ./debug_$(NAME_PROJECT)
 #
 vgdb: debug
 	@valgrind --vgdb-error=0 --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=./valgrind.supp ./debug_$(NAME_PROJECT)

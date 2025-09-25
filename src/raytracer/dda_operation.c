@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:05:50 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/23 16:42:04 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/24 16:05:31 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static void		dda_init(t_game *game, t_dda *dda, t_ray *ray);
 static void		get_first_dist(t_game *game, t_dda *dda, t_ray *ray);
 static void		collision_dist(t_game *game, t_dda *dda, t_ray *ray);
 
-void		dda_operation(t_game *game, float facing)
- {
+void	dda_operation(t_game *game, float facing)
+{
 	float	camera;
 	float	plane[2];
 	t_dda	dda;
@@ -25,12 +25,12 @@ void		dda_operation(t_game *game, float facing)
 
 	dda.dir[0] = get_angle(0, facing);
 	dda.dir[1] = get_angle(1, facing);
-	plane[0] = - tan(game->fov * M_PI / 360) * get_angle(1, facing);
+	plane[0] = -tan(game->fov * M_PI / 360) * get_angle(1, facing);
 	plane[1] = tan(game->fov * M_PI / 360) * get_angle(0, facing);
 	ray.color = RAY_COLOR;
 	ray.x = 0;
 	while (ray.x < game->screen_width)
-  	{
+	{
 		camera = (2 * ray.x / (float)game->screen_width) - 1;
 		dda.raydir[0] = dda.dir[0] + plane[0] * camera;
 		dda.raydir[1] = dda.dir[1] + plane[1] * camera;
@@ -43,21 +43,19 @@ void		dda_operation(t_game *game, float facing)
 	return ;
 }
 
-void		dda_collision(t_game *game, float move[2], int	sens)
+void	dda_collision(t_game *game, float move[2], float camera)
 {
 	float	test;
-	float	camera;
 	t_dda	dda;
 	t_ray	ray;
 
-	camera = game->player->facing;
 	safe_angle_add(&camera, -90);
 	ray.color = 0x0f66ffff;
 	ray.x = -90;
 	while (ray.x <= 90)
 	{
-		dda.raydir[0] = get_angle(0, camera) * sens;
-		dda.raydir[1] = get_angle(1, camera) * sens;
+		dda.raydir[0] = get_angle(0, camera);
+		dda.raydir[1] = get_angle(1, camera);
 		dda_init(game, &dda, &ray);
 		test = (ray.dist - COLL_DIST);
 		if (test <= move[ray.side] * dda.step[ray.side])
@@ -86,7 +84,7 @@ static void	dda_init(t_game *game, t_dda *dda, t_ray *ray)
 	return ;
 }
 
-static void	get_first_dist(t_game *game, t_dda * dda, t_ray *ray)
+static void	get_first_dist(t_game *game, t_dda *dda, t_ray *ray)
 {
 	int		i;
 
@@ -96,13 +94,14 @@ static void	get_first_dist(t_game *game, t_dda * dda, t_ray *ray)
 		if (dda->raydir[i] < 0)
 		{
 			dda->step[i] = -1;
-			dda->side_dist[i] = (game->player->pos[i] - dda->map[i]) * dda->d_dist[i];
+			dda->side_dist[i] = (game->player->pos[i] - dda->map[i]);
 		}
 		else
 		{
 			dda->step[i] = 1;
-			dda->side_dist[i] = (dda->map[i] + 1.0 - game->player->pos[i]) * dda->d_dist[i];
+			dda->side_dist[i] = (dda->map[i] + 1.0 - game->player->pos[i]);
 		}
+		dda->side_dist[i] *= dda->d_dist[i];
 		i++;
 	}
 	collision_dist(game, dda, ray);
