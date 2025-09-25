@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:55:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/25 11:53:19 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 13:47:36 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	draw_wall(t_game *game, t_dda *dda, t_ray *ray)
 				wall[1] = game->mini_height + MINI_BORDER_L;
 	wall[2] = wall[0] / 2 + game->screen_height / 2;
 	if (wall[2] >= game->screen_height)
-		wall[2] = game->screen_height - 1;
+		wall[2] = game->screen_height;
 	texture_mapping(game, dda, ray, wall);
 	return ;
 }
@@ -71,7 +71,7 @@ static void	print_wall(t_game *game, int wall[4], int tex[2], double tex_pos[3])
 	t_texture		texture;
 
 	y = wall[1];
-	while (y <= wall[2])
+	while (y < wall[2])
 	{
 		tex[1] = (int)tex_pos[0];
 		tex_pos[0] += tex_pos[1];

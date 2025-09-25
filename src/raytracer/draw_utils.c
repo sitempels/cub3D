@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:10:39 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/25 12:28:40 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 14:07:07 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	draw_line(t_game *game, t_dda *dda, t_ray *ray)
 	float	p_px[2];
 	float	dist[2];
 
-	pos[0] = game->player->pos[0] * game->mini_size + MINI_BORDER_L / 2 - 1;
+	pos[0] = game->player->pos[0] * game->mini_size + MINI_BORDER_L / 2;
 	pos[1] = game->player->pos[1] * game->mini_size + MINI_BORDER_L / 2 - 1;
 	dist[0] = 0;
 	dist[1] = 0;
@@ -34,7 +34,7 @@ void	draw_line(t_game *game, t_dda *dda, t_ray *ray)
 			dist[1] += dda->d_dist[1];
 	}
 	if (dda->raydir[ray->side] > 0)
-		px_put(game->data, p_px[0], p_px[1], ray->color);
+		px_put(game->data, p_px[0] - (1 + 1 * dda->step[0]), p_px[1], ray->color);
 }
 
 void	draw_player(t_game *game, t_data *data, unsigned int color)
