@@ -6,13 +6,12 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/25 18:02:35 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/24 15:18:38 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-//static int	game_prep(t_game *game);
 static void	print_fps(t_game *game, t_data *data);
 
 int	cub3d(t_game *game)

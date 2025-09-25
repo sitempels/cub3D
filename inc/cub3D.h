@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/25 17:24:28 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:14:15 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,14 +134,13 @@ typedef enum e_config_type
 /*________________PARSING*/
 char		*ft_strnstr_end(const char *haystack, const char *needle, size_t len);
 int			parse_file(int fd, t_game *game);
-int			process_config(int fd, t_config *config);
-int			parse_config(char *line, int *arr, t_config *config);
-int			parse_line(t_config *config, char *line, int *i, int type);
-int			fill_texture(t_config *config, char *line, int *i, int type);
+int			process_config(int fd, t_game *game);
+int			parse_config(char *line, int *arr, t_game *game);
+int			parse_line(t_game *game, char *line, int *i, int type);
+int			fill_texture(t_game *game, char *line, int *i, int type);
 int			check_rgb(char *line, int *i, t_config *config, int type);
 int 		parse_rgb(char **start, int *count, int type, t_config *config);
 int			process_map_recursive(int fd, t_game *game);
-//int			check_line(char *line, t_config *config);
 int			skip_and_save_type(int type, int *arr, int *i);
 int			ft_isblank(char c);
 int			check_map_closure(t_game *game);
@@ -183,6 +182,7 @@ void		free_map(int **array, int	size);
 void		cleanup_game(t_game *game);
 void		gnl_cleanup(char *line);
 void		free_config(t_config *config);
+void		malloc_exit(t_game *game, char *line);
 void		get_fps(t_game *game);
 unsigned int	convert_int(int rgb[3]);
 int			clean_all(t_game *game);

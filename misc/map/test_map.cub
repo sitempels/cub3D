@@ -1,11 +1,10 @@
 
 F 40, 100,48 
 
-
-NO misc/textures/grassycliff.xpm
-SO misc/textures/metal.xpm
-WE misc/textures/bluesea.xpm
-EA misc/textures/brick-wall-red.xpm
+NO misc/textures/stone_brick_32..xpm
+SO misc/textures/grass_block.xpm
+WE misc/textures/stone_brick_32..xpm
+EA misc/textures/grass_block.xpm
 
 C 254, 99 ,0
  
