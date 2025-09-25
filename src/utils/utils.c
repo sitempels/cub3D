@@ -6,52 +6,22 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/25 17:13:06 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/24 16:17:19 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 #include "get_next_line_bonus.h"
 
-void	print_int_arr(int *arr, int len)
+void	malloc_exit(t_game *game, char *line)
 {
-	int	i;
-
-	i = 0;
-	while (i++ < len)
-		printf("%d ", arr[i]);
-	printf("\n");
-}
-
-void	print_map(int **matrix, int height, int width)
-{
-	int	i;
-	int	j;
-
-	printf("------------ Print Map ------------\n");
-	printf("\n");
-	i = 0;
-	while (i < height)
-	{
-		j = 0 ;
-		while (j < width)
-		{
-			printf("%d", matrix[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
-	printf("----------------------------------\n");
-}
-
-void	ft_error(char *msg, char *var)
-{
-	ft_printf_fd(STDERR_FILENO, "Error\n");
-	if (var)
-		ft_printf_fd(STDERR_FILENO, msg, var);
+	ft_error(ERR_MALLOC, NULL);
+	if (line)
+		gnl_cleanup(line);
 	else
-		ft_printf_fd(STDERR_FILENO, msg);
+		gnl_cleanup(NULL);
+	cleanup_game(game);
+	exit(EXIT_FAILURE);
 }
 
 void	free_map(int **array, int size)

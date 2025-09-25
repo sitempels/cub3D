@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:01 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/25 16:22:53 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:44:31 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 		return (ft_error(USAGE, NULL), 1);
+	fd = open(av[1], O_DIRECTORY);
+	if (fd != -1)
+		return (ft_error(ERR_DIR, NULL), 1);
+	close(fd);
 	if (!valid_file_extension(av[1], ".cub", '\0'))
 		return (1);
 	ft_memset(&game, 0, sizeof(t_game));
