@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/24 18:34:24 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:26:09 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,20 @@ static int	check_line(char *line, t_config *config)
 	return (0);
 }
 
+static size_t	no_nwl_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '\n')
+			break ;
+		i++;
+	}
+	return (i);
+}
+
 static int	get_line_map(t_game *game, int fd, char **line, int *line_lenght)
 {
 	int	ret;
@@ -60,7 +74,7 @@ static int	get_line_map(t_game *game, int fd, char **line, int *line_lenght)
 		else if (!*line)
 			return (0);
 	}
-	*line_lenght = ft_strlen(*line);
+	*line_lenght = no_nwl_strlen(*line);
 	if (*line_lenght > game->max_x)
 		game->max_x = *line_lenght;
 	ret = check_line(*line, game->config);

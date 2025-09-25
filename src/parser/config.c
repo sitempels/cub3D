@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 19:13:21 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/24 15:39:36 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:32:04 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int	fill_texture(t_game *game, char *line, int *i, int type)
 	if (!valid_file_extension(&line[*i], ".xpm", 'X'))
 		return (1);
 	start = &line[*i];
-	printf("Texture extension format validated\n"); // COMMENTAIRE A SUPPRIMER
 	while (ft_isalnum(line[*i]) || line[*i] == '.' || line[*i] == '-'
 		|| line[*i] == '/' || line[*i] == '_')
 		(*i)++;
@@ -108,7 +107,6 @@ int	parse_line(t_game *game, char *line, int *i, int type)
 	{
 		if (check_rgb(line, i, game->config, type) == ERROR)
 			return (1);
-		printf("RGB value validated\n"); // COMMENTAIRE A SUPPRIMER
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:24:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/24 17:32:20 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:36:31 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@
 # define ERR_MALLOC "Memory allocation failed\n"
 # define ERR_FILE "Incorrect or missing file extension. Expected: %s\n"
 # define ERR_OPEN "Open failed\n"
-//# define ERR_INIT_CONFIG "Init configuration failed\n"
 # define EMPTY_FILE "Empty file\n"
-# define RD_FILE "Reading file"
+# define RD_FILE "Reading file\n"
 # define MISSING_CONFIG "Incomplete configuration\n"
 # define ERR_CONFIG "Incorrect configuration value\n"
 # define DOUBLE_TYPE "Texture type has already been parsed\n"

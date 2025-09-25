@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:51:51 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/24 15:53:22 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:36:05 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,14 @@ int	check_map_closure(t_game *game)
 {
 	int	**copy;
 
+	print_map(game->map, game->max_y, game->max_x); // SUPPRIMER PRINT
 	copy = game->map;
 	game->map = copy_map(copy, game);
 	if (!game->map)
 		return (1);
 	if (floodfill(game, 0, 0, 'E')
-		|| floodfill(game, (int)(game->player->pos[1] - 0.5)
-		, (int)(game->player->pos[0] - 0.5), 'I') != 0)
+		|| floodfill(game, (int)(game->player->pos[1] + 0.5)
+		, (int)(game->player->pos[0] + 0.5), 'I') != 0)
 	{
 		free_map(game->map, game->max_y + 2);
 		game->map = copy;
@@ -60,7 +61,6 @@ int	check_map_closure(t_game *game)
 	print_map(game->map, game->max_y + 2, game->max_x + 2); // SUPPRIMER PRINT
 	free_map(game->map, game->max_y + 2);
 	game->map = copy;
-	print_map(game->map, game->max_y, game->max_x); // SUPPRIMER PRINT
 	return (0);
 }
 
@@ -73,7 +73,7 @@ int	floodfill(t_game *game, int y, int x, char flag)
 	{
 		if (x < 0 || y < 0 || x >= game->max_x + 2 || y >= game->max_x + 2)
 			return (1);
-		else if (map[y][x] == EMPTY)
+		if (map[y][x] == EMPTY)
 			return (1);
 		else if (map[y][x] == WALL || map[y][x] == FILLED)
 			return (0);
@@ -87,8 +87,8 @@ int	floodfill(t_game *game, int y, int x, char flag)
 			return (1);
 	}
 	map[y][x] = FILLED;
-	return (floodfill(game, y, x + 1, flag)
-		|| floodfill(game, y, x -1, flag)
+	return (floodfill(game, y - 1, x, flag)
+		|| floodfill(game, y, x - 1, flag)
 		|| floodfill(game, y + 1, x, flag)
-		|| floodfill(game, y - 1, x, flag));
+		|| floodfill(game, y, x + 1, flag));
 }
