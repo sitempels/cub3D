@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 09:00:17 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 14:45:36 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 11:24:43 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,21 @@
 # define RAYCASTER_H
 /*_______________________________MACRO________________________________________*/
 # define SIZE_MOD 32
-# define ESC_KEY 65307
-# define LEFT_KEY 0xff51
-# define UP_KEY 0xff52
-# define RIGHT_KEY 0xff53
-# define DOWN_KEY 0xff54
-# define FLOOR_COLOR 0xedf0f5
-# define WALL_COLOR 0x428715
-# define PLAYER_COLOR 0xfa3737
-# define RAY_COLOR 0xb366ff
+# define MINI_BORDER_SIZE 32
 # define SPEED 7.0
 # define TURN_SPEED 120.0
+/*____________KEY_*/
+# define ESC_KEY 65307
+# define A_KEY 0x61
+# define D_KEY 0x64
+# define F_KEY 0x66
+# define G_KEY 0x67
+# define H_KEY 0x68
+# define S_KEY 0x73
+# define W_KEY 0x77
+# define COMMA_KEY 0x2c
+# define LEFT_KEY 0xff51
+# define RIGHT_KEY 0xff53
 /*_______________________________STRUCT_______________________________________*/
 typedef struct		s_data
 {
