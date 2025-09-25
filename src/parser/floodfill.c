@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:51:51 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/25 15:36:05 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/25 18:59:50 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	check_map_closure(t_game *game)
 {
 	int	**copy;
 
-	print_map(game->map, game->max_y, game->max_x); // SUPPRIMER PRINT
 	copy = game->map;
 	game->map = copy_map(copy, game);
 	if (!game->map)
@@ -58,7 +57,6 @@ int	check_map_closure(t_game *game)
 		game->map = copy;
 		return (ft_error(UNCLOSED_MAP, NULL), 1);
 	}
-	print_map(game->map, game->max_y + 2, game->max_x + 2); // SUPPRIMER PRINT
 	free_map(game->map, game->max_y + 2);
 	game->map = copy;
 	return (0);

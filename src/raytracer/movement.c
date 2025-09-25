@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:58:33 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/25 17:22:21 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 19:06:53 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static int	move_player(t_game *game, t_data *data, int camera)
 	t_player	*player;
 
 	player = game->player;
-	printf("move\n");
 	move[0] = get_angle(0, camera) * SPEED * game->frametime;
 	move[1] = get_angle(1, camera) * SPEED * game->frametime;
 	dda_collision(game, move, camera);
