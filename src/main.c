@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:01 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/25 16:44:31 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/25 19:06:23 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	main(int ac, char **av)
 	if (parse_file(fd, &game) == 1)
 		return (close(fd), cleanup_game(&game), 1);
 	close(fd);
-	mlx_initialisation(&game);
+	if (mlx_initialisation(&game))
+		return (clean_all(&game), 1);
 	game_init(&game);
 	if (cub3d(&game) != 0)
 		return (cleanup_game(&game), 1);
@@ -46,16 +47,16 @@ int	main(int ac, char **av)
 
 static void	game_init(t_game *game)
 {
-	game->minimap = 1;
+	game->minimap = 0;
 	if (game->screen_width < game->screen_height)
 		game->mini_size = game->screen_width * 0.33 / game->max_x;
 	else
 		game->mini_size = game->screen_height * 0.33 / game->max_y;
 	game->mini_width = game->mini_size * game->max_x;
 	game->mini_height = game->mini_size * game->max_y;
-	game->show_fps = 1;
+	game->show_fps = 0;
 	game->show_fov = 1;
-	game->show_col = 1;
+	game->show_col = 0;
 	game->frametime = 1;
 	return ;
 }
@@ -103,7 +104,10 @@ static int	texture_init(t_game *game)
 				game->config->textures_path[i], &texture->width,
 				&texture->height);
 		if (!texture->wall)
+		{
+			texture->wall = NULL;
 			return (ft_error(ERR_TEXT, game->config->textures_path[i]), 1);
+		}
 		texture->addr_w = mlx_get_data_addr(texture->wall, &texture->bpp,
 				&texture->l_length, &texture->endian);
 		if (!game->texture[i]->addr_w)
