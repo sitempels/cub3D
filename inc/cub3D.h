@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/25 11:54:08 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 17:24:28 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@
 # define SOUTH 90
 # define WEST 180
 # define NORTH 270
-# define WIDTH 1080
-# define HEIGHT 720
+# define WIDTH 1920
+# define HEIGHT 1080
 # define COLL_DIST 0.1
 # define MINI_SIZE 16
 # define MINI_BORDER_L 16
@@ -157,11 +157,10 @@ bool		config_completed(int *parsed_elements);
 void		init_config(t_game *game);
 
 /*________________HOOK___*/
-int			close_all(t_game *game, t_data *data, int status);
 int			key_handler(int keycode, t_game *game);
+void	toggle_handler(t_game *game, int keycode);
 /*________________PLAYER*/
-int			move_player(t_game *game, t_data *data, int camera);
-int			turn_player(t_game *game, t_data *data, int key_code);
+void	move_handler(t_game *game, int keycode);
 /*________________RAYCAST*/
 int			cub3d(t_game *game);
 int			game_loop(t_game *game);
@@ -179,7 +178,6 @@ double		get_angle(int type, int facing);
 /*________________UTILS__*/
 void		print_map(int **matrix, int height, int width);
 void		print_int_arr(int *arr, int len);
-
 void		ft_error(char *msg, char *var);
 void		free_map(int **array, int	size);
 void		cleanup_game(t_game *game);
@@ -187,4 +185,6 @@ void		gnl_cleanup(char *line);
 void		free_config(t_config *config);
 void		get_fps(t_game *game);
 unsigned int	convert_int(int rgb[3]);
+int			clean_all(t_game *game);
+int		close_all(t_game *game);
 #endif

@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:10:39 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/25 14:07:07 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 18:03:53 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	draw_line(t_game *game, t_dda *dda, t_ray *ray)
 			dist[1] += dda->d_dist[1];
 	}
 	if (dda->raydir[ray->side] > 0)
-		px_put(game->data, p_px[0] - (1 + 1 * dda->step[0]), p_px[1], ray->color);
+		px_put(game->data, p_px[0] - (1 + 1 * dda->step[0]),
+			p_px[1], ray->color);
 }
 
 void	draw_player(t_game *game, t_data *data, unsigned int color)
@@ -78,7 +79,7 @@ void	draw_minimap(t_game *game, t_data *data)
 	while (++i[1] < game->max_y)
 	{
 		i[0] = -1;
-		while (++i[0] < game->max_x - 1)
+		while (++i[0] < game->max_x)
 		{
 			if (game->map[i[1]][i[0]] == FLOOR)
 				block_put(data, i, game->mini_size, FLOOR_COLOR);

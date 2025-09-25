@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:01 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/25 11:47:37 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:22:53 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	main(int ac, char **av)
 	if (parse_file(fd, &game) == 1)
 		return (close(fd), cleanup_game(&game), 1);
 	close(fd);
-	game_init(&game);
 	mlx_initialisation(&game);
+	game_init(&game);
 	if (cub3d(&game) != 0)
 		return (cleanup_game(&game), 1);
 	cleanup_game(&game);
@@ -43,13 +43,16 @@ int	main(int ac, char **av)
 static void	game_init(t_game *game)
 {
 	game->minimap = 1;
-	game->mini_size = MINI_SIZE;
+	if (game->screen_width < game->screen_height)
+		game->mini_size = game->screen_width * 0.33 / game->max_x;
+	else
+		game->mini_size = game->screen_height * 0.33 / game->max_y;
+	game->mini_width = game->mini_size * game->max_x;
+	game->mini_height = game->mini_size * game->max_y;
 	game->show_fps = 1;
 	game->show_fov = 1;
 	game->show_col = 1;
 	game->frametime = 1;
-	game->mini_width = game->mini_size * (game->max_x - 1);
-	game->mini_height = game->mini_size * game->max_y;
 	return ;
 }
 
