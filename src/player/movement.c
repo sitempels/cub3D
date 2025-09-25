@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:58:33 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 15:59:20 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 09:36:31 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int	move_player(t_game *game, t_data *data, int camera)
 	t_player	*player;
 
 	player = game->player;
-	if (game->minimap == 1)
-		draw_minimap(game, data);
 	move[0] = get_angle(0, camera) * SPEED * game->frametime;
 	move[1] = get_angle(1, camera) * SPEED * game->frametime;
 	dda_collision(game, move, camera);

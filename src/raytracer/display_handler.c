@@ -6,12 +6,13 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 19:06:40 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 12:29:05 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
+//static int	game_prep(t_game *game);
 static void	print_fps(t_game *game, t_data *data);
 
 int	cub3d(t_game *game)
@@ -23,13 +24,29 @@ int	cub3d(t_game *game)
 	gettimeofday(&tmp, NULL);
 	game->start_time = tmp.tv_sec * 1000000 + tmp.tv_usec;
 	game->old_time = 0;
+	if (game->minimap)
+	{
+		draw_minimap(game, data);
+		draw_player(game, data, PLAYER_COLOR);
+	}
 	mlx_hook(data->win, 2, 1L << 0, key_handler, game);
 //	mlx_hook(data->win, 17, 0,/**/ , &data);
 	mlx_loop_hook(data->mlx, game_loop, game);
 	mlx_loop(data->mlx);
 	return (0);
 }
+/*
+int	game_prep(t_game *game)
+{
+	t_data	*data;
 
+	data = game->data;
+	if (game->minimap)
+		draw_minimap(game, data);
+	game_loop(game);
+	return (0);
+}
+*/
 int	game_loop(t_game *game)
 {
 	t_data	*data;
@@ -42,12 +59,9 @@ int	game_loop(t_game *game)
 	printf("old_time: %ld	frametime: %f\n", game->old_time, game->frametime);
 	if (game->show_fps == 1)
 		print_fps(game, data);
-	mlx_do_sync(data->mlx);
 	if (game->minimap)
-	{
-		draw_minimap(game, data);
 		draw_player(game, data, PLAYER_COLOR);
-	}
+	mlx_do_sync(data->mlx);
 	return (0);
 }
 
@@ -76,35 +90,5 @@ static void	print_fps(t_game *game, t_data *data)
 	mlx_string_put(data->mlx, data->win, game->screen_width - 64,
 		32, 0xd5b60a, frame);
 	free(frame);
-	return ;
-}
-
-void	img_put(t_data *data, int coord[2], int size_mod, unsigned int color)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < size_mod)
-	{
-		j = 0;
-		while (j < size_mod)
-		{
-			px_put(data, (coord[0] + 1) * size_mod - i,
-				(coord[1] + 1) * size_mod - j, color);
-			j++;
-		}
-		i++;
-	}
-}
-
-void	px_put(t_data *data, int x, int y, unsigned int color)
-{
-	char	*dst;
-
-	if (x < 0 || x > WIDTH || y < 0 || y > HEIGHT)
-		return ;
-	dst = data->addr + (y * data->l_length + x * (data->bpp / 8));
-	*(unsigned int *)dst = color;
 	return ;
 }

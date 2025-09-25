@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:56:44 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 16:13:40 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 12:14:14 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,16 @@ void	refresh_screen(t_game *game)
 	unsigned int	color;
 
 	i = -1;
-	while (++i <= game->screen_width)
+	while (++i < game->screen_width)
 	{
 		j = -1;
-		while (++j <= game->screen_height)
+		while (++j < game->screen_height)
 		{
 			if (game->minimap)
 			{
-				if (i < game->mini_width)
-					if (j < game->mini_height + game->mini_size)
-						j = game->mini_height + game->mini_size;
+				if (i < game->mini_width + MINI_BORDER_L)
+					if (j < game->mini_height + MINI_BORDER_L)
+						j = game->mini_height + MINI_BORDER_L;
 			}
 			if (j < game->screen_height / 2)
 				color = convert_int(game->config->floor_rgb);
@@ -67,31 +67,6 @@ void	refresh_screen(t_game *game)
 		}
 	}
 	return ;
-}
-
-void	draw_line(t_game *game, t_dda *dda, t_ray *ray)
-{
-	float	pos[2];
-	float	p_px[2];
-	float	dist[2];
-
-	pos[0] = game->player->pos[0] * game->mini_size;
-	pos[1] = game->player->pos[1] * game->mini_size;
-	dist[0] = 0;
-	dist[1] = 0;
-	while ((ray->side == 0 && dist[0] < ray->dist * game->mini_size)
-		|| (ray->side == 1 && dist[1] < ray->dist * game->mini_size))
-	{
-		p_px[0] = pos[0] + (dist[0] * dda->raydir[0]);
-		p_px[1] = pos[1] + (dist[1] * dda->raydir[1]);
-		px_put(game->data, p_px[0], p_px[1], ray->color);
-		if (dist[0] < dist[1] && (dda->raydir[0] != 0))
-			dist[0] += dda->d_dist[0];
-		else
-			dist[1] += dda->d_dist[1];
-	}
-	if (dda->raydir[ray->side] > 0)
-		px_put(game->data, p_px[0] + 1, p_px[1] + 1, ray->color);
 }
 
 unsigned int	convert_int(int rgb[3])

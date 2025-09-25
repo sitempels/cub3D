@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 18:02:11 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 11:54:08 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define HEIGHT 720
 # define COLL_DIST 0.1
 # define MINI_SIZE 16
+# define MINI_BORDER_L 16
 # define MLX_SYNC_IMAGE_WRITABLE 1
 # define MLX_SYNC_WIN_FLYSH_CMD 2
 # define MLX_SYNC_WIN_CMD_COPLETED 3
@@ -166,7 +167,7 @@ int			cub3d(t_game *game);
 int			game_loop(t_game *game);
 void		dda_operation(t_game *game, float facing);
 void		dda_collision(t_game *game, float move[2], float camera);
-void		img_put(t_data *data, int coord[2], int size_mod, unsigned int color);
+void		block_put(t_data *data, int pos[3], int size, unsigned int color);
 void		px_put(t_data *data, int x, int y, unsigned int color);
 void		draw_player(t_game *game, t_data *data, unsigned int color);
 void		draw_minimap(t_game *game, t_data *data);

@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:55:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/24 19:10:02 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 11:53:19 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	draw_wall(t_game *game, t_dda *dda, t_ray *ray)
 	if (wall[1] < 0)
 		wall[1] = 0;
 	if (game->minimap)
-		if (ray->x < game->mini_width)
-			if (wall[1] < game->mini_height + game->mini_size)
-				wall[1] = game->mini_height + game->mini_size;
+		if (ray->x < game->mini_width + MINI_BORDER_L)
+			if (wall[1] < game->mini_height + MINI_BORDER_L)
+				wall[1] = game->mini_height + MINI_BORDER_L;
 	wall[2] = wall[0] / 2 + game->screen_height / 2;
 	if (wall[2] >= game->screen_height)
 		wall[2] = game->screen_height - 1;

@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:01 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/24 19:01:18 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/25 11:47:37 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static void	game_init(t_game *game)
 	game->show_fov = 1;
 	game->show_col = 1;
 	game->frametime = 1;
-	game->mini_width = MINI_SIZE * game->max_x;
-	game->mini_height = MINI_SIZE * game->max_y;
+	game->mini_width = game->mini_size * (game->max_x - 1);
+	game->mini_height = game->mini_size * game->max_y;
 	return ;
 }
 
