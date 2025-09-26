@@ -6,7 +6,7 @@
 #    By: agaland <agaland@student.s19.be>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/26 09:36:31 by stempels         ###   ########.fr        #
+#    Updated: 2025/09/26 16:35:32 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@
 #
 NAME_PROJECT = cub3D 
 NAME = $(NAME_PROJECT)
+NAME_BONUS = $(addsuffix _bonus, $(NAME_PROJECT))
 debug: NAME = $(addprefix debug_, $(NAME_PROJECT))
 TYPE = EXEC
 #----------------------------COMPILER------------------------------------------#
@@ -103,11 +104,17 @@ libclean:
 fclean: clean
 	$(MAKE) fclean -C $(LIBFT_DIR)	
 	rm -rf $(NAME)
+	rm -rf $(NAME_BONUS)
 	rm -rf $(addprefix debug_, $(NAME))
 	$(MAKE) fclean -C $(LIBFT_DIR)	
 	@echo "$(NAME) $(GREEN)$@ed !$(NC)"
 #
 re: fclean all
+#
+bonus: $(NAME_BONUS)
+$(NAME_BONUS): $(OBJ) $(LIB) 
+	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) -L$(MINILBX_DIR) $(LIB_FLAG) -o $(NAME_BONUS)
+	@echo "$(NAME_BONUS) $(GREEN)created !$(NC)"
 #
 debug: fclean $(OBJ) $(LIB) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) -L$(MINILBX_DIR) $(LIB_FLAG) -o $(NAME)
