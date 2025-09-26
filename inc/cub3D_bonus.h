@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3D.h                                            :+:      :+:    :+:   */
+/*   cub3D_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/26 17:27:50 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/26 17:28:07 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@
 # define SOUTH 90
 # define WEST 180
 # define NORTH 270
-# define WIDTH 1980
-# define HEIGHT 1080
+# define WIDTH 2720
+# define HEIGHT 1780
 # define COLL_DIST 0.2
 # define MINI_SIZE 16
 # define MINI_BORDER_L 16
