@@ -6,11 +6,11 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 19:13:21 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/26 13:22:12 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/26 17:03:44 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 int	parse_rgb(char **start, int *count, int type, t_config *config)
 {

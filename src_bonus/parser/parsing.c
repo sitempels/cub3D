@@ -1,0 +1,108 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/10 13:35:36 by agaland           #+#    #+#             */
+/*   Updated: 2025/09/26 17:04:35 by stempels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+#include "get_next_line_bonus.h"
+
+int	parse_config(char *line, int *arr, t_game *game)
+{
+	int		i;
+	int		type;
+	char	first_char;
+
+	if (!detect_content(line, &first_char))
+		return (0);
+	if (first_char == '1')
+	{
+		game->config->first_map = ft_strdup(line);
+		if (!game->config->first_map)
+			malloc_exit(game, line);
+		return (0);
+	}
+	i = 0;
+	while (line[i] && ft_isblank(line[i]))
+		i++;
+	type = compare_types(&line[i]);
+	if (type < 0)
+		return (ft_error(ERR_CONFIG, NULL), 1);
+	else if (skip_and_save_type(type, arr, &i) != 0)
+		return (1);
+	if (parse_line(game, line, &i, type) == ERROR)
+		return (1);
+	return (0);
+}
+
+int	process_config(int fd, t_game *game)
+{
+	char	*line;
+	int		parsed_elements[6];
+	int		i;
+	int		ret;
+
+	i = 0;
+	while (i < 6)
+		parsed_elements[i++] = -1;
+	ret = 1;
+	while (ret != 0)
+	{
+		ret = get_next_line(fd, &line);
+		if (ret < 0)
+			return (ft_error(RD_FILE, NULL), 1);
+		if (parse_config(line, parsed_elements, game) == ERROR)
+			return (gnl_cleanup(line), 1);
+		if (game->config->first_map && config_completed(parsed_elements))
+			return (free(line), 0);
+		else if (game->config->first_map)
+			break ;
+		free(line);
+	}
+	return (gnl_cleanup(line), ft_error(MISSING_CONFIG, NULL), 1);
+}
+
+void	init_config(t_game *game)
+{
+	int	i;
+
+	game->config = malloc(sizeof(t_config));
+	if (!game->config)
+		malloc_exit(game, NULL);
+	game->config->first_map = NULL;
+	i = 0;
+	while (i < 4)
+	{
+		game->config->textures_path[i] = NULL;
+		i++;
+	}
+	i = 0;
+	while (i < 3)
+	{
+		game->config->floor_rgb[i] = 0;
+		game->config->ceiling_rgb[i] = 0;
+		i++;
+	}
+	game->config->player_count = 0;
+	game->config->map_end = false;
+}
+
+int	parse_file(int fd, t_game *game)
+{
+	init_config(game);
+	if (process_config(fd, game) == ERROR)
+		return (1);
+	game->max_x = 0;
+	game->max_y = 0;
+	if (process_map_recursive(fd, game) == 1)
+		return (1);
+	if (check_map_closure(game) != 0)
+		return (1);
+	return (0);
+}

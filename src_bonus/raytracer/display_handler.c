@@ -6,11 +6,11 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 08:46:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/26 09:39:51 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/26 17:05:20 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 static void	print_fps(t_game *game, t_data *data);
 

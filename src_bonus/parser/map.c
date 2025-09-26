@@ -6,11 +6,11 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:15 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/26 16:15:25 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/26 17:04:18 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 #include "get_next_line_bonus.h"
 
 static int	check_line(char *line, t_config *config)
