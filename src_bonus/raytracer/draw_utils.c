@@ -6,11 +6,11 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:10:39 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/26 16:41:18 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/26 17:05:46 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 void	draw_line(t_game *game, t_dda *dda, t_ray *ray)
 {

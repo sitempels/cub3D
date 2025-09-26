@@ -6,11 +6,11 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 14:37:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/26 13:25:08 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/26 17:04:27 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 int	init_game(t_game *game, int rows)
 {

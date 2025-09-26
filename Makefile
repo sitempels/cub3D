@@ -6,7 +6,7 @@
 #    By: agaland <agaland@student.s19.be>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/14 10:47:36 by stempels          #+#    #+#              #
-#    Updated: 2025/09/25 19:04:07 by stempels         ###   ########.fr        #
+#    Updated: 2025/09/26 17:16:48 by stempels         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@
 #
 NAME_PROJECT = cub3D 
 NAME = $(NAME_PROJECT)
+NAME_BONUS = $(addsuffix _bonus, $(NAME_PROJECT))
 debug: NAME = $(addprefix debug_, $(NAME_PROJECT))
 TYPE = EXEC
 #----------------------------COMPILER------------------------------------------#
@@ -32,6 +33,7 @@ INC_FLAG = -I$(INC_DIR)
 #----------------------------SRC-----------------------------------------------#
 MAIN = main
 SRC_DIR = src
+SRC_DIR_BONUS = src_bonus
 #
 RAYTRACER_DIR = raytracer
 SRC_RAYTRACER = $(addprefix $(RAYTRACER_DIR)/, display_handler display_handler_utils dda_operation dda_utils draw_wall draw_utils movement)
@@ -47,10 +49,13 @@ SRC_GNL = $(addprefix $(GNL_DIR)/, get_next_line_bonus get_next_line_utils_bonus
 #
 SRCS ::= $(MAIN) $(SRC_RAYTRACER) $(SRC_PARSER) $(SRC_UTILS) $(SRC_GNL)
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRCS))) 
+SRC_BONUS = $(addprefix $(SRC_DIR_BONUS)/, $(addsuffix .c, $(SRCS))) 
 #
 #----------------------------OBJ-----------------------------------------------#
 OBJ_DIR = obj
 OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
+OBJ_DIR_BONUS = obj_bonus
+OBJ_BONUS = $(patsubst $(SRC_DIR_BONUS)%.c, $(OBJ_DIR_BONUS)%.o, $(SRC_BONUS))
 #
 #----------------------------LIB-----------------------------------------------#
 LIBFT_DIR = libft
@@ -71,6 +76,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) $(CCFLAGS) $(CPPFLAGS) -c $< -o $@
 #
+$(OBJ_DIR_BONUS)/%.o: $(SRC_DIR_BONUS)/%.c
+	echo $(SRC_BONUS)
+	@mkdir -p $(@D)
+	$(CC) $(CCFLAGS) $(CPPFLAGS) -c $< -o $@
+#
 lib: $(LIB)
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
@@ -81,7 +91,11 @@ $(MINILBX):
 $(NAME): $(OBJ) $(LIB) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) -L$(MINILBX_DIR) $(LIB_FLAG) -o $(NAME)
 	@echo "$(NAME) $(GREEN)created !$(NC)"
-
+#
+$(NAME_BONUS): $(OBJ_BONUS) $(LIB) 
+	$(CC) $(CCFLAGS) $(OBJ_BONUS) -L$(LIBFT_DIR) -L$(MINILBX_DIR) $(LIB_FLAG) -o $(NAME_BONUS)
+	@echo "$(NAME_BONUS) $(GREEN)created !$(NC)"
+#
 run: $(NAME)
 	@./$(NAME)
 #
@@ -92,7 +106,7 @@ vgdb: debug
 	@valgrind --vgdb-error=0 --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=./valgrind.supp ./debug_$(NAME_PROJECT)
 #
 clean: libclean
-	rm -rf $(OBJ_DIR) $(DEPENDS)
+	rm -rf $(OBJ_DIR) $(OBJ_DIR_BONUS) $(DEPENDS)
 	@echo "$(NAME) $(GREEN)$@ed !$(NC)"
 #
 libclean:
@@ -103,11 +117,14 @@ libclean:
 fclean: clean
 	$(MAKE) fclean -C $(LIBFT_DIR)	
 	rm -rf $(NAME)
+	rm -rf $(NAME_BONUS)
 	rm -rf $(addprefix debug_, $(NAME))
 	$(MAKE) fclean -C $(LIBFT_DIR)	
 	@echo "$(NAME) $(GREEN)$@ed !$(NC)"
 #
 re: fclean all
+#
+bonus: $(NAME_BONUS)
 #
 debug: fclean $(OBJ) $(LIB) 
 	$(CC) $(CCFLAGS) $(OBJ) -L$(LIBFT_DIR) -L$(MINILBX_DIR) $(LIB_FLAG) -o $(NAME)

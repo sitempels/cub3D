@@ -6,11 +6,11 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:55:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/26 09:44:39 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/26 17:05:59 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 static int	get_wall_text(t_dda *dda, t_ray *ray);
 static void	texture_mapping(t_game *game, t_dda *dda, t_ray *ray, int wall[4]);

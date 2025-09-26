@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 09:00:17 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/25 11:24:43 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/26 11:20:17 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define LEFT_KEY 0xff51
 # define RIGHT_KEY 0xff53
 /*_______________________________STRUCT_______________________________________*/
-typedef struct		s_data
+typedef struct s_data
 {
 	void	*mlx;
 	void	*win;
@@ -39,9 +39,9 @@ typedef struct		s_data
 	int		bpp;
 	int		l_length;
 	int		endian;
-}					t_data;
+}	t_data;
 
-typedef struct		s_dda
+typedef struct s_dda
 {
 	int				map[2];
 	int				step[2];
@@ -51,14 +51,14 @@ typedef struct		s_dda
 	float			side_dist[2];
 	float			angle;
 	float			limit;
-}					t_dda;
+}	t_dda;
 
-typedef struct		s_ray
+typedef struct s_ray
 {
 	int				side;
 	int				x;
 	float			dist;
 	unsigned int	color;
-}					t_ray;
+}	t_ray;
 /*_______________________________FUNCT________________________________________*/
 #endif

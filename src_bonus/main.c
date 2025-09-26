@@ -6,11 +6,11 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:36:01 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/26 17:10:22 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/26 17:10:46 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 static void	game_init(t_game *game);
 static int	mlx_initialisation(t_game *game);
@@ -74,7 +74,7 @@ static int	mlx_initialisation(t_game *game)
 	if (texture_init(game))
 		return (1);
 	data->win = mlx_new_window(data->mlx, game->screen_width,
-			game->screen_height, "cub3D");
+			game->screen_height, "cub3D_bonus");
 	if (!data->win)
 		return (1);
 	data->img = mlx_new_image(data->mlx, game->screen_width,
