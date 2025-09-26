@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
+/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/26 17:28:07 by stempels         ###   ########.fr       */
+/*   Created: 2025/09/26 17:36:40 by stempels          #+#    #+#             */
+/*   Updated: 2025/09/26 17:37:11 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
 
 # define _GNU_SOURCE
 # include "libft.h"
