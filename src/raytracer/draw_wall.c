@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:55:57 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/25 13:47:36 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/26 09:44:39 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ static void	texture_mapping(t_game *game, t_dda *dda, t_ray *ray, int wall[4])
 	if (game->texture[wall[3]])
 	{
 		tex[0] = (int)(wall_x * (double)(game->texture[wall[3]]->width));
-		if (ray->side == 0 && dda->raydir[0] > 0)
+		if (ray->side == 0 && dda->raydir[0] < 0)
 			tex[0] = game->texture[wall[3]]->width - tex[0] - 1;
-		if (ray->side == 1 && dda->raydir[1] < 0)
+		if (ray->side == 1 && dda->raydir[1] > 0)
 			tex[0] = game->texture[wall[3]]->width - tex[0] - 1;
 		tex_pos[1] = 1.0 * game->texture[wall[3]]->height / wall[0];
 		tex_pos[0] = (wall[1] - game->screen_height / 2 + wall[0] / 2);

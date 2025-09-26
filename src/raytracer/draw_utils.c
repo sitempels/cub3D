@@ -6,7 +6,7 @@
 /*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 12:10:39 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/25 18:03:53 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/26 09:00:33 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,10 @@ void	draw_player(t_game *game, t_data *data, unsigned int color)
 
 void	draw_minimap(t_game *game, t_data *data)
 {
-	int	i[3];
+	int	i[4];
 
 	i[2] = MINI_BORDER_L / 2 - 1;
+	i[3] = MINI_BORDER_L / 2 - 1;
 	i[1] = -1;
 	while (++i[1] < game->mini_height + MINI_BORDER_L)
 	{
@@ -85,14 +86,13 @@ void	draw_minimap(t_game *game, t_data *data)
 				block_put(data, i, game->mini_size, FLOOR_COLOR);
 			else if (game->map[i[1]][i[0]] == WALL)
 				block_put(data, i, game->mini_size, WALL_COLOR);
-			else if (game->map[i[1]][i[0]] == -1)
+			else if (game->map[i[1]][i[0]] == EMPTY)
 				block_put(data, i, game->mini_size, MINI_BACKGROUND);
 		}
 	}
-	return ;
 }
 
-void	block_put(t_data *data, int coord[3], int size_mod, unsigned int color)
+void	block_put(t_data *data, int coord[4], int size_mod, unsigned int color)
 {
 	int	i;
 	int	j;
@@ -104,7 +104,7 @@ void	block_put(t_data *data, int coord[3], int size_mod, unsigned int color)
 		while (j > 0)
 		{
 			px_put(data, (coord[0]) * size_mod + j + coord[2],
-				(coord[1]) * size_mod + i + coord[2], color);
+				(coord[1]) * size_mod + i + coord[3], color);
 			j--;
 		}
 		i--;

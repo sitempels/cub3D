@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/25 19:10:55 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/26 11:19:38 by stempels         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 /*_______________________________MACRO________________________________________*/
 # define SUCCES 0
 # define ERROR 1
+# define FPS_CAP 80
 # define FOV 66
 # define EAST 0
 # define SOUTH 90
@@ -55,42 +56,42 @@
 
 /*_______________________________STRUCT_______________________________________*/
 
-typedef struct			s_game
+typedef struct s_game
 {
-	int				**map;
-	int				max_x;
-	int				max_y;
-	int				screen_width;
-	int				screen_height;
-	int				minimap;
-	int				mini_size;
-	int				mini_width;
-	int				mini_height;
-	int				fov;
-	int				show_fov;
-	int				show_fps;
-	int				show_col;
+	int						**map;
+	int						max_x;
+	int						max_y;
+	int						screen_width;
+	int						screen_height;
+	int						minimap;
+	int						mini_size;
+	int						mini_width;
+	int						mini_height;
+	int						fov;
+	int						show_fov;
+	int						show_fps;
+	int						show_col;
+	unsigned int			default_color[4];
 	unsigned long int		start_time;
 	unsigned long int		old_time;
-	unsigned int	default_color[4];
-	double			frametime;
-	struct s_texture	*texture[4];
-	struct s_player	*player;
-	struct s_data	*data;
-	struct s_config	*config;
-}					t_game;
+	double					frametime;
+	struct s_texture		*texture[4];
+	struct s_player			*player;
+	struct s_data			*data;
+	struct s_config			*config;
+}	t_game;
 
-typedef	struct		s_config
+typedef struct s_config
 {
 	char			*first_map;
 	char			*textures_path[4];
-	int 			floor_rgb[3];
-	int 			ceiling_rgb[3];
+	int				floor_rgb[3];
+	int				ceiling_rgb[3];
 	int				player_count;
 	bool			map_end;
-}					t_config;
+}	t_config;
 
-typedef	struct		s_texture
+typedef struct s_texture
 {
 	void			*wall;
 	char			*addr_w;
@@ -99,13 +100,13 @@ typedef	struct		s_texture
 	int				bpp;
 	int				l_length;
 	int				endian;
-}					t_texture;
+}	t_texture;
 
-typedef	struct		s_player
+typedef struct s_player
 {
-	float 			facing;
+	float			facing;
 	float			pos[2];
-}					t_player;
+}	t_player;
 
 /*_______________________________ENUM_________________________________________*/
 typedef enum e_type
@@ -132,59 +133,58 @@ typedef enum e_config_type
 
 /*_______________________________FUNCTION_____________________________________*/
 /*________________PARSING*/
-char		*ft_strnstr_end(const char *haystack, const char *needle, size_t len);
-int			parse_file(int fd, t_game *game);
-int			process_config(int fd, t_game *game);
-int			parse_config(char *line, int *arr, t_game *game);
-int			parse_line(t_game *game, char *line, int *i, int type);
-int			fill_texture(t_game *game, char *line, int *i, int type);
-int			check_rgb(char *line, int *i, t_config *config, int type);
-int 		parse_rgb(char **start, int *count, int type, t_config *config);
-int			process_map_recursive(int fd, t_game *game);
-int			skip_and_save_type(int type, int *arr, int *i);
-int			ft_isblank(char c);
-int			check_map_closure(t_game *game);
-int			floodfill(t_game *game, int pos_y, int pos_x, char flag);
-int			init_game(t_game *game, int rows);
-int			init_map(t_game *game, char *line, int curr_row, int line_lenght);
-int			compare_types(char *line_pos);
-int			ft_strcmp(const char *s1, const char *s2);
-bool		is_texture(int type);
-bool		valid_file_extension(char *filename, char *ext, char del);
-bool		detect_content(char *line, char *first_char);
-bool		config_completed(int *parsed_elements);
-void		init_config(t_game *game);
+char			*ft_strnstr_end(const char *haystack, const char *n, size_t l);
+int				parse_file(int fd, t_game *game);
+int				process_config(int fd, t_game *game);
+int				parse_config(char *line, int *arr, t_game *game);
+int				parse_line(t_game *game, char *line, int *i, int type);
+int				fill_texture(t_game *game, char *line, int *i, int type);
+int				check_rgb(char *line, int *i, t_config *config, int type);
+int				parse_rgb(char **start, int *count, int type, t_config *config);
+int				process_map_recursive(int fd, t_game *game);
+int				skip_and_save_type(int type, int *arr, int *i);
+int				ft_isblank(char c);
+int				check_map_closure(t_game *game);
+int				floodfill(t_game *game, int pos_y, int pos_x, char flag);
+int				init_game(t_game *game, int rows);
+int				init_map(t_game *game, char *line, int curr_row, int line_l);
+int				compare_types(char *line_pos);
+int				ft_strcmp(const char *s1, const char *s2);
+bool			is_texture(int type);
+bool			valid_file_extension(char *filename, char *ext, char del);
+bool			detect_content(char *line, char *first_char);
+bool			config_completed(int *parsed_elements);
+void			init_config(t_game *game);
 
 /*________________HOOK___*/
-int			key_handler(int keycode, t_game *game);
-void	toggle_handler(t_game *game, int keycode);
-/*________________PLAYER*/
-void	move_handler(t_game *game, int keycode);
+int				key_handler(int keycode, t_game *game);
+void			toggle_handler(t_game *game, int keycode);
 /*________________RAYCAST*/
-int			cub3d(t_game *game);
-int			game_loop(t_game *game);
-void		dda_operation(t_game *game, float facing);
-void		dda_collision(t_game *game, float move[2], float camera);
-void		block_put(t_data *data, int pos[3], int size, unsigned int color);
-void		px_put(t_data *data, int x, int y, unsigned int color);
-void		draw_player(t_game *game, t_data *data, unsigned int color);
-void		draw_minimap(t_game *game, t_data *data);
-void		draw_wall(t_game *game, t_dda *dda, t_ray *ray);
-void		draw_line(t_game *game, t_dda *dda, t_ray *ray);
-void		refresh_screen(t_game *game);
-float		safe_angle_add(float *angle, float mod);
-double		get_angle(int type, int facing);
+int				cub3d(t_game *game);
+int				game_loop(t_game *game);
+void			dda_operation(t_game *game, float facing);
+void			dda_collision(t_game *game, float move[2], float camera);
+void			block_put(t_data *data, int pos[3], int size, unsigned int col);
+void			px_put(t_data *data, int x, int y, unsigned int color);
+void			draw_player(t_game *game, t_data *data, unsigned int color);
+void			draw_minimap(t_game *game, t_data *data);
+void			draw_wall(t_game *game, t_dda *dda, t_ray *ray);
+void			draw_line(t_game *game, t_dda *dda, t_ray *ray);
+void			refresh_screen(t_game *game);
+void			move_handler(t_game *game, int keycode);
+float			safe_angle_add(float *angle, float mod);
+double			get_angle(int type, int facing);
 /*________________UTILS__*/
-void		print_map(int **matrix, int height, int width);
-void		print_int_arr(int *arr, int len);
-void		ft_error(char *msg, char *var);
-void		free_map(int **array, int	size);
-void		cleanup_game(t_game *game);
-void		gnl_cleanup(char *line);
-void		free_config(t_config *config);
-void		malloc_exit(t_game *game, char *line);
-void		get_fps(t_game *game);
+int				clean_all(t_game *game);
+int				close_all(t_game *game);
+void			print_map(int **matrix, int height, int width);
+void			print_int_arr(int *arr, int len);
+void			ft_error(char *msg, char *var);
+void			free_map(int **array, int size);
+void			cleanup_game(t_game *game);
+void			gnl_cleanup(char *line);
+void			free_config(t_config *config);
+void			malloc_exit(t_game *game, char *line);
+void			get_fps(t_game *game);
 unsigned int	convert_int(int rgb[3]);
-int			clean_all(t_game *game);
-int		close_all(t_game *game);
 #endif
