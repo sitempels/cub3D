@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 14:37:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/24 18:33:37 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/26 13:25:08 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	init_game(t_game *game, int rows)
 		return (1);
 	game->screen_width = WIDTH;
 	game->screen_height = HEIGHT;
-	game->minimap = 1;
 	game->fov = FOV;
 	game->player = malloc(sizeof(t_player));
 	if (!game->player)
