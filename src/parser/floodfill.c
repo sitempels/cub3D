@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:51:51 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/25 18:59:50 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/26 16:12:29 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	floodfill(t_game *game, int y, int x, char flag)
 	map = game->map;
 	if (flag == 'I')
 	{
-		if (x < 0 || y < 0 || x >= game->max_x + 2 || y >= game->max_x + 2)
+		if (x < 0 || y < 0 || x >= game->max_x + 2 || y >= game->max_y + 2)
 			return (1);
 		if (map[y][x] == EMPTY)
 			return (1);

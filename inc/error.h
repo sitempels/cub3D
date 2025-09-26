@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:24:31 by agaland           #+#    #+#             */
-/*   Updated: 2025/09/25 16:14:46 by agaland          ###   ########.fr       */
+/*   Updated: 2025/09/26 16:27:00 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,8 @@
 # define ERR_MAP "Empty line in map or content after map\n"
 # define NO_PLAYER "The map must contain a player represented by N, S, W or E\n"
 # define MULT_PLAYERS "Multiple players found\n"
-# define ERR_RGB "Invalid RGB format, must be a digit\n"
+# define ERR_RGB "Invalid RGB format\n"
 # define RANGE_RGB "RGB value out of range (0-255)\n"
-# define FRMT_RGB "RGB values must be separated by a comma\n"
 # define RGB_COUNT "RGB must have exactly 3 values\n"
 # define RGB_EXTRA "Extra content before or after RGB values\n"
 # define UNCLOSED_MAP "Map is not closed\n"

@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/26 11:19:38 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/26 15:14:43 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ int				skip_and_save_type(int type, int *arr, int *i);
 int				ft_isblank(char c);
 int				check_map_closure(t_game *game);
 int				floodfill(t_game *game, int pos_y, int pos_x, char flag);
+int				floodfill_ext(t_game *game, int y, int x, char flag);
 int				init_game(t_game *game, int rows);
 int				init_map(t_game *game, char *line, int curr_row, int line_l);
 int				compare_types(char *line_pos);
