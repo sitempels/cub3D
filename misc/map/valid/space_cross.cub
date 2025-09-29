@@ -1,0 +1,25 @@
+
+NO misc/textures/Texturelabs_Sky.xpm
+SO misc/textures/Texturelabs_solar_plasma12.xpm
+WE misc/textures/space.xpm
+EA misc/textures/Texturelabs_Details.xpm
+
+C 18, 20, 19
+F 0, 0, 0
+
+          11111111          
+          10110001          
+          10000001          
+          10001111          
+          10000001          
+1111111111100000011111111111
+1000000000000000000000000001
+1111100000000W00000000011111
+1000000000000000000000000001
+1111111111100000011111111111
+          10000001          
+          10000001          
+          10000111          
+          10000001          
+          10010001          
+          11111111     

@@ -1,11 +1,11 @@
 
-NO misc/textures/space.xpm
+NO misc/textures/diamantx1.xpm
 SO misc/textures/grassycliff.xpm
-WE misc/textures/brick_wall_damaged.xpm
-EA misc/textures/blblbl.xpm
+WE misc/textures/dino.xpm
+EA misc/textures/diamantx2.xpm
 
-C 35,19,73
-F 15,6,40
+F 3, 41, 15
+C 1, 23, 11
 
 111111111111111
 111111000111111

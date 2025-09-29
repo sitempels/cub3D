@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dda_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stempels <stempels@student.s19.be>         +#+  +:+       +#+        */
+/*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 15:56:44 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/25 12:14:14 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/30 00:41:48 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ void	refresh_screen(t_game *game)
 						j = game->mini_height + MINI_BORDER_L;
 			}
 			if (j < game->screen_height / 2)
-				color = convert_int(game->config->floor_rgb);
-			if (j >= game->screen_height / 2)
 				color = convert_int(game->config->ceiling_rgb);
+			if (j >= game->screen_height / 2)
+				color = convert_int(game->config->floor_rgb);
 			px_put(game->data, i, j, color);
 		}
 	}
