@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 13:44:32 by stempels          #+#    #+#             */
-/*   Updated: 2025/09/26 17:27:50 by stempels         ###   ########.fr       */
+/*   Updated: 2025/09/30 10:08:17 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ int				cub3d(t_game *game);
 int				game_loop(t_game *game);
 void			dda_operation(t_game *game, float facing);
 void			dda_collision(t_game *game, float move[2], float camera);
-void			block_put(t_data *data, int pos[3], int size, unsigned int col);
+void			block_put(t_data *data, int pos[4], int size, unsigned int col);
 void			px_put(t_data *data, int x, int y, unsigned int color);
 void			draw_player(t_game *game, t_data *data, unsigned int color);
 void			draw_minimap(t_game *game, t_data *data);
