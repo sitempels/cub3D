@@ -25,8 +25,7 @@ int	main(int ac, char **av)
 		return (ft_error(USAGE, NULL), 1);
 	fd = open(av[1], O_DIRECTORY);
 	if (fd != -1)
-		return (ft_error(ERR_DIR, NULL), 1);
-	close(fd);
+		return (close(fd), ft_error(ERR_DIR, NULL), 1);
 	if (!valid_file_extension(av[1], ".cub", '\0'))
 		return (1);
 	ft_memset(&game, 0, sizeof(t_game));
@@ -51,7 +50,11 @@ static void	game_init(t_game *game)
 	if (game->screen_width < game->screen_height)
 		game->mini_size = game->screen_width * 0.33 / game->max_x;
 	else
+	{
 		game->mini_size = game->screen_height * 0.33 / game->max_y;
+		if (game->mini_size * game->max_x > game->screen_width)
+			game->mini_size = game->screen_width * 0.50 / game->max_x;
+	}
 	game->mini_width = game->mini_size * game->max_x;
 	game->mini_height = game->mini_size * game->max_y;
 	game->show_fps = 0;
